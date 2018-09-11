@@ -56,7 +56,7 @@ ROOT_URLCONF = 'BrandMonitoring.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates/SMM')]
+        'DIRS': [os.path.join(BASE_DIR, 'templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -85,7 +85,7 @@ DATABASES = {
 
 STATICFILES_DIRS = [
 
-    "/home/sajjad/PycharmProjects/BrandMonitoring/BrandMonitoring/static/",
+    "/home/rehab/PycharmProjects/SMM/DSL-BrandMonitoring/static/",
     # ("CSS_MODEL", "/home/sajjad/PycharmProjects/BrandMonitoring/SMM/static/SMM"),
     # ("CSS_BOOTSTRAP", "/home/sajjad/PycharmProjects/BrandMonitoring/SMM/static/bootstrap"),
     # ("JS", "/home/sajjad/PycharmProjects/BrandMonitoring/SMM/static/js"),
