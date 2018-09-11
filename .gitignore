@@ -23,7 +23,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-.idea
+.idea/
 
 MANIFEST
 
