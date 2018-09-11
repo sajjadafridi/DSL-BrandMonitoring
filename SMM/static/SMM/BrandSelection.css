@@ -1,0 +1,40 @@
+.result {
+    list-style: none;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.result li {
+    list-style-position: outside;
+    cursor: pointer;
+    margin-left: 0px;
+    margin-right:0%;
+    position: relative;
+}
+
+.result img {
+    border-radius: 40%;
+    background-repeat: no-repeat;
+    background-position: left;
+    margin-right: 10px;
+    width: 25px;
+    height: 25px;
+}
+.result li:hover
+{
+    background-color: lightgreen;
+
+}
+.result li:after {
+    border:  0.5px solid green;
+    content: "";
+    border-bottom: 0.5px solid;
+    border-top: 0.5px solid;
+    display: block;
+    width: 100%;
+    background: darkblue;
+}
