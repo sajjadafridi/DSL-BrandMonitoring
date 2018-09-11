@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 
-from django.forms import ModelForm
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -36,10 +35,7 @@ class Keyword(models.Model):
 # class Anything(ModelForm):
 #     model = AlertMention
 #     fields = '__all__'
-class KeywordForm(ModelForm):
-    class Meta:
-        model = Keyword
-        fields = '__all__'
+
 
 
 @receiver(post_save, sender=User)

@@ -280,7 +280,7 @@
             </div>
         </div>
         <!--Sources and language model-->
-        <form class="modal-form" method="post">
+        <form class="modal-form" method="post" action="{% url 'insert_value' %}" >
 
             <div class="row">
                 <div class="modal fade" id="SourcesModal" role="dialog">
@@ -355,11 +355,12 @@
                                         <tr>
                                             <td class="text-right label">Spanish</td>
                                             <td class="text-center">
-                                                <input name="sourceselection" id="ad_Checkbox1"  type="checkbox" value="spanish" </td>
+                                                <input name="sourceselection" id="ad_Checkbox1"  type="checkbox" value="spanish"> </td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
+
                             </div>
                             <div class="rows">
                                 <div class="col-6">
@@ -369,7 +370,11 @@
                                         <i class="fa fa-arrow-left pull-left"
                                            style="margin-left:750px;top:0;left:0;padding-right:20px;"></i></button>
                                 </div>
+
                                 <div class="col-6">
+                                    {% csrf_token %}
+        {{ form.as_p }}
+{#                                    <a href="{% url 'insert_value' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>#}
                                     <button class="button modal-form-button btn-default"
                                             style="margin-left:70%;margin-right:10px" type="submit" data-toggle="modal" id="source-selection-btn">
                                         <span class="pull-left">Submit&nbsp;&nbsp; </span>

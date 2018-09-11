@@ -8,8 +8,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from SMM.forms import SignUpForm
-from SMM.models import KeywordForm
-
+from SMM.forms import KeywordForm
+from SETMOK_API.SETMOKE_API import SETMOKE_API
 from SMM.tokens import account_activation_token
 
 template_name = "dashboard"
@@ -74,16 +74,27 @@ def activate(request, uidb64, token):
 
 def insert_value(request):
     if request.method == "POST":
+        print("I am here django")
+
         form = KeywordForm(request.POST)
-        if form.is_valid():
+        # if form.is_valid():
+        keyword_to_search = 'Fatima Jinnah'
+            #  keyword_to_search="Nawaz Sharif"
+        setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
+        list = setmoke_api.get_data()
+        setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
             # post = form.save(commit=False)
             # post.author = request.user
             # post.published_date = timezone.now()
             # post.save()
-            return redirect('SMM/dashboard1.html',)
-    else:
-        form = KeywordForm()
-    # return render(request, 'blog/post_edit.html', {'form': form})
+        return redirect('SMM/dashboard1.html', )
+    #        return render(request, 'SMM/dashboard1.html', {'form': form})
+    #
+    # else:
+    #     form = KeywordForm()
+    #     return render(request, 'SMM/dashboard1.html', {'form': form})
+
+         # return render(request, 'blog/post_edit.html', {'form': form})
         # if form.is_valid():
         #     alert_name = request.POST['alert_name']
         #     form.optional_keywords = request.POST.get('fourth', '')
