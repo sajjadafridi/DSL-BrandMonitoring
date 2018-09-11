@@ -11,7 +11,7 @@ from SMM.forms import SignUpForm
 from SMM.forms import KeywordForm
 from SETMOK_API.SETMOKE_API import SETMOKE_API
 from SMM.tokens import account_activation_token
-
+from django.shortcuts import render_to_response
 template_name = "dashboard"
 keyword = ''
 
@@ -82,12 +82,15 @@ def insert_value(request):
             #  keyword_to_search="Nawaz Sharif"
         setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
         list = setmoke_api.get_data()
-        setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
+        # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
             # post = form.save(commit=False)
             # post.author = request.user
             # post.published_date = timezone.now()
             # post.save()
-        return redirect('SMM/dashboard1.html', )
+        list_of_data = {
+            "list_of_data": list
+        }
+        return render_to_response('SMM/dashboard1.html', list_of_data)
     #        return render(request, 'SMM/dashboard1.html', {'form': form})
     #
     # else:
