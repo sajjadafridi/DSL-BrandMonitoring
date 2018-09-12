@@ -14,16 +14,6 @@ class Profile(models.Model):
     birth_date = models.DateField(null=True, blank=True)
     email_confirmed = models.BooleanField(default=False)
 
-
-class Keyword(models.Model):
-    Userid = models.ForeignKey(Profile,on_delete=models.CASCADE)
-    alert_name = models.CharField(max_length=200,blank=False)
-    optional_keywords = models.TextField(max_length=200, blank=False)
-    required_keywords = models.TextField(max_length=200, blank=False)
-    excluded_keywords = models.TextField(max_length=200, blank=False)
-    class Meta:
-        order_with_respect_to = 'Userid'
-        db_table = 'Keyword'
         # constraints = [
         #     models.CheckConstraint(models.Q(age__gte=18), 'age_gte_18'),
         # ]
@@ -37,6 +27,40 @@ class Keyword(models.Model):
 #     fields = '__all__'
 
 
+class Keyword(models.Model):
+    Text=models.CharField(max_length=45)
+    Optional=models.CharField(default=None, blank=True, null=True,max_length=45)
+    Required=models.CharField(default=None, blank=True, null=True,max_length=45)
+    Excluded=models.CharField(default=None, blank=True, null=True,max_length=45)
+    Userid = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    class Meta:
+        order_with_respect_to = 'Userid'
+        db_table = 'Keyword'
+
+
+class PostUser(models.Model):
+    UserID = models.CharField(max_length=60)
+    DisplayName = models.CharField(max_length=45)
+    DisplayImage = models.CharField(max_length=1024)
+    TotalLikes= models.IntegerField(default=None, blank=True, null=True)
+    TotalPosts=models.IntegerField(default=None, blank=True, null=True)
+    FollowingCount=models.IntegerField(default=None, blank=True, null=True)
+    FollowerCount=models.IntegerField(default=None, blank=True, null=True)
+    PostReshareCount=models.IntegerField(default=None, blank=True, null=True)
+
+class Post(models.Model):
+    PostUser=models.ForeignKey(PostUser, on_delete=models.CASCADE)
+    Keyword = models.ForeignKey(Keyword, on_delete=models.CASCADE)
+    StatusID = models.CharField(max_length=45)
+    Content = models.TextField()
+    CreatedAt = models.DateTimeField()
+    ResharerCount = models.IntegerField()
+    Source = models.CharField(max_length=45)
+
+
+class Resharer(models.Model):
+    PostUser = models.ForeignKey(PostUser, on_delete=models.CASCADE)
+    Post=models.ForeignKey(Post,on_delete=models.CASCADE)
 
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):

@@ -80,7 +80,7 @@ def insert_value(request):
         # if form.is_valid():
         keyword_to_search = 'Fatima Jinnah'
             #  keyword_to_search="Nawaz Sharif"
-        setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
+        setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini",3)
         list = setmoke_api.get_data()
         # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
             # post = form.save(commit=False)
@@ -90,7 +90,7 @@ def insert_value(request):
         list_of_data = {
             "list_of_data": list
         }
-        return render_to_response('SMM/dashboard1.html', list_of_data)
+    return render_to_response('SMM/dashboard1.html', list_of_data)
     #        return render(request, 'SMM/dashboard1.html', {'form': form})
     #
     # else:
