@@ -75,7 +75,7 @@ def activate(request, uidb64, token):
 def insert_value(request):
     if request.method == "POST":
         print("I am here django")
-
+        
         form = KeywordForm(request.POST)
         # if form.is_valid():
         keyword_to_search = 'Fatima Jinnah'
