@@ -21,7 +21,42 @@ def load_forgetpassword_page(request):
 
 @login_required
 def home(request):
-    return render(request, 'SMM/home.html')
+    if request.user.is_authenticated:
+        print("authentic user")
+        if request.method == "POST":
+            keyword_form = KeywordForm(request.POST)
+
+            # current user information
+
+            user_id = request.POST.get('user_id')
+            user_fname=request.POST.get('user_fist_name')
+            user_lname=request.POST.get('user_last_name')
+            user_email=request.POST.get('user_email')
+            user_status=request.POST.get('user_status')
+            user_econform=request.POST.get('user_email_conform')
+
+            key_word=request.POST.get('search_keyword')
+
+            # create or get the user_id already exist
+            # user, _ = User.objects.get_or_create(Userid=request.POST.get('user_id'))
+
+# updating the current form and then post
+            # updated_request = request.POST.copy()
+            # updated_request.update({'alert_name': key_word})
+            # updated_request.update({'Userid_id': user_id})
+            # keyword_form= KeywordForm(data=updated_request)
+            if keyword_form.is_valid():
+                keyword_form = KeywordForm()
+                model_instance = keyword_form.save(commit=False)
+                model_instance.alert_name = key_word
+                model_instance.Userid_id = user_id
+                model_instance.save()
+                return redirect('dashboard')
+        else:
+            keyword_form = KeywordForm()
+            return render(request, "SMM/home.html", {'form': keyword_form})
+    else:
+        return render(request, 'SMM/home.html',{})
 
 
 def signup(request):
