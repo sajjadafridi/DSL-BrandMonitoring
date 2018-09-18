@@ -78,9 +78,9 @@ def insert_value(request):
 
         form = KeywordForm(request.POST)
         # if form.is_valid():
-        keyword_to_search = 'Fatima Jinnah'
+        keyword_to_search = 'Imran Khan'
             #  keyword_to_search="Nawaz Sharif"
-        setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
+        setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini",3)
         list = setmoke_api.get_data()
         # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
             # post = form.save(commit=False)

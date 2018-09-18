@@ -19,6 +19,7 @@
         <link rel="icon" href="{% static 'images/icon-trans.png' %}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 
+
 <style>
 /* width */
 div#scroll::-webkit-scrollbar {
@@ -177,7 +178,7 @@ div#scroll::-webkit-scrollbar-thumb {
 
                {% for message in list_of_data %}
 
-                <div class="row" onclick=" MainPanel({{ message }}) ">
+                <div class="row" id={{message.status_id}}  onClick="reply_click('{{message.user.time }}','{{ message.text }}','{{  message.user.display_name}}','{{message.user.display_picture }}','{{ message.status_id }}','{{ message.user.user_id  }}','{{ message.source }}')">
                     <div class="db-FeedSocial">
                         <div class="db-FeedSocialLeft">
 	    <span class="db-box Social-box">
@@ -199,7 +200,7 @@ div#scroll::-webkit-scrollbar-thumb {
                         </div>
                         <div class="db-FeedSocialMid">
                             <div class="db-FeedSocialName highlight">{{ message.user.display_name }}</div>
-                            <div class="db-FeedSocialTitle"> {{ message.text|slice:":50"}}</div>
+                            <div class="db-FeedSocialTitle">{{ message.text|slice:":40"}}</div>
                             <div class="db-FeedSocialDesc highlight">
                                 {% if message.source == "GooglePlus" %}
                                 <a target="_blank" href="https://plus.google.com/{{ message.user.user_id }}/posts/{{ message.status_id }}">https://plus.google.com/{{ message.user.user_id }}/posts/{{ message.status_id }}</a>
@@ -217,14 +218,30 @@ div#scroll::-webkit-scrollbar-thumb {
                         </div>
                     </div>
                 </div>
+
                  {% endfor %}
 </div>
 <script>
-function MainPanel(x) {
+function reply_click(time, text, name, picture, status_id , user_id, source)
+{ $("#display_name").text(name);
+  $("#created_at").text(time);
+{#  var prtext = $.parseHTML(text);#}
+  $("#text").text(text);
+  $('#display_picture').attr('src',picture);
+   $('#display_picture_link').attr('href',"https://twitter.com/"+name);
 
-    return x;
+  if(source=="GooglePlus")
+  {
+
+    $("#post_url").attr('href',"https://plus.google.com/"+user_id+"/posts/"+status_id);
+    $("#post_url").attr('src',"https://plus.google.com/"+user_id+"/posts/"+status_id);
+  }
+  else if(source=="Twitter")
+      {
+           $("#post_url").attr('href',"https://twitter.com/"+name+"/status/"+status_id);
+            $("#post_url").attr('src',"https://twitter.com/"+name+"/status/"+status_id);
+      }
 }
-document.getElementById("demo").innerHTML = myFunction(4);
 </script>
 
 {#                <div class="row">#}
@@ -300,7 +317,7 @@ document.getElementById("demo").innerHTML = myFunction(4);
 {#                </div>#}
             </div>
             <!--Main Panel-->
-            <div class="col-lg-6 col-xl-6 d-flex flex-column">
+            <div class="col-lg-6 col-xl-6 d-flex flex-column"  style="width:auto;height:auto;">
                 <div class="row">
                     <div class="col">
                         <div class="db-FeedSocial-expand h-100">
@@ -343,21 +360,22 @@ document.getElementById("demo").innerHTML = myFunction(4);
 		   <div class="db-position">
 		      <span class="Social-box-image" style="height:100px;width:100px;">
 			      <span class="Social-box-image-wrap" style="height:100px; margin-left: -233px; width: 500px;">
-				     <img class="Social-box-image-img" src="{% static 'images/profilepic.png' %}"
-                          style="max-height:100px;width:100px;margin-left:50px">
+				    <a id="display_picture_link" target="_blank" href="#">
+                      <img  id="display_picture" class="Social-box-image-img"src="{% static 'images/profilepic.png' %}"
+                          style="max-height:100px;width:100px;margin-left:50px"></a>
 				  </span>
 				</span>
 			</div>
 		</span>
                             </div>
                             <div class="db-FeedSocialNotif" style="width:auto;height:auto;">
-                                <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">31 Jul 11:30 A.M</div>
+                                <div id ="created_at" class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">31 Jul 11:30 A.M</div>
                             </div>
 
                             <div class="db-mainFeedContent">
-                                <div class="db-FeedSocialName highlight">@SocialMonitoring.com</div>
-                                <div class="db-FeedSocialTitle"> Fix Review July 2018…This is Kate Colonel Jamei…</div>
-                                <div class="db-FeedSocialDesc highlight"><a target="_blank" href="#">https://www.socialmediamonitoring.com/2018/07/july-2018/</a>
+                                <div  id="display_name" class="db-FeedSocialName highlight">@SocialMonitoring.com</div>
+                                <div  id="text" class="db-FeedSocialTitle" style="width: 100%; height: auto "></div>
+                                <div class="db-FeedSocialDesc highlight"><a id="post_url" target="_blank" href="#">https://www.socialmediamonitoring.com/2018/07/july-2018/</a>
                                 </div>
                             </div>
                             <div class="row">
@@ -382,6 +400,7 @@ document.getElementById("demo").innerHTML = myFunction(4);
         </div>
     </div>
     <!--script-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script
             src="https://code.jquery.com/jquery-3.1.1.js"
             integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
@@ -399,6 +418,7 @@ document.getElementById("demo").innerHTML = myFunction(4);
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
+
 
     </body>
     </html>
