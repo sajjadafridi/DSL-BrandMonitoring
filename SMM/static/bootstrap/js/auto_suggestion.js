@@ -8,6 +8,7 @@ $('#rlist').on('click', 'li', function(){
     $('#search-input').val(searchvalue);
     var domainvalue=$(this).children("input").val();
     $('#domain-input').val(domainvalue);
+    $('#search_keyword').val(searchvalue);
     var imgUrl = $(this).children('img').attr('src');
     $('#input-image').attr('src',imgUrl);
     $('#image-input').attr('src',imgUrl);

@@ -229,16 +229,7 @@
                                     <label>Facebook Page</label>
                                     <input id="facebooklink" type="input" class="form-control"
                                            placeholder="Facebook Profile.." required autofocus></input>
-                                    {% csrf_token %}
-                                    <p id="user_id" name="user_id" type="hidden" value={{ user.id }}></p>
-                                    <p id="user_status" name="user_status" type="hidden" value={{ user.is_active }}></p>
-                                    <p id="user_fist_name" name="user_first_name" type="hidden"
-                                       value={{ user.first_name }}></p>
-                                    <p id="user_last_name" name="user_last_name" type="hidden"
-                                       value={{ user.last_name }}></p>
-                                    <p id="user_email_conform" name="user_email_conform" type="hidden"
-                                       value={{ user.profile.email_confirmed }}></p>
-                                    <p id="user_email" name="user_email" type="hidden" value={{ user.email }}></p>
+
                                     {#                                    <input type="input" id="facebooklink" class="form-control " style="width:550px;"#}
                                     {#                                       placeholder="Facebook Profile.." required autofocus>#}
                                 </div>
@@ -280,8 +271,7 @@
             </div>
         </div>
         <!--Sources and language model-->
-        <form class="modal-form" method="post" action="{% url 'insert_value' %}" >
-
+        <form class="modal-form" method="post" action="">
             <div class="row">
                 <div class="modal fade" id="SourcesModal" role="dialog">
                     <div class="modal-dialoge">
@@ -370,11 +360,23 @@
                                         <i class="fa fa-arrow-left pull-left"
                                            style="margin-left:750px;top:0;left:0;padding-right:20px;"></i></button>
                                 </div>
+                                   <form method="post" >
 
-                                <div class="col-6">
-                                    {% csrf_token %}
-        {{ form.as_p }}
-{#                                    <a href="{% url 'insert_value' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>#}
+                                    <input id="user_id" name="user_id" type="hidden" value={{ user.id }}>
+                                    <input id="user_status" name="user_status" type="hidden" value={{ user.is_active }}>
+                                    <input id="user_fist_name" name="user_first_name" type="hidden"
+                                       value={{ user.first_name }}>
+                                    <input id="user_last_name" name="user_last_name" type="hidden"
+                                       value={{ user.last_name }}>
+                                    <input id="user_email_conform" name="user_email_conform" type="hidden"
+                                       value={{ user.profile.email_confirmed }}>
+                                    <input id="user_email" name="user_email" type="hidden" value={{ user.email }}>
+                                <div id="hereare" class="col-6">
+                                            {% csrf_token %}
+                                    <input type="hidden" id="search_keyword" value="none" name="search_keyword">
+                                            {{ form.as_p }}
+{#                                    {{ form.excluded_keywords.value|default_if_none:"NONE" }}#}
+
                                     <button class="button modal-form-button btn-default"
                                             style="margin-left:70%;margin-right:10px" type="submit" data-toggle="modal" id="source-selection-btn">
                                         <span class="pull-left">Submit&nbsp;&nbsp; </span>

@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm,PasswordInput
+from django.forms import ModelForm,PasswordInput,Textarea, TextInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Keyword
@@ -26,13 +26,23 @@ class SignUpForm(UserCreationForm):
 		'password2': PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password confirmation'}),
 	}
 		# fields = ('first_name', 'last_name', 'company_name','email','password1','password2','show_password',)
-class keyword_model(forms.Form):
-	serch = forms.CharField(max_length=200,required=True)
-	class Meta:
-		model=forms
-		fields = ('search_keyword')
+# class keyword_model(forms.Form):
+# 	serch = forms.CharField(max_length=200,required=True)
+# 	class Meta:
+# 		model=forms
+# 		fields = ('search_keyword')
 
 class KeywordForm(ModelForm):
     class Meta:
         model = Keyword
-        fields = '__all__'
+        exclude = ['alert_name','Userid','optional_keywords','excluded_keywords','required_keywords']
+
+class KeywordForm_One(ModelForm):
+    class Meta:
+        model = Keyword
+        fields = ['alert_name', 'optional_keywords']
+        widgets = {
+            'alert_name': TextInput(attrs={'placeholder': 'Here we are','type':'hidden'}),
+            'optional_keywords': Textarea(attrs={'placeholder': 'add optional keyword here'}),
+
+        }

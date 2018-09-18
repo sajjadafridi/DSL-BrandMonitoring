@@ -5,6 +5,7 @@ $jQuery_2_2_4(document).ready(function () {
     {
         var domain_word = $("#domain-input").val();
         $("#companyname").val(domain_word);
+        console.log(domain_word);
         // $('#companyname').val(search_word);
         //searchUrl(domain_word );
         search_url(domain_word);
