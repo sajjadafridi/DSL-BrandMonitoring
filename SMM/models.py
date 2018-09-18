@@ -18,9 +18,9 @@ class Profile(models.Model):
 class Keyword(models.Model):
     Userid = models.ForeignKey(Profile,on_delete=models.CASCADE)
     alert_name = models.CharField(max_length=200,blank=False)
-    optional_keywords = models.TextField(max_length=200, blank=False)
-    required_keywords = models.TextField(max_length=200, blank=False)
-    excluded_keywords = models.TextField(max_length=200, blank=False)
+    optional_keywords = models.TextField(max_length=200, blank=True)
+    required_keywords = models.TextField(max_length=200, blank=True)
+    excluded_keywords = models.TextField(max_length=200, blank=True)
     class Meta:
         order_with_respect_to = 'Userid'
         db_table = 'Keyword'
