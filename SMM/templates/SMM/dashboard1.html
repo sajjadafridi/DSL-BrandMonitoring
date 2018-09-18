@@ -18,6 +18,19 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
         <link rel="icon" href="{% static 'images/icon-trans.png' %}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+<style>
+/* width */
+div#scroll::-webkit-scrollbar {
+    width: 10px;
+}
+/* Handle */
+div#scroll::-webkit-scrollbar-thumb {
+    background: green;
+    border-radius: 10px;
+}
+
+</style>
     </head>
     <body>
     <!--Nav bar-->
@@ -160,78 +173,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="db-FeedSocial">
-                        <div class="db-FeedSocialLeft">
-	    <span class="db-box Social-box">
-		   <div class="db-position">
-		      <span class="Social-box-image" style="height:40px;line-height:40px; width:40px;">
-			      <span class="Social-box-image-wrap"
-                        style="height:40px; line-height: 40px; margin-left: -233px; width: 500px;">
-				     <img class="Social-box-image-img" src="{% static 'images/profilepic.png' %}"
-                          style="max-height:40px;">
-				  </span>
-				  <div class=""></div>
-				</span>
-			</div>
-		</span>
-                            <div class="db-SocialFeed-unread"></div>
-                        </div>
-                        <div class="db-FeedSocialNotif">
-                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">31 Jul 11:30 A.M</div>
-                        </div>
-                        <div class="db-FeedSocialMid">
-                            <div class="db-FeedSocialName highlight">@SocialMonitoring.com</div>
-                            <div class="db-FeedSocialTitle"> Fix Review July 2018…This is Kate Colonel Jamei…</div>
-                            <div class="db-FeedSocialDesc highlight"><a target="_blank" href="#">https://www.socialmediamonitoring.com/2018/07/july-2018/</a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6"></div>
-                            <div title="Move to Favourities" class="col-1"><i class="fa fa-star"></i></div>
-                            <div title="Move to spam" class="col-1"><i class="fa fa-exclamation-circle"></i></div>
-                            <div title="Move to Trash" class="col-1"><i class="fa fa-trash"></i></div>
-                            <div title="Block Resource" class="col-1"><i class="fa fa-ban"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="db-FeedSocial">
-                        <div class="db-FeedSocialLeft">
-	    <span class="db-box Social-box">
-		   <div class="db-position">
-		      <span class="Social-box-image" style="height:40px;line-height:40px; width:40px;">
-			      <span class="Social-box-image-wrap"
-                        style="height:40px; line-height: 40px; margin-left: -233px; width: 500px;">
-				     <img class="Social-box-image-img" src="{% static 'images/profilepic.png' %}"
-                          style="max-height:40px;">
-				  </span>
-				  <div class=""></div>
-				</span>
-			</div>
-		</span>
-                            <div class="db-SocialFeed-unread"></div>
-                        </div>
-                        <div class="db-FeedSocialNotif">
-                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">31 Jul 11:30 A.M</div>
-                        </div>
-                        <div class="db-FeedSocialMid">
-                            <div class="db-FeedSocialName highlight">@SocialMonitoring.com</div>
-                            <div class="db-FeedSocialTitle"> Fix Review July 2018…This is Kate Colonel Jamei…</div>
-                            <div class="db-FeedSocialDesc highlight"><a target="_blank" href="#">https://www.socialmediamonitoring.com/2018/07/july-2018/</a>
-                            </div>
-                        </div>
-                        <div class="row">
+<div id ="scroll"  style="overflow-y: auto; height:500px; overflow-x: hidden">
 
-                            <div class="col-6"></div>
-                            <div title="Move to Favourities" class="col-1"><i class="fa fa-star"></i></div>
-                            <div title="Move to spam" class="col-1"><i class="fa fa-exclamation-circle"></i></div>
-                            <div title="Move to Trash" class="col-1"><i class="fa fa-trash"></i></div>
-                            <div title="Block Resource" class="col-1"><i class="fa fa-ban"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
+               {% for message in list_of_data %}
+
+                <div class="row" onclick=" MainPanel({{ message }}) ">
                     <div class="db-FeedSocial">
                         <div class="db-FeedSocialLeft">
 	    <span class="db-box Social-box">
@@ -239,7 +185,7 @@
 		      <span class="Social-box-image" style="height:40px;line-height:40px; width:40px;">
 			      <span class="Social-box-image-wrap"
                         style="height:40px; line-height: 40px; margin-left: -233px; width: 500px;">
-				     <img class="Social-box-image-img" src="{% static 'images/profilepic.png' %}"
+				     <img class="Social-box-image-img" src= {{message.user.display_picture}}
                           style="max-height:40px;">
 				  </span>
 				  <div class=""></div>
@@ -249,12 +195,17 @@
                             <div class="db-SocialFeed-unread"></div>
                         </div>
                         <div class="db-FeedSocialNotif">
-                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">31 Jul 11:30 A.M</div>
+                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">{{ message.user.time }}</div>
                         </div>
                         <div class="db-FeedSocialMid">
-                            <div class="db-FeedSocialName highlight">@SocialMonitoring.com</div>
-                            <div class="db-FeedSocialTitle"> Fix Review July 2018…This is Kate Colonel Jamei…</div>
-                            <div class="db-FeedSocialDesc highlight"><a target="_blank" href="#">https://www.socialmediamonitoring.com/2018/07/july-2018/</a>
+                            <div class="db-FeedSocialName highlight">{{ message.user.display_name }}</div>
+                            <div class="db-FeedSocialTitle"> {{ message.text|slice:":50"}}</div>
+                            <div class="db-FeedSocialDesc highlight">
+                                {% if message.source == "GooglePlus" %}
+                                <a target="_blank" href="https://plus.google.com/{{ message.user.user_id }}/posts/{{ message.status_id }}">https://plus.google.com/{{ message.user.user_id }}/posts/{{ message.status_id }}</a>
+                                {% elif message.source == "Twitter" %}
+                                <a target="_blank" href="https://twitter.com/{{ message.user.display_name }}/status/{{ message.status_id }}">https://twitter.com/{{ message.user.display_name }}/status/{{ message.status_id }}</a>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="row">
@@ -266,6 +217,87 @@
                         </div>
                     </div>
                 </div>
+                 {% endfor %}
+</div>
+<script>
+function MainPanel(x) {
+
+    return x;
+}
+document.getElementById("demo").innerHTML = myFunction(4);
+</script>
+
+{#                <div class="row">#}
+{#                    <div class="db-FeedSocial">#}
+{#                        <div class="db-FeedSocialLeft">#}
+{#	    <span class="db-box Social-box">#}
+{#		   <div class="db-position">#}
+{#		      <span class="Social-box-image" style="height:40px;line-height:40px; width:40px;">#}
+{#			      <span class="Social-box-image-wrap"#}
+{#                        style="height:40px; line-height: 40px; margin-left: -233px; width: 500px;">#}
+{#				     <img class="Social-box-image-img" src="{% static 'images/profilepic.png' %}"#}
+{#                          style="max-height:40px;">#}
+{#				  </span>#}
+{#				  <div class=""></div>#}
+{#				</span>#}
+{#			</div>#}
+{#		</span>#}
+{#                            <div class="db-SocialFeed-unread"></div>#}
+{#                        </div>#}
+{#                        <div class="db-FeedSocialNotif">#}
+{#                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">31 Jul 11:30 A.M</div>#}
+{#                        </div>#}
+{#                        <div class="db-FeedSocialMid">#}
+{#                            <div class="db-FeedSocialName highlight">@SocialMonitoring.com</div>#}
+{#                            <div class="db-FeedSocialTitle"> Fix Review July 2018…This is Kate Colonel Jamei…</div>#}
+{#                            <div class="db-FeedSocialDesc highlight"><a target="_blank" href="#">https://www.socialmediamonitoring.com/2018/07/july-2018/</a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{##}
+{#                            <div class="col-6"></div>#}
+{#                            <div title="Move to Favourities" class="col-1"><i class="fa fa-star"></i></div>#}
+{#                            <div title="Move to spam" class="col-1"><i class="fa fa-exclamation-circle"></i></div>#}
+{#                            <div title="Move to Trash" class="col-1"><i class="fa fa-trash"></i></div>#}
+{#                            <div title="Block Resource" class="col-1"><i class="fa fa-ban"></i></div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="row">#}
+{#                    <div class="db-FeedSocial">#}
+{#                        <div class="db-FeedSocialLeft">#}
+{#	    <span class="db-box Social-box">#}
+{#		   <div class="db-position">#}
+{#		      <span class="Social-box-image" style="height:40px;line-height:40px; width:40px;">#}
+{#			      <span class="Social-box-image-wrap"#}
+{#                        style="height:40px; line-height: 40px; margin-left: -233px; width: 500px;">#}
+{#				     <img class="Social-box-image-img" src="{% static 'images/profilepic.png' %}"#}
+{#                          style="max-height:40px;">#}
+{#				  </span>#}
+{#				  <div class=""></div>#}
+{#				</span>#}
+{#			</div>#}
+{#		</span>#}
+{#                            <div class="db-SocialFeed-unread"></div>#}
+{#                        </div>#}
+{#                        <div class="db-FeedSocialNotif">#}
+{#                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">31 Jul 11:30 A.M</div>#}
+{#                        </div>#}
+{#                        <div class="db-FeedSocialMid">#}
+{#                            <div class="db-FeedSocialName highlight">@SocialMonitoring.com</div>#}
+{#                            <div class="db-FeedSocialTitle"> Fix Review July 2018…This is Kate Colonel Jamei…</div>#}
+{#                            <div class="db-FeedSocialDesc highlight"><a target="_blank" href="#">https://www.socialmediamonitoring.com/2018/07/july-2018/</a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col-6"></div>#}
+{#                            <div title="Move to Favourities" class="col-1"><i class="fa fa-star"></i></div>#}
+{#                            <div title="Move to spam" class="col-1"><i class="fa fa-exclamation-circle"></i></div>#}
+{#                            <div title="Move to Trash" class="col-1"><i class="fa fa-trash"></i></div>#}
+{#                            <div title="Block Resource" class="col-1"><i class="fa fa-ban"></i></div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
             </div>
             <!--Main Panel-->
             <div class="col-lg-6 col-xl-6 d-flex flex-column">
