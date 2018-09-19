@@ -43,3 +43,27 @@ def update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
+
+class PostUser(models.Model):
+   UserID = models.CharField(max_length=60)
+   DisplayName = models.CharField(max_length=45)
+   DisplayPicture = models.CharField(max_length=1024)
+   TotalLikes= models.IntegerField()
+   TotalPosts=models.IntegerField()
+   FollowingCount=models.IntegerField()
+   FollowerCount=models.IntegerField()
+   PostReshareCount=models.IntegerField()
+
+class Post(models.Model):
+   PostUserID=models.ForeignKey(PostUser, on_delete=models.CASCADE)
+   KeywordID = models.ForeignKey(Keyword, on_delete=models.CASCADE)
+   StatusID = models.CharField(max_length=45)
+   Content = models.TextField()
+   CreatedAt = models.DateTimeField()
+   ResharerCount = models.IntegerField()
+   Source = models.CharField(max_length=45)
+
+
+class Resharer(models.Model):
+   PostUserID = models.ForeignKey(PostUser, on_delete=models.CASCADE)
+   PostID=models.ForeignKey(Post,on_delete=models.CASCADE)
