@@ -107,37 +107,65 @@ def activate(request, uidb64, token):
         return render(request, 'SMM/account_activation_invalid.html')
 
 
+def fetch_posts(keyword_to_search):
+    setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    list = setmoke_api.get_data()
+    setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
+    list_of_data = {
+        "list_of_data": list
+    }
+    return list_of_data
+
+
 def insert_value(request):
     if request.method == "POST":
         print("I am here django")
-        
-        form = KeywordForm(request.POST)
-        # if form.is_valid():
-        keyword_to_search = 'Fatima Jinnah'
-            #  keyword_to_search="Nawaz Sharif"
-        setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
-        list = setmoke_api.get_data()
-        # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
-            # post = form.save(commit=False)
-            # post.author = request.user
-            # post.published_date = timezone.now()
-            # post.save()
-        list_of_data = {
-            "list_of_data": list
-        }
-        return render_to_response('SMM/dashboard1.html', list_of_data)
-        # return render(request, 'SMM/dashboard1.html',)
-    #
-    # else:
-    #     form = KeywordForm()
-    #     return render(request, 'SMM/dashboard1.html', {'form': form})
 
-         # return render(request, 'blog/post_edit.html', {'form': form})
-        # if form.is_valid():
-        #     alert_name = request.POST['alert_name']
-        #     form.optional_keywords = request.POST.get('fourth', '')
-        #     form.required_keywords = request.POST.get('fourth', '')
-        #     form.excluded_keywords = request.POST.get('fourth', '')
+    form = KeywordForm(request.POST)
+    # if form.is_valid():
+    keyword_to_search = 'Fatima Jinnah'
+    #  keyword_to_search="Nawaz Sharif"
+    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
+    list = setmoke_api.get_data()
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
+    # post = form.save(commit=False)
+    # post.author = request.user
+    # post.published_date = timezone.now()
+    # post.save()
+    list_of_data = {
+        "list_of_data": list
+    }
+    return render_to_response('SMM/dashboard1.html', list_of_data)
+    # return render(request, 'SMM/dashboard1.html',)
+#
+# else:
+#     form = KeywordForm()
+#     return render(request, 'SMM/dashboard1.html', {'form': form})
+
+# return render(request, 'blog/post_edit.html', {'form': form})
+# if form.is_valid():
+#     alert_name = request.POST['alert_name']
+#     form.optional_keywords = request.POST.get('fourth', '')
+#     form.required_keywords = request.POST.get('fourth', '')
+#     form.excluded_keywords = request.POST.get('fourth', '')
+
+# list_data=fetch_posts('pepsi')
+# keyword='pepsi'
+# print("I am here django")
+# return render_to_response(request,'SMM/dashboard1.html', {})
+# fetch_posts(keyword))
+# return render(request, 'SMM/dashboard1.html', {})
+#
+# else:
+#     form = KeywordForm()
+#     return render(request, 'SMM/dashboard1.html', {'form': form})
+
+# return render(request, 'blog/post_edit.html', {'form': form})
+# if form.is_valid():
+#     alert_name = request.POST['alert_name']
+#     form.optional_keywords = request.POST.get('fourth', '')
+#     form.required_keywords = request.POST.get('fourth', '')
+#     form.excluded_keywords = request.POST.get('fourth', '')
 
 
 # def get_search(request):
@@ -155,4 +183,4 @@ def insert_value(request):
 #             keyword = request.GET.get('ajax-input')
 #             return render(request, 'SMM/dashboard.html', {'form': form})
 
-    # rendered = render_to_string('my_template.html', {'foo': 'bar'})
+# rendered = render_to_string('my_template.html', {'foo': 'bar'})
