@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{% static 'SMM/login.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrapcdn-grid.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
 </head>
 
 <body>
@@ -27,7 +27,7 @@
         </div>
         <form class="signup-form" method="post">
             <h4 class="text-center font-weight-normal">Sign Up for new Account</h4> 
-            {% csrf_token %} 
+            {% csrf_token %}
             {% for field in form %}
             <div class="form-label-group">
                 {% if field.name == 'show_password' %}
@@ -39,8 +39,16 @@
                         </div>
                     </div>
                 </div>
-                {% else %} 
-                {{ field.label_tag }}
+                {% else %}
+                    {% if field.name == 'password1'%}
+                        <label for="{{ form.password.id_for_label }}" class="label">New Password</label>
+                        <span class="passwordSublabel">(Minimun 6 characters)</span>
+                        {% elif field.name == 'password2'%}
+                        <label for="{{ form.password.id_for_label }}" class="label">Confirm Password</label>
+                        {% else %}
+                        {{ field.label_tag }}
+                        {% endif %}
+
             </div>
             {{ field }} 
             {% endif %} 

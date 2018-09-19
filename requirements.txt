@@ -5,3 +5,4 @@ celery[redis]==4.2.0rc4
 pytz==2015.4
 redis==2.10.5
 requests==2.7.0
+SETMOKE-API==1.3
