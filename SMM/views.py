@@ -13,7 +13,7 @@ from SETMOK_API.SETMOKE_API import SETMOKE_API
 from SMM.tokens import account_activation_token
 from django.shortcuts import render_to_response
 template_name = "dashboard"
-keyword = ''
+Search_keyword = ''
 
 def load_forgetpassword_page(request):
     return render(request,'SMM/forgetpassword.html')
@@ -34,8 +34,8 @@ def home(request):
             user_email=request.POST.get('user_email')
             user_status=request.POST.get('user_status')
             user_econform=request.POST.get('user_email_conform')
-
-            key_word=request.POST.get('search_keyword')
+            global Search_keyword
+            Search_keyword=request.POST.get('search_keyword')
 
             # create or get the user_id already exist
             # user, _ = User.objects.get_or_create(Userid=request.POST.get('user_id'))
@@ -48,7 +48,7 @@ def home(request):
             if keyword_form.is_valid():
                 keyword_form = KeywordForm()
                 model_instance = keyword_form.save(commit=False)
-                model_instance.alert_name = key_word
+                model_instance.alert_name = Search_keyword
                 model_instance.Userid_id = user_id
                 model_instance.save()
                 return redirect('dashboard')
@@ -108,9 +108,9 @@ def activate(request, uidb64, token):
 
 
 def fetch_posts(keyword_to_search):
-    setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
     list = setmoke_api.get_data()
-    setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
+    setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
     list_of_data = {
         "list_of_data": list
     }
@@ -121,66 +121,15 @@ def insert_value(request):
     if request.method == "POST":
         print("I am here django")
 
+
     form = KeywordForm(request.POST)
     # if form.is_valid():
-    keyword_to_search = 'Fatima Jinnah'
-    #  keyword_to_search="Nawaz Sharif"
-    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
-    list = setmoke_api.get_data()
+
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
     # post = form.save(commit=False)
     # post.author = request.user
     # post.published_date = timezone.now()
     # post.save()
-    list_of_data = {
-        "list_of_data": list
-    }
-    return render_to_response('SMM/dashboard1.html', list_of_data)
+    print(Search_keyword)
+    return render_to_response('SMM/dashboard1.html', fetch_posts(Search_keyword))
     # return render(request, 'SMM/dashboard1.html',)
-#
-# else:
-#     form = KeywordForm()
-#     return render(request, 'SMM/dashboard1.html', {'form': form})
-
-# return render(request, 'blog/post_edit.html', {'form': form})
-# if form.is_valid():
-#     alert_name = request.POST['alert_name']
-#     form.optional_keywords = request.POST.get('fourth', '')
-#     form.required_keywords = request.POST.get('fourth', '')
-#     form.excluded_keywords = request.POST.get('fourth', '')
-
-# list_data=fetch_posts('pepsi')
-# keyword='pepsi'
-# print("I am here django")
-# return render_to_response(request,'SMM/dashboard1.html', {})
-# fetch_posts(keyword))
-# return render(request, 'SMM/dashboard1.html', {})
-#
-# else:
-#     form = KeywordForm()
-#     return render(request, 'SMM/dashboard1.html', {'form': form})
-
-# return render(request, 'blog/post_edit.html', {'form': form})
-# if form.is_valid():
-#     alert_name = request.POST['alert_name']
-#     form.optional_keywords = request.POST.get('fourth', '')
-#     form.required_keywords = request.POST.get('fourth', '')
-#     form.excluded_keywords = request.POST.get('fourth', '')
-
-
-# def get_search(request):
-#     if request.method == 'GET':
-#         keyword = request.GET.get('Search')
-#     error = ''
-#     if not keyword:
-#         error = "error message"
-#     return render(request, template_name, {'error': error})
-
-# def keyword_module(request):
-#     if request.method == 'GET':
-#         form = keyword_module(request.GET)
-#         if form.is_valid():
-#             keyword = request.GET.get('ajax-input')
-#             return render(request, 'SMM/dashboard.html', {'form': form})
-
-# rendered = render_to_string('my_template.html', {'foo': 'bar'})
