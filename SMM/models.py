@@ -21,19 +21,6 @@ class Keyword(models.Model):
     class Meta:
         order_with_respect_to = 'Userid'
         db_table = 'Keyword'
-        # constraints = [
-        #     models.CheckConstraint(models.Q(age__gte=18), 'age_gte_18'),
-        # ]
-# class Brand(ModelForm):
-#     class Meta:
-#         model = AlertMention
-#         exclude = ['excluded_keywords','optional_keywords','required_keywords']
-#
-# class Anything(ModelForm):
-#     model = AlertMention
-#     fields = '__all__'
-
-
 
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
@@ -66,7 +53,6 @@ class Post(models.Model):
 
    class Meta:
        db_table = 'Post'
-
 
 class Resharer(models.Model):
    PostUserID = models.ForeignKey(PostUser, on_delete=models.CASCADE)

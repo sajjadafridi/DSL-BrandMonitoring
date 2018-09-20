@@ -70,7 +70,7 @@ def signup(request):
             user.is_active = False
             user.save()
             current_site = get_current_site(request)
-            subject = 'Activate Your MySite Account'
+            subject = 'Social Media Brand Monitoring'
             message = render_to_string('SMM/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -78,7 +78,7 @@ def signup(request):
                 'token': account_activation_token.make_token(user),
             })
             user.email_user(subject, message,user.email)
-            mail_subject = 'Activate your SMM account.'
+            mail_subject = subject
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()

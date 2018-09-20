@@ -13,6 +13,17 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 from celery.schedules import  crontab
 
+
+#  for email verificaiton
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'muhammad.sajjad@kics.edu.pk'
+EMAIL_HOST_PASSWORD = 'saj427272727()()()()()()()'
+EMAIL_PORT = 587
+
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -152,7 +163,7 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'

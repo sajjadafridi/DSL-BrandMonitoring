@@ -324,7 +324,7 @@ background:#4a4754;color:white;
 .hm-bg-clr{background-color: #4a4754;}
 .hm-contact-icon{margin-left:-50px;margin-top:-10px;}
 .hm-margin-top{margin-top:15px;}
-.hm-qr-hgt{height:150px;}
+.hm-qr-hgt{height:150px; resize: none;}
 .hm-ContactUs-bar{background:#7c7d7f;height:60px;}
 .home-mt{margin-top:230px;text-align:center;}
 /* Carousel Intro section--*/
