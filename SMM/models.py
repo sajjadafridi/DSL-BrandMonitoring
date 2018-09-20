@@ -53,7 +53,6 @@ class Post(models.Model):
 
    class Meta:
        db_table = 'Post'
-
 class Resharer(models.Model):
    PostUserID = models.ForeignKey(PostUser, on_delete=models.CASCADE)
    PostID=models.ForeignKey(Post,on_delete=models.CASCADE)

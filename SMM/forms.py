@@ -4,9 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Keyword
 
+form_control_class = forms.TextInput(attrs={'class': 'form-control'})
 
 class SignUpForm(UserCreationForm):
-    form_control_class = forms.TextInput(attrs={'class': 'form-control'})
     username = forms.CharField(max_length=30, required=True, widget=form_control_class)
     first_name = forms.CharField(max_length=30, required=True, widget=form_control_class)
     last_name = forms.CharField(max_length=30, required=True, widget=form_control_class)
@@ -32,3 +32,12 @@ class KeywordForm_One(ModelForm):
             'optional_keywords': Textarea(attrs={'placeholder': 'add optional keyword here'}),
 
         }
+
+class ContactForm(forms.Form):
+    email_address = forms.EmailField(max_length=254, widget=form_control_class)
+    subject=forms.CharField(max_length=500, required=True, widget=form_control_class)
+    message = forms.CharField(required=True,widget=forms.Textarea)
+
+    class Meta:
+        model = Keyword
+        fields = ['email_address', 'subject', 'message']

@@ -2,16 +2,17 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
-from SMM.forms import SignUpForm
-from SMM.forms import KeywordForm
-from SETMOK_API.SETMOKE_API import SETMOKE_API
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.mail import EmailMessage,send_mail, BadHeaderError
 from SMM.tokens import account_activation_token
-from django.shortcuts import render_to_response
+from SMM.forms import SignUpForm,KeywordForm,ContactForm
+from SETMOK_API.SETMOKE_API import SETMOKE_API
+from django.contrib import messages
+
 template_name = "dashboard"
 keyword = ''
 
@@ -20,7 +21,24 @@ def load_forgetpassword_page(request):
 
 
 def index(request):
-    return render(request,'SMM/index.html')
+    # handle the contact form
+    if request.method == 'GET':
+        contactform = ContactForm()
+    else:
+        contactform = ContactForm(data=request.POST)
+        if contactform.is_valid():
+            subject = contactform.cleaned_data['subject']
+            from_email = contactform.cleaned_data['email_address']
+            message = contactform.cleaned_data['message']
+            try:
+                send_mail(subject, message, from_email, ['muhammad.sajjad@kics.edu.pk'])
+                message = 'Your message has been send successfully!'
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            messages.info(request, message)
+        else:
+            return render(request, "SMM/index.html", {'contact_form': contactform})
+    return render(request, "SMM/index.html", {'contact_form': contactform})
 
 @login_required
 def home(request):
@@ -139,50 +157,12 @@ def insert_value(request):
     }
     return render_to_response('SMM/dashboard1.html', list_of_data)
     # return render(request, 'SMM/dashboard1.html',)
-#
-# else:
-#     form = KeywordForm()
-#     return render(request, 'SMM/dashboard1.html', {'form': form})
-
-# return render(request, 'blog/post_edit.html', {'form': form})
-# if form.is_valid():
-#     alert_name = request.POST['alert_name']
-#     form.optional_keywords = request.POST.get('fourth', '')
-#     form.required_keywords = request.POST.get('fourth', '')
-#     form.excluded_keywords = request.POST.get('fourth', '')
-
-# list_data=fetch_posts('pepsi')
-# keyword='pepsi'
-# print("I am here django")
-# return render_to_response(request,'SMM/dashboard1.html', {})
-# fetch_posts(keyword))
-# return render(request, 'SMM/dashboard1.html', {})
-#
-# else:
-#     form = KeywordForm()
-#     return render(request, 'SMM/dashboard1.html', {'form': form})
-
-# return render(request, 'blog/post_edit.html', {'form': form})
-# if form.is_valid():
-#     alert_name = request.POST['alert_name']
-#     form.optional_keywords = request.POST.get('fourth', '')
-#     form.required_keywords = request.POST.get('fourth', '')
-#     form.excluded_keywords = request.POST.get('fourth', '')
 
 
-# def get_search(request):
-#     if request.method == 'GET':
-#         keyword = request.GET.get('Search')
-#     error = ''
-#     if not keyword:
-#         error = "error message"
-#     return render(request, template_name, {'error': error})
-
-# def keyword_module(request):
-#     if request.method == 'GET':
-#         form = keyword_module(request.GET)
-#         if form.is_valid():
-#             keyword = request.GET.get('ajax-input')
-#             return render(request, 'SMM/dashboard.html', {'form': form})
-
-# rendered = render_to_string('my_template.html', {'foo': 'bar'})
+def get_search(request):
+    if request.method == 'GET':
+        keyword = request.GET.get('Search')
+    error = ''
+    if not keyword:
+        error = "error message"
+    return render(request, template_name, {'error': error})

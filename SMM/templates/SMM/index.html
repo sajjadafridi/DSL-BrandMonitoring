@@ -2,280 +2,304 @@
 <!DOCTYPE html>
 {% block content %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Social Media Monitor</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css' %}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
-    <link rel="icon" href="{% static 'images/icon-trans.png' %}">
-</head>
-<body>
-<!--NavBar-->
-<nav class="navbar navbar-expand-md hm-bg-clr navbar-dark sticky-top text-white">
-    <div class="container-fluid">
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Social Media Monitor</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css' %}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
+        <link rel="icon" href="{% static 'images/icon-trans.png' %}">
+    </head>
+    <body>
+    <!--NavBar-->
+    <nav class="navbar navbar-expand-md hm-bg-clr navbar-dark sticky-top text-white">
+        <div class="container-fluid">
   <span>
       <image class="navbar-brand logo-pic" src="{% static 'images/icon-trans.png' %}" alt=""> </image>
    <h5 class="h4 font-weight-normal header-text h-brandName">Social Media Monitor</h5>
    </span>
-        <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse"
-                data-target="#mainNavbarCollapse">&#9776;
-        </button>
-        <div class="collapse navbar-collapse" id="mainNavbarCollapse">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="#about"><img
-                        src="{% static 'images/about-us.png' %}" style="margin-right:5px" width="29px" height="29px">About
-                    Us</a></li>
-                <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="#main"><span
-                        class="fa fa-phone-square db-icon" style="font-size:26px"></span>Contact Us</a></li>
-                <li class="nav-item db-nav-item"><a class="nav-link text-white" href="{% url 'login' %}"><img
-                        src="{% static 'images/login.png' %}">Log In</a></li>
+            <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse"
+                    data-target="#mainNavbarCollapse">&#9776;
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbarCollapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="#about"><img
+                            src="{% static 'images/about-us.png' %}" style="margin-right:5px" width="29px"
+                            height="29px">About
+                        Us</a></li>
+                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="#main"><span
+                            class="fa fa-phone-square db-icon" style="font-size:26px"></span>Contact Us</a></li>
+                    <li class="nav-item db-nav-item"><a class="nav-link text-white" href="{% url 'login' %}"><img
+                            src="{% static 'images/login.png' %}">Log In</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--Carousel Intro-->
+    <section id="intro">
+        <div id="Carousel" class="carousel slide carousel-fade" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="carousel-background"><img src="{% static 'images/social_bg.jpg' %}" width="100%"
+                                                          height="600px" alt=""></div>
+                    <div class="carousel-container">
+                        <div class="carousel-content text-white">
+                            <h2 class="font-weight-normal">Social Media Monitor</h2><br><br>
+                            <h4 class="font-weight-normal">Monitor Brand,Product,Company,Competitor,Campaigns,<br>Customers,Industry
+                                or anything!!!</h4>
+                            <p class="font-weight-normal">Social Media and more powerful market insight.</p>
+                            <div class="home-rdm-button"><a href="#" class="white-link" data-id="#">Read More</a></div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-background"><img src="{% static 'images/2nd.jpeg' %}" width="100%"
+                                                          height="600px"
+                                                          alt=""></div>
+                    <div class="carousel-container">
+                        <div class="carousel-content text-white">
+                            <h2 class="font-weight-normal">Social Media Monitor</h2><br><br>
+                            <h4 class="font-weight-normal">Monitor Brand,Product,Company,Competitor,Campaigns,<br>Customers,Industry
+                                or anything!!!</h4>
+                            <p class="font-weight-normal">Social Media and more powerful market insight.</p>
+                            <div class="home-rdm-button"><a href="#" class="white-link" data-id="#">Read More</a></div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-background"><img src="{% static 'images/3rd.jpg' %}" width="100%"
+                                                          height="600px"
+                                                          alt=""></div>
+                    <div class="carousel-container">
+                        <div class="carousel-content text-white">
+                            <h2 class="font-weight-normal">Social Media Monitor</h2><br><br>
+                            <h4 class="font-weight-normal">Monitor Brand,Product,Company,Competitor,Campaigns,<br>Customers,Industry
+                                or anything!!!</h4>
+                            <p class="font-weight-normal">Social Media and more powerful market insight.</p>
+                            <div class="home-rdm-button"><a href="#" class="white-link" data-id="#">Read More</a></div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <a class="carousel-control-prev" href="#Carousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+
+            <a class="carousel-control-next" href="#Carousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+            <ul class="carousel-indicators">
+                <li class="carousel-round" data-target="#slides" data-slide-to="0"></li>
+                <li class="carousel-round" data-target="#slides" data-slide-to="1"></li>
+                <li class="carousel-round" data-target="#slides" data-slide-to="2"></li>
             </ul>
-        </div>
-    </div>
-</nav>
-<!--Carousel Intro-->
-<section id="intro">
-    <div id="Carousel" class="carousel slide carousel-fade" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="carousel-background"><img src="{% static 'images/social_bg.jpg' %}" width="100%"
-                                                      height="600px" alt=""></div>
-                <div class="carousel-container">
-                    <div class="carousel-content text-white">
-                        <h2 class="font-weight-normal">Social Media Monitor</h2><br><br>
-                        <h4 class="font-weight-normal">Monitor Brand,Product,Company,Competitor,Campaigns,<br>Customers,Industry
-                            or anything!!!</h4>
-                        <p class="font-weight-normal">Social Media and more powerful market insight.</p>
-                        <div class="home-rdm-button"><a href="#" class="white-link" data-id="#">Read More</a></div>
-                        <br>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="carousel-background"><img src="{% static 'images/2nd.jpeg' %}" width="100%" height="600px"
-                                                      alt=""></div>
-                <div class="carousel-container">
-                    <div class="carousel-content text-white">
-                        <h2 class="font-weight-normal">Social Media Monitor</h2><br><br>
-                        <h4 class="font-weight-normal">Monitor Brand,Product,Company,Competitor,Campaigns,<br>Customers,Industry
-                            or anything!!!</h4>
-                        <p class="font-weight-normal">Social Media and more powerful market insight.</p>
-                        <div class="home-rdm-button"><a href="#" class="white-link" data-id="#">Read More</a></div>
-                        <br>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="carousel-background"><img src="{% static 'images/3rd.jpg' %}" width="100%" height="600px"
-                                                      alt=""></div>
-                <div class="carousel-container">
-                    <div class="carousel-content text-white">
-                        <h2 class="font-weight-normal">Social Media Monitor</h2><br><br>
-                        <h4 class="font-weight-normal">Monitor Brand,Product,Company,Competitor,Campaigns,<br>Customers,Industry
-                            or anything!!!</h4>
-                        <p class="font-weight-normal">Social Media and more powerful market insight.</p>
-                        <div class="home-rdm-button"><a href="#" class="white-link" data-id="#">Read More</a></div>
-                        <br>
-                    </div>
-                </div>
-            </div>
 
         </div>
+    </section>
+    <!--About Us-->
+    <section id="about">
+        <div class="container">
+            <header class="section-header">
+                <h3>About Us</h3>
+                <p>Get live updates about your brand from the web and social media.Explore how you can easily monitor
+                    the
+                    web</p>
+            </header>
 
-        <a class="carousel-control-prev" href="#Carousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-
-        <a class="carousel-control-next" href="#Carousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-        <ul class="carousel-indicators">
-            <li class="carousel-round" data-target="#slides" data-slide-to="0"></li>
-            <li class="carousel-round" data-target="#slides" data-slide-to="1"></li>
-            <li class="carousel-round" data-target="#slides" data-slide-to="2"></li>
-        </ul>
-
-    </div>
-</section>
-<!--About Us-->
-<section id="about">
-    <div class="container">
-        <header class="section-header">
-            <h3>About Us</h3>
-            <p>Get live updates about your brand from the web and social media.Explore how you can easily monitor the
-                web</p>
-        </header>
-
-        <div class="row">
-            <div class="col-md-4 wow fadeInUp">
-                <div class="about-col">
-                    <div class="img">
-                        <img src="{% static 'images/aboutus1.png' %}" alt="" class="img-fluid" width="100%"
-                             height="100%">
-                        <div class="icon"><i class="fa fa-dashcube aboutus-icon"></i></div>
+            <div class="row">
+                <div class="col-md-4 wow fadeInUp">
+                    <div class="about-col">
+                        <div class="img">
+                            <img src="{% static 'images/aboutus1.png' %}" alt="" class="img-fluid" width="100%"
+                                 height="100%">
+                            <div class="icon"><i class="fa fa-dashcube aboutus-icon"></i></div>
+                        </div>
+                        <h2 class="title"><a href="#">Our Mission</a></h2>
+                        <p class="font-weight-normal text-center">Our mission is to easily monitor millions of sources
+                            daily
+                            including social media,blogs and other websites.
+                            You can montior Brands,Companies,Customers,Competitors for market research
+                        </p>
                     </div>
-                    <h2 class="title"><a href="#">Our Mission</a></h2>
-                    <p class="font-weight-normal text-center">Our mission is to easily monitor millions of sources daily
-                        including social media,blogs and other websites.
-                        You can montior Brands,Companies,Customers,Competitors for market research
-                    </p>
                 </div>
+
+                <div class="col-md-4 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="about-col">
+                        <div class="img">
+                            <img src="{% static 'images/aboutus2.jpg' %}" alt="" class="img-fluid" width="100%"
+                                 height="auto">
+                            <div class="icon"><i class="fa fa-list-alt aboutus-icon"></i></div>
+                        </div>
+                        <h2 class="title"><a href="#">Our Services</a></h2>
+                        <p class="text-center">
+                            We help you to make better improvement to your business goals by providing services to you
+                            to
+                            easily achieve you goals.
+                            You too can make better business decisions based on real-world data.
+                        </p>
+                        <br>
+                    </div>
+                </div>
+
+                <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
+                    <div class="about-col">
+                        <div class="img">
+                            <img src="{% static 'images/aboutus3.png' %}" alt="" class="img-fluid" width="100%"
+                                 height="100%">
+                            <br>
+                            <div class="icon"><i class="fa fa-eye aboutus-icon"></i></div>
+                        </div>
+                        <br><br>
+                        <h2 class="title"><a href="#">Our Vision</a></h2>
+                        <p class="text-center">
+                            Our vision is to interact people to build awareness about the
+                            Brands,Companies,Customers,Industry and Competitors to make their reputation in business
+                            market
+                        </p>
+                        <br>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="about-col">
-                    <div class="img">
-                        <img src="{% static 'images/aboutus2.jpg' %}" alt="" class="img-fluid" width="100%"
-                             height="auto">
-                        <div class="icon"><i class="fa fa-list-alt aboutus-icon"></i></div>
+        </div>
+    </section>
+    <section id="main">
+        <div class="container-fluid">
+            <div class="row contactUs-Section">
+                <div class="col-12">
+                    <div class="section-header ml-5">
+                        <h3 class="p-3 align-center ml-5">Contact Us</h3>
                     </div>
-                    <h2 class="title"><a href="#">Our Services</a></h2>
-                    <p class="text-center">
-                        We help you to make better improvement to your business goals by providing services to you to
-                        easily achieve you goals.
-                        You too can make better business decisions based on real-world data.
-                    </p>
+                </div>
+                <div class="col-12 col-md-8 col-lg-8">
+                    <div class="row">
+                        <form class="formcontactUs" method="post" action="">
+                            {% csrf_token %}
+                            <h4 class="text-center font-weight-normal">Contact Us</h4>
+                            <p class="h6 text-center font-weight-normal">Contact Us If there is any query.Type your
+                                Name,<br>Email and your query!!..</p>
+                            <div class="form-label-group">
+                                <div class="rows">
+                                    <label for="name">Subject:</label>
+                                    <input id="{{ contact_form.subject.id_for_label }}" class="form-control"
+                                           name="{{ contact_form.subject.html_name }}" placeholder="Enter subject"
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="form-label-group">
+                                <div class="rows">
+                                    <label for="Email">Email address:</label>
+                                    <input id="{{ contact_form.email_address.id_for_label }}" class="form-control"
+                                           name="{{ contact_form.email_address.html_name }}"
+                                           placeholder="Enter mail address" type="email" required>
+                                </div>
+                            </div>
+                            <div class="form-label-group">
+                                <div class="rows">
+                                    <label for="text">Enter Your Query:</label>
+
+                                    <textarea id="{{ contact_form.message.id_for_label }}"
+                                              name="{{ contact_form.message.html_name }}" required
+                                              class="form-control hm-qr-hgt"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-label-group">
+                                <div class="rows">
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            {% if message.tags %}
+                                            {% endif %}
+                                            {{ message }}
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    <button class="button btn-default ml-auto hm-bg-clr">Submit!</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4">
+                    <h4 class="text-center font-weight-normal hm-margin-top">Quick Contact</h4>
+                    <p class="h6 font-weight-normal text-center">Do you want a Quick Contact?<br>Following is the
+                        information provided <br>to contact quickly:</p>
                     <br>
-                </div>
-            </div>
-
-            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
-                <div class="about-col">
-                    <div class="img">
-                        <img src="{% static 'images/aboutus3.png' %}" alt="" class="img-fluid" width="100%"
-                             height="100%">
-                        <br>
-                        <div class="icon"><i class="fa fa-eye aboutus-icon"></i></div>
-                    </div>
-                    <br><br>
-                    <h2 class="title"><a href="#">Our Vision</a></h2>
-                    <p class="text-center">
-                        Our vision is to interact people to build awareness about the
-                        Brands,Companies,Customers,Industry and Competitors to make their reputation in business market
-                    </p>
                     <br>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-<section id="main">
-    <div class="container-fluid">
-        <div class="row contactUs-Section">
-            <div class="col-12">
-                <div class="section-header ml-5">
-                    <h3 class="p-3 align-center ml-5">Contact Us</h3>
-                </div>
-            </div>
-            <div class="col-12 col-md-8 col-lg-8">
-                <div class="row">
-                    <form class="formcontactUs">
-                        <h4 class="text-center font-weight-normal">Contact Us</h4>
-                        <p class="h6 text-center font-weight-normal">Contact Us If there is any query.Type your
-                            Name,<br>Email and your query!!..</p>
-                        <div class="form-label-group">
-                            <div class="rows">
-                                <label for="name">Your Name:</label>
-                                <input type="text" id="name" class="form-control" placeholder="Name" required>
-                            </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li class="h6 font-weight-normal text-left d-block"><i
+                                        class="fa fa-envelope hm-contact-icon" style="font-size:25px;"></i>Email:abc@uet.edu.com.pk
+                                </li>
+                                <li class="h6 font-weight-normal text-left d-block"><i
+                                        class="fa fa-phone hm-contact-icon"
+                                        style="font-size:25px;"></i>Phone:+123456789
+                                </li>
+                                <li class="h6 font-weight-normal text-left d-block"><i
+                                        class="fa fa-fax hm-contact-icon "
+                                        style="font-size:25px;"></i>Fax:abc
+                                </li>
+                            </ul>
                         </div>
-                        <div class="form-label-group">
-                            <div class="rows">
-                                <label for="Email">Email address:</label>
-                                <input type="email" id="Email" class="form-control" placeholder="Email address"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="form-label-group">
-                            <div class="rows">
-                                <label for="text">Enter Your Query:</label>
-                                <textarea type="text"  class="form-control hm-qr-hgt" placeholder="" required></textarea>
-                            </div>
-                        </div>
-                        <div class="form-label-group">
-                            <div class="rows">
-                                <button class="button btn-default ml-auto hm-bg-clr">Submit!</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-12 col-md-4 col-lg-4">
-                <h4 class="text-center font-weight-normal hm-margin-top">Quick Contact</h4>
-                <p class="h6 font-weight-normal text-center">Do you want a Quick Contact?<br>Following is the
-                    information provided <br>to contact quickly:</p>
-                <br>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <ul>
-                            <li class="h6 font-weight-normal text-left d-block"><i
-                                    class="fa fa-envelope hm-contact-icon" style="font-size:25px;"></i>Email:abc@uet.edu.com.pk
-                            </li>
-                            <li class="h6 font-weight-normal text-left d-block"><i class="fa fa-phone hm-contact-icon"
-                                                                                   style="font-size:25px;"></i>Phone:+123456789
-                            </li>
-                            <li class="h6 font-weight-normal text-left d-block"><i class="fa fa-fax hm-contact-icon "
-                                                                                   style="font-size:25px;"></i>Fax:abc
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--
-        <div class="row footer-section">
-        <div class="col-12 col-sm-12  col-md-12 col-lg-12 col-xl-12 align-center">
-             <div class="row">
-              <div class="col-4 col-sm-3  col-md-3 col-lg-4 col-xl-4"></div>
-              <div class="col-1 col-sm-2  col-md-2 col-lg-1 col-xl-1 align-center"><a href="#" class="footer-icon"><i class="fa fa-facebook"></i></a></div>
-              <div class="col-1 col-sm-2  col-md-2 col-lg-1 col-xl-1 align-center"><a href="#" class="footer-icon"><i class="fa fa-twitter"></i></a></div>
-              <div class="col-1  col-sm-2  col-md-2 col-lg-1 col-xl-1 align-center"><a href="#" class="footer-icon"><i class="fa fa-linkedin"></i></a></div>
-              <div class="col-1  col-sm-2  col-md-2 col-lg-1 col-xl-1 align-center"><a href="#" class="footer-icon"><i class="fa fa-google"></i></a></div>
-              <div class="col-4"></div>
+            <!--
+            <div class="row footer-section">
+            <div class="col-12 col-sm-12  col-md-12 col-lg-12 col-xl-12 align-center">
+                 <div class="row">
+                  <div class="col-4 col-sm-3  col-md-3 col-lg-4 col-xl-4"></div>
+                  <div class="col-1 col-sm-2  col-md-2 col-lg-1 col-xl-1 align-center"><a href="#" class="footer-icon"><i class="fa fa-facebook"></i></a></div>
+                  <div class="col-1 col-sm-2  col-md-2 col-lg-1 col-xl-1 align-center"><a href="#" class="footer-icon"><i class="fa fa-twitter"></i></a></div>
+                  <div class="col-1  col-sm-2  col-md-2 col-lg-1 col-xl-1 align-center"><a href="#" class="footer-icon"><i class="fa fa-linkedin"></i></a></div>
+                  <div class="col-1  col-sm-2  col-md-2 col-lg-1 col-xl-1 align-center"><a href="#" class="footer-icon"><i class="fa fa-google"></i></a></div>
+                  <div class="col-4"></div>
+                 </div>
              </div>
-         </div>
-        </div>-->
-        <div class="row  copyright-section text-center">
-            <div class="col pt-2">
-                <p class="text-center align-center p-2">Copyright &copy; 2018 Social Media Company</p>
+            </div>-->
+            <div class="row  copyright-section text-center">
+                <div class="col pt-2">
+                    <p class="text-center align-center p-2">Copyright &copy; 2018 Social Media Company</p>
+                </div>
             </div>
-        </div>
 
-    </div>
-</section>
-<!--script-->
-<script
+        </div>
+    </section>
+    <!--script-->
+    <script
             src="https://code.jquery.com/jquery-3.1.1.js"
             integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
             crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
-        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"
-        integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-</body>
-</html>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    </body>
+    </html>
 {% endblock %}
