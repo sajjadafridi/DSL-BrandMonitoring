@@ -40,7 +40,7 @@
 
             input#search-input:focus {
                 outline: 0px;
-                box-shadow: 0px;
+                box-shadow: none;
 
             }
 
@@ -359,8 +359,6 @@
                                         <i class="fa fa-arrow-left pull-left"
                                            style="margin-left:750px;top:0;left:0;padding-right:20px;"></i></button>
                                 </div>
-                                   <form method="post" >
-
                                     <input id="user_id" name="user_id" type="hidden" value={{ user.id }}>
                                     <input id="user_status" name="user_status" type="hidden" value={{ user.is_active }}>
                                     <input id="user_fist_name" name="user_first_name" type="hidden"

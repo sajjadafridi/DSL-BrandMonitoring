@@ -12,8 +12,6 @@ class Profile(models.Model):
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     email_confirmed = models.BooleanField(default=False)
-
-
 class Keyword(models.Model):
     Userid = models.ForeignKey(Profile,on_delete=models.CASCADE)
     alert_name = models.CharField(max_length=200,blank=False)
@@ -53,6 +51,9 @@ class PostUser(models.Model):
    FollowerCount=models.IntegerField()
    PostReshareCount=models.IntegerField()
 
+   class Meta:
+       db_table = 'PostUser'
+
 class Post(models.Model):
    PostUserID=models.ForeignKey(PostUser, on_delete=models.CASCADE)
    KeywordID = models.ForeignKey(Keyword, on_delete=models.CASCADE)
@@ -61,8 +62,14 @@ class Post(models.Model):
    CreatedAt = models.DateTimeField()
    ResharerCount = models.IntegerField()
    Source = models.CharField(max_length=45)
+   Sentiment=models.IntegerField()
+
+   class Meta:
+       db_table = 'Post'
 
 
 class Resharer(models.Model):
    PostUserID = models.ForeignKey(PostUser, on_delete=models.CASCADE)
    PostID=models.ForeignKey(Post,on_delete=models.CASCADE)
+   class Meta:
+       db_table = 'Resharer'

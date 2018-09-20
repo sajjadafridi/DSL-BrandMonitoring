@@ -33,10 +33,10 @@
   background-image: -ms-linear-gradient(top, #298a08,#5FB404);
   background-image: -o-linear-gradient(top,#298a08,#5FB404);
   background-image: linear-gradient(to bottom,#298a08,#5FB404);
-  -webkit-border-radius: 20;
-  -moz-border-radius: 20;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
   border-radius: 10px;
-
+  
 }
 
 .btnn:hover {
@@ -53,8 +53,8 @@
 	color:white;
 	background-color:green;
 	border-radius:10px;
-  -webkit-border-radius: 20;
-  -moz-border-radius: 20;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
   cursor:pointer;
   width:100%;
     text-decoration: none;
@@ -85,7 +85,7 @@ font-size:25px;
 }
 .white-link {
   font-weight: 400;
-
+ 
 }
 
 .white-link:hover {
@@ -149,7 +149,7 @@ color:white;
   bottom:auto;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
-
+  
 }
 .linkwhite:hover{
 color:white;
@@ -172,7 +172,7 @@ color:white;
   bottom:auto;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
-
+  
 }
 .SignIn-links{
   font-size:15px;
@@ -191,7 +191,7 @@ color:white;
 .passwordSublabel {
     color: #8596a5;
     padding: 0 3px;
-    transition: opacity .3s
+    transition: opacity .3s 
 }
 .item{
 margin-top:0;
@@ -199,7 +199,7 @@ margin-top:0;
 .bounceUp{
 	-webkit-animation-name:bounceUp;
 	animation-name:bounceUp;
-}
+}	
 .animated{
 	-webkit-animation-duration:4s;
 	animation-duration:4s;
@@ -229,7 +229,7 @@ margin-top:0;
 }
 .selector hover{
 	opacity:0.85;
-	top:-10px;
+	top:-10px;	
 }
 .selector-header{
 	background:#eee;
@@ -273,7 +273,7 @@ margin-top:0;
 	font-size:15px;
 	max-width:350px;
 	line-height:25px;
-
+	
 }
 .text-logo{
 	margin-top:30px;
@@ -302,7 +302,7 @@ margin-top:0;
 	padding-left:10px;
 	margin-left:auto;
 	margin-right:auto;
-	background-image:none;
+	/*background-image:;*/
 }
 
 .button-selection {
@@ -319,12 +319,12 @@ margin-top:0;
 .button-selection:hover {
   opacity: 0.8;
   border-color:white;
-
+  
 }
 .button-selection:active {
   opacity: 0.8;
   border-color:white;
-
+  
 }
 .button {
   background-color: #4CAF50;
@@ -356,13 +356,13 @@ margin-top:0;
   bottom:auto;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
-
+  
 }
 .modal-form-input{
   padding: 10px;
   width: 100%;
-  font-size: 15px;
-  left:10%;
+  font-size: 17px;
+  left:10%;  
 }
 .modalpage-head{
 	margin-left:50%;margin-top:80px;
@@ -384,5 +384,5 @@ width:40%;
 	padding:15px;
 	left:400px;
 	font-size:20px;
-
+	
 }

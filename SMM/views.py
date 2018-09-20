@@ -19,6 +19,9 @@ def load_forgetpassword_page(request):
     return render(request,'SMM/forgetpassword.html')
 
 
+def index(request):
+    return render(request,'SMM/index.html')
+
 @login_required
 def home(request):
     if request.user.is_authenticated:

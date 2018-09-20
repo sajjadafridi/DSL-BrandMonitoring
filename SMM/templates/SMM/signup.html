@@ -41,10 +41,10 @@
                 </div>
                 {% else %}
                     {% if field.name == 'password1'%}
-                        <label for="{{ form.password.id_for_label }}" class="label">New Password</label>
+                        <label for="{{ form.password1.id_for_label }}" class="label">New Password</label>
                         <span class="passwordSublabel">(Minimun 6 characters)</span>
                         {% elif field.name == 'password2'%}
-                        <label for="{{ form.password.id_for_label }}" class="label">Confirm Password</label>
+                        <label for="{{ form.password2.id_for_label }}" class="label">Confirm Password</label>
                         {% else %}
                         {{ field.label_tag }}
                         {% endif %}

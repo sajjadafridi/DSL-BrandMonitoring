@@ -3,14 +3,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+      <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Social Media Monitor</title>
     <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css' %}">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}  ">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
@@ -23,26 +23,31 @@
 <nav class="navbar navbar-expand-lg  navbar-dark dashboard-nav">
     <div class="container-fluid">
 <span>
-<image class="navbar-brand logo-pic" src="{% static 'images/icon-trans.png' %}" alt="">
-<h5 class="h4 font-weight-normal header-text h-brandName">Social Media Monitor</h5></span>
+    <image class="navbar-brand logo-pic" src="{% static 'images/icon-trans.png' %}" alt=""> </image>
+    <h5 class="h4 font-weight-normal header-text h-brandName">Social Media Monitor </h5>
+</span>
         <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse"
                 data-target="#mainNavbarCollapse">&#9776;
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavbarCollapse">
             <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="#"><img
-                        src="{% static 'images/about-us.png' %}" style="margin-right:5px" width="29px" height="29px">About
-                    Us</a></li>
-                <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="#"><span
-                        class="fa fa-phone-square db-icon'%}" style="font-size:26px"></span>Contact Us</a></li>
-                {# <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="#"><img src="{% static 'images\login.png'%}">Log In</a></li>#}
+                <li class="nav-item db-nav-item">
+                    <a class="nav-link db-nav-link text-white" href="#">
+                        <img src="{% static 'images/about-us.png' %}" style="margin-right:5px" width="29px" height="29px">About Us</a>
+                </li>
+                <li class="nav-item db-nav-item">
+                    <a class="nav-link db-nav-link text-white" href="#">
+                        <span class="fa fa-phone-square db-icon" style="font-size:26px"></span>Contact Us</a>
+                </li>
                 {% if user.is_authenticated %}
-                    <li class="nav-item db-nav-item"><a class="db-nav-link fa fa-sign-in" href="{% url 'logout' %}"
-                                                        aria-hidden="true">Log out</a></li>
+                    <li class="nav-item db-nav-item">
+                        <a class="db-nav-link fa fa-sign-in" href="{% url 'logout' %}"
+                           aria-hidden="true">Log out</a></li>
                 {% else %}
-                    <li class="nav-item db-nav-item"><a class="db-nav-link fa fa-sign-in" href="{% url 'logout' %}"
-                                                        aria-hidden="true">Log In</a></li>
+                    <li class="nav-item db-nav-item">
+                     <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="{% url 'logout' %}"><img src="{% static 'images\login.png'%}">Log In</a></li>
+{#                        <a class="db-nav-link fa fa-sign-in" href="{% url 'logout' %}" aria-hidden="true">Log In</a></li>#}
                 {% endif %}
             </ul>
         </div>
@@ -54,7 +59,10 @@
 </main>
 {% block content %}
 {% endblock %}
-
+<script
+            src="https://code.jquery.com/jquery-3.1.1.js"
+            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+            crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
         integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
         crossorigin="anonymous"></script>

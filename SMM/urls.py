@@ -3,9 +3,10 @@ from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.urls import path
 from .import views as core_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
-
+    url(r'^$',core_views.index,name='index'),
     url(r'^login/$', auth_views.login, {'template_name': 'SMM/login.html'}, name='login'),
     # url( r'^login/$',auth_views.LoginView.as_view(template_name="SMM/login.html"), name="login"),
     url(r'^logout/$', auth_views.logout, {'next_page': 'login'}, name='logout'),
@@ -26,3 +27,5 @@ urlpatterns = [
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',auth_views.PasswordResetConfirmView.as_view(template_name='SMM/password_reset_confirm.html'),name='password_reset_confirm'),
     url(r'^reset/complete/$',auth_views.PasswordResetCompleteView.as_view(template_name='SMM/password_reset_complete.html'), name='password_reset_complete'),
     ]
+
+urlpatterns += staticfiles_urlpatterns()

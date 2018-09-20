@@ -103,12 +103,13 @@ DATABASES = {
 
 STATICFILES_DIRS = [
 
-    "/home/rehab/PycharmProjects/SMM/DSL-BrandMonitoring/static/",
-    # ("CSS_MODEL", "/home/sajjad/PycharmProjects/BrandMonitoring/SMM/static/SMM"),
+    # "/home/rehab/PycharmProjects/SMM/DSL-BrandMonitoring/static/",
+    "E:/Pycharm Project/DSL-BrandMonitoring/SMM/templates/SMM",
+    "E:/Pycharm Project/DSL-BrandMonitoring/SMM/static/",
     # ("CSS_BOOTSTRAP", "/home/sajjad/PycharmProjects/BrandMonitoring/SMM/static/bootstrap"),
     # ("JS", "/home/sajjad/PycharmProjects/BrandMonitoring/SMM/static/js"),
 ]
-
+STATIC_ROOT="E:/Pycharm Project/"
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 

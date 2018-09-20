@@ -26,22 +26,26 @@
        Social Media Monitor</h1>
   </span>
     </div>
-    {% if form.errors %}
-        <p style="color: red">Your username and password didn't match. Please try again.</p>
-    {% endif %}
     <form class="loginform" method="post" action="">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}"/>
-        {% for field in form %}
+{#        {% for field in form %}#}
             <div class="form-label-group">
                 <div class="row">
-                    {{ field.label_tag }}
-                    {{ field }}
+                    <label for="{{ form.username.id_for_label }}" class="label">User Name</label>
+{#                    {% if field.name == 'password' %}#}
+                    <input id="{{ form.username.id_for_label }}" maxlength="100" name="{{ form.username.html_name }}" placeholder="Enter user name"  type="input" class="form-control">
+                    <label for="{{ form.password.id_for_label }}" class="label"> Enter Password</label>
+                    <input id="{{ form.password.id_for_label }}" maxlength="100" name="{{ form.password.html_name }}" placeholder="Enter your password"  type="password" class="form-control">
+{#                    {% endif%}#}
+
+{#                    {{ field }}#}
+
                 </div>
             </div>
             {% for error in field.errors %}
                 <p style="color: red">{{ error }}</p>
-            {% endfor %}
+{#            {% endfor %}#}
             {% if field.help_text %}
                 <p>
                     <small style="color: grey">{{ field.help_text }}</small>
@@ -93,6 +97,11 @@
         <div class="text-center">
             <p>Don't have an account? <a class="link" href="{% url 'signup' %}">SignUp</a></p>
         </div>
+    <div class="text-center">
+        {% if form.errors %}
+        <p style="color: red">Your username and password didn't match. Please try again.</p>
+        {% endif %}
+    </div>
     </form>
 {% endblock %}
 </div>
