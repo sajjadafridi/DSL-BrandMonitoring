@@ -19,7 +19,6 @@ class Keyword(models.Model):
     required_keywords = models.TextField(max_length=200, blank=False)
     excluded_keywords = models.TextField(max_length=200, blank=False)
     class Meta:
-        order_with_respect_to = 'Userid'
         db_table = 'Keyword'
 
 @receiver(post_save, sender=User)
