@@ -77,7 +77,7 @@ def home(request):
             keyword_form = KeywordForm()
             return render(request, "SMM/home.html", {'form': keyword_form})
     else:
-        return render(request, 'SMM/home.html',{})
+        return redirect('login')
 
 
 def signup(request):
@@ -128,9 +128,9 @@ def activate(request, uidb64, token):
 
 
 def fetch_posts(keyword_to_search):
-    setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
     list = setmoke_api.get_data()
-    setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
+    setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
     list_of_data = {
         "list_of_data": list
     }
@@ -145,7 +145,7 @@ def insert_value(request):
     # if form.is_valid():
     keyword_to_search = 'Fatima Jinnah'
     #  keyword_to_search="Nawaz Sharif"
-    setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
     list = setmoke_api.get_data()
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
     # post = form.save(commit=False)

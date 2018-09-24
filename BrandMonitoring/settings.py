@@ -99,9 +99,9 @@ DATABASES = {
     'default': {
 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'SMM_DB',
+        'NAME': 'SMM_DB3',
         'USER': 'root',
-        'PASSWORD': 'sajjadafridi',
+        'PASSWORD': 'rehab105',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
