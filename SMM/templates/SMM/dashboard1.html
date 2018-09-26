@@ -1,3 +1,4 @@
+{% extends 'SMM/dashboard_base.html' %}
 {% load staticfiles %}
 <!DOCTYPE html>
 {% block content %}
@@ -34,35 +35,6 @@ div#scroll::-webkit-scrollbar-thumb {
 </style>
     </head>
     <body>
-    <!--Nav bar-->
-    <nav class="navbar navbar-expand-lg  navbar-dark dashboard-nav">
-        <div class="container-fluid">
-            <image class="navbar-brand logo-pic" src="{% static 'images/icon-trans.png' %}" alt="">
-                <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse"
-                        data-target="#mainNavbarCollapse">&#9776;</button>
-                <div class="collapse navbar-collapse" id="mainNavbarCollapse">
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="#"><span
-                                class="fa fa-clipboard db-icon"></span>Feed</a></li>
-                        <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="#"><span
-                                class="fa fa-users db-icon"></span>Influencers</a></li>
-                        <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="#"> <span
-                                class="fa fa-qrcode db-icon"></span>Reports</a></li>
-                        <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="#"><span
-                                class="fa fa-cogs db-icon"></span>Account Setting</a></li>
-                    </ul>
-                    <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-                        <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="#"><span
-                                class="fa fa-question-circle db-icon-question" style="font-size:30px"></span></a></li>
-
-                        <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="/SMM/logout/"><span
-                                class="fa fa-sign-out db-icon"></span>Sign Out</a></li>
-                    </ul>
-                </div>
-            </image>
-        </div>
-
-    </nav>
     <!--Main -->
     <div class="container-fluid">
         <div class="row d-flex flex-row h-100">
@@ -119,7 +91,7 @@ div#scroll::-webkit-scrollbar-thumb {
                     </div>
                     <div class="col-6 col-xs-6 col-sm-6 col-lg">
                         <li class="db-list-item">
-                            <a class="button btn alert-button text-white" href="newalert.html">
+                            <a class="button btn alert-button text-white" href="{% url 'home' %}">
                                 <i class="fa fa-plus-square db-list-add-icon" style="font-size:25px;"></i>New Alert</a>
                         </li>
                     </div>
@@ -225,7 +197,6 @@ div#scroll::-webkit-scrollbar-thumb {
 function reply_click(time, text, name, picture, status_id , user_id, source)
 { $("#display_name").text(name);
   $("#created_at").text(time);
-{#  var prtext = $.parseHTML(text);#}
   $("#text").text(text);
   $('#display_picture').attr('src',picture);
    $('#display_picture_link').attr('href',"https://twitter.com/"+name);

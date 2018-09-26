@@ -61,7 +61,7 @@ def home(request):
             # create or get the user_id already exist
             # user, _ = User.objects.get_or_create(Userid=request.POST.get('user_id'))
 
-# updating the current form and then post
+            # updating the current form and then post
             # updated_request = request.POST.copy()
             # updated_request.update({'alert_name': key_word})
             # updated_request.update({'Userid_id': user_id})
@@ -128,9 +128,9 @@ def activate(request, uidb64, token):
 
 
 def fetch_posts(keyword_to_search):
-    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
+    setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     list = setmoke_api.get_data()
-    setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
+    setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
     list_of_data = {
         "list_of_data": list
     }
@@ -145,7 +145,7 @@ def insert_value(request):
     # if form.is_valid():
     keyword_to_search = 'Fatima Jinnah'
     #  keyword_to_search="Nawaz Sharif"
-    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
+    setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     list = setmoke_api.get_data()
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
     # post = form.save(commit=False)
