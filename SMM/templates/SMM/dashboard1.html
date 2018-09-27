@@ -215,9 +215,9 @@ function reply_click(time, text, name, picture, status_id , user_id, source,sent
       }
     if(sentiment=='0')
     {
-          $('#dropdownEmotionButton').attr('src',{% static 'images/happy.png' %});
+          $('#dropdownEmotionButton').attr('src','{% static 'images/happy.png' %}');
     }else {
-      $('#dropdownEmotionButton').attr('src',{% static 'images/sad.svg' %});
+      $('#dropdownEmotionButton').attr('src','{% static 'images/sad.svg' %}');
     }
 }
 </script>
