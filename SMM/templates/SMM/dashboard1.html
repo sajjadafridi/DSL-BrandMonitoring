@@ -150,7 +150,8 @@ div#scroll::-webkit-scrollbar-thumb {
 
                {% for message in list_of_data %}
 
-                <div class="row" id={{message.status_id}}  onClick="reply_click('{{message.user.time }}','{{ message.text }}','{{  message.user.display_name}}','{{message.user.display_picture }}','{{ message.status_id }}','{{ message.user.user_id  }}','{{ message.source }}')">
+
+                <div class="row" id={{message.list.status_id}}  onClick="reply_click('{{message.list.user.time }}','{{ message.list.text }}','{{  message.list.user.display_name}}','{{message.list.user.display_picture }}','{{ message.list.status_id }}','{{ message.list.user.user_id  }}','{{ message.list.source }}',{{ message.sentiment}})">
                     <div class="db-FeedSocial">
                         <div class="db-FeedSocialLeft">
 	    <span class="db-box Social-box">
@@ -158,7 +159,7 @@ div#scroll::-webkit-scrollbar-thumb {
 		      <span class="Social-box-image" style="height:40px;line-height:40px; width:40px;">
 			      <span class="Social-box-image-wrap"
                         style="height:40px; line-height: 40px; margin-left: -233px; width: 500px;">
-				     <img class="Social-box-image-img" src= {{message.user.display_picture}}
+				     <img class="Social-box-image-img" src= {{message.list.user.display_picture}}
                           style="max-height:40px;">
 				  </span>
 				  <div class=""></div>
@@ -168,16 +169,16 @@ div#scroll::-webkit-scrollbar-thumb {
                             <div class="db-SocialFeed-unread"></div>
                         </div>
                         <div class="db-FeedSocialNotif">
-                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">{{ message.user.time }}</div>
+                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">{{ message.list.user.time }}</div>
                         </div>
                         <div class="db-FeedSocialMid">
-                            <div class="db-FeedSocialName highlight">{{ message.user.display_name }}</div>
-                            <div class="db-FeedSocialTitle">{{ message.text|slice:":40"}}</div>
+                            <div class="db-FeedSocialName highlight">{{ message.list.user.display_name }}</div>
+                            <div class="db-FeedSocialTitle">{{ message.list.text|slice:":40"}}</div>
                             <div class="db-FeedSocialDesc highlight">
-                                {% if message.source == "GooglePlus" %}
-                                <a target="_blank" href="https://plus.google.com/{{ message.user.user_id }}/posts/{{ message.status_id }}">https://plus.google.com/{{ message.user.user_id }}/posts/{{ message.status_id }}</a>
-                                {% elif message.source == "Twitter" %}
-                                <a target="_blank" href="https://twitter.com/{{ message.user.display_name }}/status/{{ message.status_id }}">https://twitter.com/{{ message.user.display_name }}/status/{{ message.status_id }}</a>
+                                {% if message.list.source == "GooglePlus" %}
+                                <a target="_blank" href="https://plus.google.com/{{ message.list.user.user_id }}/posts/{{ message.list.status_id }}">https://plus.google.com/{{ message.list.user.user_id }}/posts/{{ message.list.status_id }}</a>
+                                {% elif message.list.source == "Twitter" %}
+                                <a target="_blank" href="https://twitter.com/{{ message.list.user.display_name }}/status/{{ message.list.status_id }}">https://twitter.com/{{ message.list.user.display_name }}/status/{{ message.list.status_id }}</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -194,7 +195,7 @@ div#scroll::-webkit-scrollbar-thumb {
                  {% endfor %}
 </div>
 <script>
-function reply_click(time, text, name, picture, status_id , user_id, source)
+function reply_click(time, text, name, picture, status_id , user_id, source,sentiment)
 { $("#display_name").text(name);
   $("#created_at").text(time);
   $("#text").text(text);
@@ -212,6 +213,12 @@ function reply_click(time, text, name, picture, status_id , user_id, source)
            $("#post_url").attr('href',"https://twitter.com/"+name+"/status/"+status_id);
             $("#post_url").attr('src',"https://twitter.com/"+name+"/status/"+status_id);
       }
+    if(sentiment=='0')
+    {
+          $('#dropdownEmotionButton').attr('src',{% static 'images/happy.png' %});
+    }else {
+      $('#dropdownEmotionButton').attr('src',{% static 'images/sad.svg' %});
+    }
 }
 </script>
 

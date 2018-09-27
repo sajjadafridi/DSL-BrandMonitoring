@@ -12,7 +12,8 @@ from SMM.tokens import account_activation_token
 from SMM.forms import SignUpForm,KeywordForm,ContactForm,UserProfileForm,UserEditForm
 from SETMOK_API.SETMOKE_API import SETMOKE_API
 from django.contrib import messages
-
+from Analysis.SentimentAnalysis import SentimentAnalysis
+from SMM.Sentiment import Sentiment
 template_name = "dashboard"
 keyword = ''
 
@@ -70,7 +71,7 @@ def home(request):
                 keyword_form = KeywordForm()
                 model_instance = keyword_form.save(commit=False)
                 model_instance.alert_name = key_word
-                model_instance.Userid_id = user_id
+                model_instance.User_id = user_id
                 model_instance.save()
                 return redirect('dashboard')
         else:
@@ -79,7 +80,7 @@ def home(request):
     else:
         return redirect('login')
 
-
+Sentiment
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -130,7 +131,11 @@ def activate(request, uidb64, token):
 def fetch_posts(keyword_to_search):
     setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     list = setmoke_api.get_data()
+<<<<<<< HEAD
     setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
+=======
+    setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
+>>>>>>> 201230e0f89fe10ff32746349d02ac7a4db45c93
     list_of_data = {
         "list_of_data": list
     }
@@ -145,15 +150,38 @@ def insert_value(request):
     # if form.is_valid():
     # keyword_to_search = 'Fatima Jinnah'
     #  keyword_to_search="Nawaz Sharif"
+<<<<<<< HEAD
     # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     # list = setmoke_api.get_data()
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
+=======
+    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
+    list = setmoke_api.get_data()
+
+    sent_list=[]
+    analysis=SentimentAnalysis()
+
+    for mention in list:
+        sentiment = Sentiment()
+
+        sentiment.set_list(mention)
+        sent=analysis.analysis(mention.get_text(), "NLTK",
+                          "/home/rehab/PycharmProjects/PYPI package/SentimentAnalysis/my_classifier.pickle")
+
+        if sent=='Negative':
+            sentiment.set_sentiment(0)
+        else:
+            sentiment.set_sentiment(1)
+        sent_list.append(sentiment)
+
+    setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'rehab105', 'SMM_DB', 1)
+>>>>>>> 201230e0f89fe10ff32746349d02ac7a4db45c93
     # post = form.save(commit=False)
     # post.author = request.user
     # post.published_date = timezone.now()
     # post.save()
     list_of_data = {
-        "list_of_data": list
+        "list_of_data": sent_list
     }
     return render_to_response('SMM/dashboard1.html', list_of_data)
     # return render(request, 'SMM/dashboard1.html',)

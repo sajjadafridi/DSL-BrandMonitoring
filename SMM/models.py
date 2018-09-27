@@ -24,13 +24,12 @@ class Profile(models.Model):
     avatar = models.ImageField()
 
 class Keyword(models.Model):
-    Userid = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    User = models.ForeignKey(Profile,on_delete=models.CASCADE)
     alert_name = models.CharField(max_length=200,blank=False)
-    optional_keywords = models.TextField(max_length=200, blank=False)
-    required_keywords = models.TextField(max_length=200, blank=False)
-    excluded_keywords = models.TextField(max_length=200, blank=False)
+    optional_keywords = models.TextField(max_length=200,  null=True)
+    required_keywords = models.TextField(max_length=200, null=True)
+    excluded_keywords = models.TextField(max_length=200, null=True)
     class Meta:
-        order_with_respect_to = 'Userid'
         db_table = 'Keyword'
 
 @receiver(post_save, sender=User)
@@ -43,29 +42,29 @@ class PostUser(models.Model):
    UserID = models.CharField(max_length=60)
    DisplayName = models.CharField(max_length=45)
    DisplayPicture = models.CharField(max_length=1024)
-   TotalLikes= models.IntegerField()
-   TotalPosts=models.IntegerField()
-   FollowingCount=models.IntegerField()
-   FollowerCount=models.IntegerField()
-   PostReshareCount=models.IntegerField()
+   TotalLikes= models.IntegerField(null=True)
+   TotalPosts=models.IntegerField(null=True)
+   FollowingCount=models.IntegerField(null=True)
+   FollowerCount=models.IntegerField( null=True)
+   PostReshareCount=models.IntegerField(null=True)
 
    class Meta:
        db_table = 'PostUser'
 
 class Post(models.Model):
-   PostUserID=models.ForeignKey(PostUser, on_delete=models.CASCADE)
-   KeywordID = models.ForeignKey(Keyword, on_delete=models.CASCADE)
+   PostUser=models.ForeignKey(PostUser, on_delete=models.CASCADE)
+   Keyword = models.ForeignKey(Keyword, on_delete=models.CASCADE)
    StatusID = models.CharField(max_length=45)
    Content = models.TextField()
    CreatedAt = models.DateTimeField()
    ResharerCount = models.IntegerField()
    Source = models.CharField(max_length=45)
-   Sentiment=models.IntegerField()
+   Sentiment=models.IntegerField(blank=True, null=True)
 
    class Meta:
        db_table = 'Post'
 class Resharer(models.Model):
-   PostUserID = models.ForeignKey(PostUser, on_delete=models.CASCADE)
-   PostID=models.ForeignKey(Post,on_delete=models.CASCADE)
+   PostUser = models.ForeignKey(PostUser, on_delete=models.CASCADE)
+   Post=models.ForeignKey(Post,on_delete=models.CASCADE)
    class Meta:
        db_table = 'Resharer'
