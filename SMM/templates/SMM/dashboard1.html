@@ -303,23 +303,28 @@ function reply_click(time, text, name, picture, status_id , user_id, source,sent
                                 <div class="row m-2">
                                     <div class="col-1 col-sm-1 col-md-5 col-lg-5"></div>
                                     <div title="Add Your Response" class="col-3 col-sm-3 col-md-2 col-lg-2">
+
                                         <div class="dropdown">
                                             <img class="image-emotion dropdown-toggle"
                                                  src="{% static 'images/smily.jpg' %}" id="dropdownEmotionButton"
                                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <div class="dropdown-menu dropdown-content"
                                                  aria-labelledby="dropdownEmotionButton">
-                                                <a class="dropdown-item" href="#">Positive <img
+                                                <a class="dropdown-item" href="{% url 'update_sentiment' sentiment=0 %}">Positive <img
                                                         class="image-emotion-dropdown ml-auto" align="left"
                                                         src="{% static 'images/happy.png' %}"></a>
-                                                <a class="dropdown-item" href="#">Nuetral <img
+                                                <a class="dropdown-item"href="{% url 'update_sentiment' sentiment=2 %}">Nuetral <img
                                                         class="image-emotion-dropdown ml-auto" align="left"
                                                         src="{% static 'images/emotion.svg' %}"></a>
-                                                <a class="dropdown-item" href="#">Negitive<img
+                                                <a class="dropdown-item" href="{% url 'update_sentiment' sentiment=1 %}">Negitive<img
                                                         class="image-emotion-dropdown ml-auto" align="left"
                                                         src="{% static 'images/sad.svg' %}"></a>
+
+
                                             </div>
                                         </div>
+
+
                                     </div>
                                     <div title="Move to Favourities" class="col-2 col-sm-2 col-md-1 col-lg-1"><i
                                             class="fa fa-star db-list-icon" style="font-size:25px;"></i></div>

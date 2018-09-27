@@ -213,3 +213,7 @@ def load_profile(user):
   except:  # this is not great, but trying to keep it simple
     profile = UserProfileForm.objects.create(user=user)
     return profile
+
+def update_sentiment(request, sentiment):
+
+   return HttpResponse("Succeefully updated")

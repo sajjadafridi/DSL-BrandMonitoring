@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^dashboard1/$', core_views.insert_value, name='dashboard'),
     url(r'influenser/$',core_views.influenser,name='influencers'),
     url(r'^profile_edit/$', core_views.update_profile, name='profile_edit'),
-
+    url(r'^(?P<sentiment>[0-9]+)/$', core_views.update_sentiment, name='update_sentiment'),
     # url( r'^login/$',auth_views.LoginView.as_view(template_name="SMM/login.html"), name="login"),
     url(r'^logout/$', auth_views.logout, {'next_page': 'login'}, name='logout'),
     url(r'^signup/$', core_views.signup, name='signup'),
@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^reset/done/$',auth_views.PasswordResetDoneView.as_view(template_name='SMM/password_reset_done.html'),name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',auth_views.PasswordResetConfirmView.as_view(template_name='SMM/password_reset_confirm.html'),name='password_reset_confirm'),
     url(r'^reset/complete/$',auth_views.PasswordResetCompleteView.as_view(template_name='SMM/password_reset_complete.html'), name='password_reset_complete'),
-    # url(r'', core_views.index, name='index'),
+    url(r'', core_views.index, name='index'),
 
 ]
 
