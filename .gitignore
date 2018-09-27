@@ -26,7 +26,7 @@ wheels/
 .idea/
 *.iml
 settings.py
-**SMM/migrations/*
+**/migrations/*
 MANIFEST
 
 # PyInstaller
