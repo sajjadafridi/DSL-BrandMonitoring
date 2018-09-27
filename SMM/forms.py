@@ -21,7 +21,7 @@ class SignUpForm(UserCreationForm):
 class KeywordForm(ModelForm):
     class Meta:
         model = Keyword
-        exclude = ['alert_name', 'Userid', 'optional_keywords', 'excluded_keywords', 'required_keywords']
+        exclude = ['alert_name', 'User', 'optional_keywords', 'excluded_keywords', 'required_keywords']
 
 class KeywordForm_One(ModelForm):
     class Meta:
