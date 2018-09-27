@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import EmailMessage,send_mail, BadHeaderError
 from SMM.tokens import account_activation_token
-from SMM.forms import SignUpForm,KeywordForm,ContactForm
+from SMM.forms import SignUpForm,KeywordForm,ContactForm,UserProfileForm,UserEditForm
 from SETMOK_API.SETMOKE_API import SETMOKE_API
 from django.contrib import messages
 
@@ -143,10 +143,10 @@ def insert_value(request):
 
     form = KeywordForm(request.POST)
     # if form.is_valid():
-    keyword_to_search = 'Fatima Jinnah'
+    # keyword_to_search = 'Fatima Jinnah'
     #  keyword_to_search="Nawaz Sharif"
-    setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
-    list = setmoke_api.get_data()
+    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # list = setmoke_api.get_data()
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
     # post = form.save(commit=False)
     # post.author = request.user
@@ -166,3 +166,28 @@ def get_search(request):
     if not keyword:
         error = "error message"
     return render(request, template_name, {'error': error})
+
+def influenser(request):
+    return render(request, 'SMM/influencers.html')
+
+def update_profile(request):
+    profile = load_profile(request.user)
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user,data=request.POST,)
+        profile_form = UserProfileForm(instance=profile,data=request.POST,files=request.FILES,)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+
+    else:
+        user_form = UserEditForm(instance=request.user)
+        profile_form = UserProfileForm(instance=profile)
+
+    return render(request,'SMM/profile_edit.html',{'user_form': user_form,'profile_form':profile_form })
+
+def load_profile(user):
+  try:
+    return user.profile
+  except:  # this is not great, but trying to keep it simple
+    profile = UserProfileForm.objects.create(user=user)
+    return profile

@@ -4,14 +4,25 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.validators import RegexValidator
+
 
 
 class Profile(models.Model):
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name=models.CharField(max_length=500, blank=True)
+    email = models.EmailField(max_length=30,blank=True)
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True) # validators should be a list
+    country = models.CharField(max_length=20,blank=True)
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     email_confirmed = models.BooleanField(default=False)
+    company_name = models.CharField(max_length=30, blank=True)
+    company_size= models.CharField(max_length=30, blank=True)
+    avatar = models.ImageField()
+
 class Keyword(models.Model):
     Userid = models.ForeignKey(Profile,on_delete=models.CASCADE)
     alert_name = models.CharField(max_length=200,blank=False)

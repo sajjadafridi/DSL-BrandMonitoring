@@ -1,0 +1,246 @@
+{% extends 'SMM/dashboard_base.html' %}
+{% load staticfiles %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en" xmlns:background-image="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Social Media Monitor</title>
+<link rel="stylesheet" type="text/css" href="{% static  'SMM/modal.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css'%}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css'%}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css'%}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css'%}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css'%}">
+<link rel="icon" href="{% static 'images/icon-trans.png'%}">
+</head>
+<body>
+<!--Main body-->
+<div class="container-fluid">
+<div class="row">
+<div class="col-12 col-md-12 col-lg-12">
+<h4 class="h3 font-weight-normal text-center mt-4 align-center" style="color:#28B463;">Influencers Table</h4><br><br>
+<div class="row mr-auto">
+<div class="col-0 col-md-2 col-lg-2"></div>
+<div class=" col-4 col-md-2 col-lg-2"><button class="button btn btn-default">Pepsi</button></div>
+<div class=" col-4 col-md-2 col-lg-2"><button class="button btn btn-default">Today</button></div>
+<div class=" col-4 col-md-2 col-lg-2"><button class="button btn btn-default">Twitter</button></div>
+<div class="col-0 col-md-2 col-lg-2"></div>
+<div class=" col-4 col-md-2 col-lg-2"><button class="button btn btn-default" onclick="on()">Influencers Filter</button></div>
+</div>
+<div class="row d-flex flex-row align-center">
+ <div class="col-12">
+   <div class="table-stripped" >
+   <table class="table table-responsive text-center w-100 m-0 p-0">
+   <br><br>
+   <thead>
+      <tr style="height:20px;">
+        <th class="table-col-width">Name</th>
+        <th class="table-col-width">Followers</th>
+        <th class="table-col-width">Location</th>
+        <th class="table-col-width">Interation</th>
+        <th class="table-cell-width">Interest</th>
+        <th class="table-cell-width">Influence</th>
+		<th class="table-cell-width">Reach</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>@Anna</td>
+        <td>35</td>
+        <td>USA</td>
+		<td>3 int</td>
+        <td>Business</td>
+		<td>34/10</td>
+		<td>6234</td>
+      </tr>
+	  <tr>
+        <td>@Anna</td>
+        <td>35</td>
+        <td>USA</td>
+		<td>3 int</td>
+        <td>Business</td>
+		<td>34/10</td>
+		<td>6234</td>
+      </tr><tr>
+        <td>@Anna</td>
+        <td>35</td>
+        <td>USA</td>
+		<td>3 int</td>
+        <td>Business</td>
+		<td>34/10</td>
+		<td>6234</td>
+      </tr>
+       </tbody>
+   </table>
+   </div>
+ </div>
+</div>
+</div>
+</div>
+  <div id="overlay">
+	 <div class="row">
+	  <div class="col" title="Cancel">
+      <span class="fa fa-close ml-auto" onclick="off()" style="font-size:26px;cursor:pointer;"></span><br>
+      </div>
+	 </div>
+	 <div class="row">
+	  <div class="col">
+	    <h4 class="h4 font-weight-normal text-center">Content</h4>
+	  </div>
+	 </div>
+	 <div class="row">
+	  <div class="col">
+	  <form class="formfilterInfluencer">
+       <div class="form-label-group">
+	    <div class="row">
+		<div class="col">
+		 <label for="time">Time Period</label>
+         <select class="form-control" id="time" placeholder="Last 30 days">
+          <option>Today</option>
+          <option>Yesterday</option>
+          <option>7 Days</option>
+          <option>Last Week</option>
+		  <option>Last 30 Days</option>
+		  <option>Last Month</option>
+         </select>
+		 </div>
+	    </div>
+		<div class="row">
+		 <div class="col">
+          <label for="Language">Language</label>
+         <select class="form-control" id="time" placeholder="ex.English,Chinese..">
+          <option>English</option>
+          <option>Arabic</option>
+          <option>German</option>
+          <option>Italian</option>
+		  <option>Spanish</option>
+		  <option>Greece</option>
+		  <option>Chinese</option>
+		  <option>Japanese</option>
+         </select>
+		 </div>
+        </div>
+		<div class="row">
+		<div class="col">
+		 <label for="Interest">Interest</label>
+         <select class="form-control" id="Interest">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+         </select>
+		 </div>
+	    </div>
+		<div class="row">
+		<div class="col">
+		 <label for="gender">Gender</label>
+         <select class="form-control" id="gender">
+          <option>Male</option>
+          <option>Female</option>
+         </select>
+		 </div>
+	    </div>
+		<div class="row">
+		 <div class="col">
+		 <label for="sentiment">Sentiments</label>
+         <select class="form-control" id="sentiment">
+		  <option>All</option>
+          <option style="background-image:url({% static 'images/happy.png'%});width:25px;height:25px;">Positive</option>
+          <option style="background-image:url({%static 'images/emotion.svg' %});width:25px;height:25px;">Neutral</option>
+		  <option style="background-image:url({% static 'images/sad.svg' %});width:25px;height:25px;">Negitive</option>
+         </select>
+		 </div>
+	    </div>
+		<div class="row">
+		 <div class="col">
+		  <label for="status">Status</label>
+		   <div class="multiselect">
+            <div class="selectBox" onclick="showCheckboxes()">
+            <select class="form-control" id="status">
+             <option>All</option>
+            </select>
+            <div class="overSelect"></div>
+           </div>
+          <div id="checkboxes">
+			<label for="fav">
+            <input type="checkbox" id="fav" />Favourites</label>
+            <label for="unread">
+            <input type="checkbox" id="unread" />Unread</label>
+		  </div>
+          </div>
+		  </div>
+		</div>
+	   </div>
+	   <br><br>
+       <div class="row">
+		 <div class="col"><button class="button">Apply Filter</button></div>
+	   </div>
+      </form>
+	  </div>
+	 
+</div>
+</div>
+</div>
+
+
+
+<!--script-->
+<script>
+function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
+}
+var expanded = false;
+
+function showCheckboxes() {
+  var checkboxes = document.getElementById("checkboxes");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+}
+</script>
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous">
+    </script>
+    <script>var $jQuery_2_2_4 = $.noConflict(true);
+    {#alert("Version: "+$jQuery_2_2_4.fn.jquery);#}
+    </script>
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.js"
+            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+            crossorigin="anonymous"></script>
+    <script src="https://fastcdn.org/Underscore.js/1.8.3/underscore-min.js"></script>
+
+    {#    <script>jQuery.noConflict();</script>#}
+    {#    <script src="{% static '/bootstrap/js/keyword.js' %}"></script>#}
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/jquery.mentiony.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/tags-input.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+</body>
+</html>
+{% endblock %}
