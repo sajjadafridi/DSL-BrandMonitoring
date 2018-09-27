@@ -131,11 +131,8 @@ def activate(request, uidb64, token):
 def fetch_posts(keyword_to_search):
     setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     list = setmoke_api.get_data()
-<<<<<<< HEAD
     setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
-=======
     setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
->>>>>>> 201230e0f89fe10ff32746349d02ac7a4db45c93
     list_of_data = {
         "list_of_data": list
     }
@@ -148,13 +145,11 @@ def insert_value(request):
 
     form = KeywordForm(request.POST)
     # if form.is_valid():
-    # keyword_to_search = 'Fatima Jinnah'
+    keyword_to_search = 'Fatima Jinnah'
     #  keyword_to_search="Nawaz Sharif"
-<<<<<<< HEAD
     # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     # list = setmoke_api.get_data()
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
-=======
     setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
     list = setmoke_api.get_data()
 
@@ -175,7 +170,6 @@ def insert_value(request):
         sent_list.append(sentiment)
 
     setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'rehab105', 'SMM_DB', 1)
->>>>>>> 201230e0f89fe10ff32746349d02ac7a4db45c93
     # post = form.save(commit=False)
     # post.author = request.user
     # post.published_date = timezone.now()

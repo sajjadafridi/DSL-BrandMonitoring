@@ -213,7 +213,7 @@ function reply_click(time, text, name, picture, status_id , user_id, source,sent
            $("#post_url").attr('href',"https://twitter.com/"+name+"/status/"+status_id);
             $("#post_url").attr('src',"https://twitter.com/"+name+"/status/"+status_id);
       }
-    if(sentiment=='0')
+    if(sentiment=='1')
     {
           $('#dropdownEmotionButton').attr('src','{% static 'images/happy.png' %}');
     }else {
