@@ -39,7 +39,7 @@ div#scroll::-webkit-scrollbar-thumb {
     <div class="container-fluid">
         <div class="row d-flex flex-row h-100">
             <!--Side Bar-->
-            <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2 d-flex flex-column float-left">
+            <div class="col-sm-10 col-md-10 col-lg-2 col-xl-2 d-flex flex-column float-left">
                 <div class="row d-flex flex-row border-right">
                     <div class="col-1 col-xs-1 col-sm-1 col-lg">
                         <li class="db-list-item">
@@ -93,10 +93,26 @@ div#scroll::-webkit-scrollbar-thumb {
                         <li class="db-list-item">
                             <a class="button btn alert-button text-white" href="{% url 'home' %}">
                                 <i class="fa fa-plus-square db-list-add-icon" style="font-size:25px;"></i>New Alert</a>
+
                         </li>
+
                     </div>
+
+<div id ="scroll"  style="overflow-y: auto; height:200px; overflow-x: hidden">
+                    <div class="col-1 col-xs-1 col-sm-1 col-lg">
+
+                        {%  for kwd_id, alert_name in keyword_list.items %}
+                        <li  class="db-list-item">
+                            <a  id="alert_redirect" href={% url 'display_feed' alert_id=kwd_id%} class="db-side-link">
+                            <span class="d-none d-md-inline">{{alert_name }}</span>
+                            </a>
+                         </li>
+                        {% endfor %}
+                    </div>
+</div>
                 </div>
             </div>
+
             <!--Feed Panel-->
             <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 db-sidebar border-right">
                 <div class="row">
@@ -148,10 +164,10 @@ div#scroll::-webkit-scrollbar-thumb {
                 </div>
 <div id ="scroll"  style="overflow-y: auto; height:500px; overflow-x: hidden">
 
-               {% for message in list_of_data %}
+               {% for message in post_data %}
 
 
-                <div class="row" id={{message.list.status_id}}  onClick="reply_click('{{message.list.user.time }}','{{ message.list.text }}','{{  message.list.user.display_name}}','{{message.list.user.display_picture }}','{{ message.list.status_id }}','{{ message.list.user.user_id  }}','{{ message.list.source }}',{{ message.sentiment}})">
+                <div class="row"onClick="reply_click('{{message.CreatedAt}}','{{ message.Content }}','{{  message.DisplayName}}','{{message.DisplayPicture }}','{{message.StatusID}}','{{ message.UserID  }}','{{ message.Source }}',{{ message.sentiment}})">
                     <div class="db-FeedSocial">
                         <div class="db-FeedSocialLeft">
 	    <span class="db-box Social-box">
@@ -159,7 +175,7 @@ div#scroll::-webkit-scrollbar-thumb {
 		      <span class="Social-box-image" style="height:40px;line-height:40px; width:40px;">
 			      <span class="Social-box-image-wrap"
                         style="height:40px; line-height: 40px; margin-left: -233px; width: 500px;">
-				     <img class="Social-box-image-img" src= {{message.list.user.display_picture}}
+				     <img class="Social-box-image-img" src= {{message.DisplayPicture}}
                           style="max-height:40px;">
 				  </span>
 				  <div class=""></div>
@@ -169,16 +185,16 @@ div#scroll::-webkit-scrollbar-thumb {
                             <div class="db-SocialFeed-unread"></div>
                         </div>
                         <div class="db-FeedSocialNotif">
-                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">{{ message.list.user.time }}</div>
+                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">{{ message.CreatedAt }}</div>
                         </div>
                         <div class="db-FeedSocialMid">
-                            <div class="db-FeedSocialName highlight">{{ message.list.user.display_name }}</div>
-                            <div class="db-FeedSocialTitle">{{ message.list.text|slice:":40"}}</div>
+                            <div class="db-FeedSocialName highlight">{{   message.DisplayName}}</div>
+                            <div class="db-FeedSocialTitle">{{  message.Content|slice:":40"}}</div>
                             <div class="db-FeedSocialDesc highlight">
-                                {% if message.list.source == "GooglePlus" %}
-                                <a target="_blank" href="https://plus.google.com/{{ message.list.user.user_id }}/posts/{{ message.list.status_id }}">https://plus.google.com/{{ message.list.user.user_id }}/posts/{{ message.list.status_id }}</a>
-                                {% elif message.list.source == "Twitter" %}
-                                <a target="_blank" href="https://twitter.com/{{ message.list.user.display_name }}/status/{{ message.list.status_id }}">https://twitter.com/{{ message.list.user.display_name }}/status/{{ message.list.status_id }}</a>
+                                {% if message.Source == "GooglePlus" %}
+                                <a target="_blank" href="https://plus.google.com/{{ message.UserID}}/posts/{{ message.StatusID }}">https://plus.google.com/{{ message.UserID }}/posts/{{ message.StatusID }}</a>
+                                {% elif message.Source == "Twitter" %}
+                                <a target="_blank" href="https://twitter.com/{{  message.DisplayName }}/status/{{message.StatusID }}">https://twitter.com/{{  message.DisplayName}}/status/{{ message.StatusID }}</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -196,9 +212,11 @@ div#scroll::-webkit-scrollbar-thumb {
 </div>
 <script>
 function reply_click(time, text, name, picture, status_id , user_id, source,sentiment)
-{ $("#display_name").text(name);
+{
+  console.log("hello")
+$("#display_name").text(name);
   $("#created_at").text(time);
-  $("#text").text(text);
+  $("#text").text("hello");
   $('#display_picture').attr('src',picture);
    $('#display_picture_link').attr('href',"https://twitter.com/"+name);
 
@@ -220,6 +238,14 @@ function reply_click(time, text, name, picture, status_id , user_id, source,sent
       $('#dropdownEmotionButton').attr('src','{% static 'images/sad.svg' %}');
     }
 }
+
+function click_alert(keyword_id) {
+
+    kwd_id=parseInt(keyword_id)
+    $('#alert_redirect').attr('href', "{% url 'display_feed' alert_id=1 %}")
+
+}
+
 </script>
 
 {#                <div class="row">#}

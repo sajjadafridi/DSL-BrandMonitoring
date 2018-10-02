@@ -61,6 +61,12 @@ class Post(models.Model):
    Source = models.CharField(max_length=45)
    Sentiment=models.IntegerField(blank=True, null=True)
 
+
+   def set_statusID(self,id):
+       self.statusID=id
+   def get_statusID(self):
+       return self.statusID
+
    class Meta:
        db_table = 'Post'
 class Resharer(models.Model):
