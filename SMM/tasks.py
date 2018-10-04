@@ -1,23 +1,21 @@
-from __future__ import absolute_import, unicode_literals
+import twitter
+from SMM.PostMessage import Message
+def get_twitter_feed():
+    api = twitter.Api(consumer_key='kWYGRMr4OuWGK2RfUs0dz1mRR',
+                          consumer_secret='s298yX6M0hyIA460O320k7uM5ZfpVdqhbBYwWd7i5t6gfiOene',
+                          access_token_key='3306982388-gaQA7otFm27ra1jnDvzEOpRm91PgOCpMbfTF7CK',
+                          access_token_secret='jgYGV56beqcZBtnuUGBW0cUpr0Fvy830vrEFpYY2OVypB',
+                      tweet_mode='extended')
+    resp =api.GetSearch(term="Imran",count=15)
+    for tweet in resp:
+        tweet_info =Message()
+        tweet_info.set_Content(str(tweet.full_text))
+        tweet_info.set_DisplayPicture()
 
-from Analysis.SentimentAnalysis import SentimentAnalysis
-from celery import task
-from SETMOK_API.SETMOKE_API import SETMOKE_API
-from SMM.Sentiment import Sentiment
-
-@task()
-def scheduling_script():
- setmoke = SETMOKE_API("", "")
- list = setmoke.read_and_fetch('localhost', 'root', 'rehab105', 'SMM_DB', 1,
-                               "/home/rehab/PycharmProjects/conf/config.ini")
 
 
- for key, value in list.items():
-     sent_list = []
-     for mention in value:
-         sent = Sentiment()
-         sent.set_list(mention)
-         sent.set_sentiment(0)
-         sent_list.append(sent)
 
-     setmoke.update_database(sent_list, key, 'localhost', 'root', 'rehab105', 'SMM_DB', 1)
+
+
+
+get_twitter_feed()

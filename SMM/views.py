@@ -159,7 +159,7 @@ def insert_value(request,alert_keyword=None):
     # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     # list = setmoke_api.get_data()
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
-    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
+    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini", 200)
     list = setmoke_api.get_data()
 
     sent_list=[]

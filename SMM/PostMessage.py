@@ -48,4 +48,4 @@ class Message:
     def set_UserID(self, UserID):
         self.UserID = UserID
     def get_UserID(self):
-        return self.UserI
+        return self.UserID
