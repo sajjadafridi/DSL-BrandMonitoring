@@ -152,14 +152,18 @@ def insert_value(request,alert_keyword=None):
     if request.method == "POST":
         print("I am here django")
 
+
+
     form = KeywordForm(request.POST)
-    # if form.is_valid():
+    # if form.is_valid():'
+    # return_5.delay()
+
     keyword_to_search = 'Imran'
     #  keyword_to_search="Nawaz Sharif"
     # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     # list = setmoke_api.get_data()
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
-    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini", 200)
+    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini", 2, source="googlePlus")
     list = setmoke_api.get_data()
 
     sent_list=[]
@@ -178,7 +182,7 @@ def insert_value(request,alert_keyword=None):
             sentiment.set_sentiment(1)
         sent_list.append(sentiment)
 
-    setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'rehab105', 'SMM_DB', current_user.id)
+    # setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'rehab105', 'SMM_DB', current_user.id)
     # post = form.save(commit=False)
     # post.author = request.user
     # post.published_date = timezone.now()

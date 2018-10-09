@@ -1,4 +1,4 @@
-class User:
+class Users:
     def __init__(self):
 
         self.display_name = None

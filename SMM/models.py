@@ -47,6 +47,7 @@ class PostUser(models.Model):
    FollowingCount=models.IntegerField(null=True)
    FollowerCount=models.IntegerField( null=True)
    PostReshareCount=models.IntegerField(null=True)
+   Location=models.CharField(max_length=100)
 
    class Meta:
        db_table = 'PostUser'

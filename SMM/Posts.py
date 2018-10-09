@@ -1,4 +1,4 @@
-class Post:
+class Posts:
     def __init__(self):
         self.text = None
         self.time = None
@@ -7,6 +7,7 @@ class Post:
         self.source=None
         self.user=None
         self.resharers=None
+        self.keyword=None
 
 
 
@@ -24,6 +25,8 @@ class Post:
         self.user=user
     def set_resharer(self, resharers):
         self.resharers = resharers
+    def set_keyword(self, keyword):
+            self.keyword = keyword
 
 
 
@@ -41,4 +44,7 @@ class Post:
         return self.resharers
     def get_user(self):
         return self.user
+
+    def get_keyword(self):
+        return self.keyword
 
