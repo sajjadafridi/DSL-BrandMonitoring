@@ -14,6 +14,7 @@ from SETMOK_API.SETMOKE_API import SETMOKE_API
 from django.contrib import messages
 from Analysis.SentimentAnalysis import SentimentAnalysis
 from SMM.Sentiment import Sentiment
+from SMM.models import Keyword,Post,PostUser
 template_name = "dashboard"
 keyword = ''
 
@@ -131,11 +132,8 @@ def activate(request, uidb64, token):
 def fetch_posts(keyword_to_search):
     setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     list = setmoke_api.get_data()
-<<<<<<< HEAD
-    setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
-=======
-    setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
->>>>>>> 201230e0f89fe10ff32746349d02ac7a4db45c93
+    setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB',1)
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
     list_of_data = {
         "list_of_data": list
     }
@@ -149,13 +147,11 @@ def insert_value(request):
     form = KeywordForm(request.POST)
     # if form.is_valid():
     # keyword_to_search = 'Fatima Jinnah'
-    #  keyword_to_search="Nawaz Sharif"
-<<<<<<< HEAD
-    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    keyword_to_search="Nawaz Sharif"
+    setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     # list = setmoke_api.get_data()
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
-=======
-    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini")
+    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     list = setmoke_api.get_data()
 
     sent_list=[]
@@ -165,8 +161,7 @@ def insert_value(request):
         sentiment = Sentiment()
 
         sentiment.set_list(mention)
-        sent=analysis.analysis(mention.get_text(), "NLTK",
-                          "/home/rehab/PycharmProjects/PYPI package/SentimentAnalysis/my_classifier.pickle")
+        sent=analysis.analysis(mention.get_text(), "NLTK","E:\Pycharm Project\DSL-BrandMonitoring\my_classifier.pickle")
 
         if sent=='Negative':
             sentiment.set_sentiment(0)
@@ -174,8 +169,7 @@ def insert_value(request):
             sentiment.set_sentiment(1)
         sent_list.append(sentiment)
 
-    setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'rehab105', 'SMM_DB', 1)
->>>>>>> 201230e0f89fe10ff32746349d02ac7a4db45c93
+    setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB',1)
     # post = form.save(commit=False)
     # post.author = request.user
     # post.published_date = timezone.now()
@@ -196,6 +190,30 @@ def get_search(request):
     return render(request, template_name, {'error': error})
 
 def influenser(request):
+    keywords = {}
+    current_user = request.user
+    Keyword_table = Keyword.objects.filter(User_id=current_user.id)
+    for kwd in Keyword_table:
+        post_table = Post.objects.select_related('PostUser').filter(Keyword_id=kwd.id)
+        for post in post_table:
+            # if(post.)
+            print(post.PostUser.DisplayName)
+            print(post.PostUser.DisplayPicture)
+            print(post.PostUser.FollowerCount)
+            print(post.PostUser.DisplayPicture)
+
+            # Post.add_to_class("id", post.id)
+            # Post.add_to_class("StatusID", post.StatusID)
+            # Post.add_to_class("Sentiment", post.Sentiment)
+            # Post.add_to_class("Content", post.Content)
+            # Post.add_to_class("CreatedAt", post.CreatedAt)
+            # Post.add_to_class("ResharerCount", post.ResharerCount)
+            # Post.add_to_class("Source", post.Source)
+            # Post.add_to_class("DisplayName", post.PostUser.DisplayName)
+            # PostUser.add_to_class("DisplayPicture", post.PostUser.DisplayPicture)
+            # PostUser.add_to_class("DisplayName", post.PostUser.DisplayName)
+            # PostUser.add_to_class("UserID", post.PostUser.UserID)
+        # keywords[kwd.id] = kwd.alert_name
     return render(request, 'SMM/influencers.html')
 
 def update_profile(request):
