@@ -27,11 +27,9 @@
         <style>
             #resTabsrc {
 
-                height: auto;
                 position: relative;
                 margin-left: 55%;
                 margin-top: 30px;
-                margin-bottom: -150px;
                 width: 20%;
                 height: 100%;
                 display: inline-block;
@@ -298,18 +296,26 @@
                                     <table class="table table-hover">
                                         <thead><h1 class="h4 font-weight-normal"><b>Sources</b></h1></thead>
                                         <tbody>
+                                         <tr >
+                                            <td class="text-right label">{{ source_selection_form.source_googleplus.label_tag }}</td>
+                                            <td class="text-center">
+                                               <input name="{{ source_selection_form.source_googleplus.html_name }}"type="checkbox"></td>
+                                        </tr>
 
-
+{#                                         <tr>#}
+{#                                            <td class="text-right label">Linkedin</td>#}
+{#                                            <td class="text-center">#}
+{#                                               <input name="Linkedin"type="checkbox"></td>#}
+{#                                        </tr>#}
+{#                                           <tr>#}
+{#                                            <td class="text-right label">Facebook</td>#}
+{#                                            <td class="text-center">#}
+{#                                               <input name="Facebook"type="checkbox"></td>#}
+{#                                        </tr>#}
                                         <tr>
                                             <td class="text-right label">{{ source_selection_form.source_twitter.label_tag }}</td>
                                             <td class="text-center">
                                                <input name="{{ source_selection_form.source_twitter.html_name }}" type="checkbox" ></td>
-                                        </tr>
-
-                                         <tr>
-                                            <td class="text-right label">{{ source_selection_form.source_googleplus.label_tag }}</td>
-                                            <td class="text-center">
-                                               <input name="{{ source_selection_form.source_googleplus.html_name }}"type="checkbox"></td>
                                         </tr>
 
                                         </tbody>

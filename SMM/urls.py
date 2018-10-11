@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, {'template_name': 'SMM/login.html'}, name='login'),
     url(r'^home/$', core_views.home, name='home'),
     url(r'^dashboard1/$', core_views.insert_value, name='dashboard'),
-    url(r'influenser/$',core_views.influenser,name='influencers'),
+    url(r'^influencers/$',core_views.influenser,name='influencers'),
     url(r'^profile_edit/$', core_views.update_profile, name='profile_edit'),
     url(r'^(?P<alert_id>[0-9]+)/$', core_views.display_feed, name='display_feed'),
 

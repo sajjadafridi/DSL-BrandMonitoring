@@ -87,8 +87,16 @@ def home(request):
                     model_instance.source_googleplus = 0
                     shared_obj['source_googleplus'] = False
 
-                model_instance.source_twitter = 0
-                shared_obj['source_twitter'] = False
+                if source_twitter == 'on':
+                    model_instance.source_twitter = 1
+                    shared_obj['source_twitter'] = True
+                else:
+                    model_instance.source_twitter = 0
+                    shared_obj['source_twitter'] = False
+
+                #
+                # model_instance.source_twitter = 0
+                # shared_obj['source_twitter'] = False
 
                 request.session['SMMSession'] = shared_obj
 
@@ -191,7 +199,7 @@ def insert_value(request,  alert_keyword=None):
 
         if googleplus_source==True:
 
-            googleplus_data =get_twitter_feed(kwd_to_search,1)
+            googleplus_data =get_gplus_feed(kwd_to_search,1)
             add_to_database(googleplus_data,kwd.id)
     keywords = {}
     current_user = request.user
