@@ -18,12 +18,16 @@ def scheduling_script():
     keywords = {}
     Keyword_table = Keyword.objects.all()
     for kwd in Keyword_table:
-        twitter_response = get_gplus_feed(kwd.alert_name, 1)
-        add_to_database(twitter_response, kwd.id)
-    print("hello i am in")
+        if kwd.source_googleplus==True:
+            googleplus_response = get_gplus_feed(kwd.alert_name, 1)
+            add_to_database(googleplus_response, kwd.id)
+        if kwd.source_twitter == True :
+            twitter_response = get_twitter_feed(kwd.alert_name, 1)
+            add_to_database(twitter_response, kwd.id)
 
 
-def get_twitter_feed(keyword, limit):
+
+def get_twitter_feed(keyword, limit=1):
     api = twitter.Api(consumer_key='kWYGRMr4OuWGK2RfUs0dz1mRR',
                           consumer_secret = 's298yX6M0hyIA460O320k7uM5ZfpVdqhbBYwWd7i5t6gfiOene',
                           access_token_key = '3306982388-gaQA7otFm27ra1jnDvzEOpRm91PgOCpMbfTF7CK',
@@ -80,7 +84,7 @@ def get_twitter_feed(keyword, limit):
     return tweet_reponse_list
 
 
-def get_gplus_feed(keyword, limit):
+def get_gplus_feed(keyword, limit=1):
     GPLUS = discovery.build('plus', 'v1', developerKey="AIzaSyBL8f2kQJSgpAu2pXdnqXhmGEcm3yXYtj0")
     postList = []
     try:
@@ -141,7 +145,7 @@ def add_to_database(list, kwd_id):
         post = Post(PostUser_id=users.id, Keyword_id=kwd_id, StatusID=message.get_status_id(),
                     Content=message.get_text(),
                     CreatedAt=message.get_time(), ResharerCount=message.get_reshare_count(),
-                    Source=message.get_source())
+                  )
         post.save()
         for resharer in [resharer for resharer in (message.get_resharer() or [])]:
 

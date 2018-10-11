@@ -9,16 +9,16 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import EmailMessage,send_mail, BadHeaderError
 from SMM.tokens import account_activation_token
-from SMM.forms import SignUpForm,KeywordForm,ContactForm,UserProfileForm,UserEditForm
+from SMM.forms import SignUpForm,KeywordForm,ContactForm,UserProfileForm,UserEditForm, SourceSelectionForm
 from SETMOK_API.SETMOKE_API import SETMOKE_API
 from django.contrib import messages
 from Analysis.SentimentAnalysis import SentimentAnalysis
 from SMM.Sentiment import Sentiment
 from SMM.models import Keyword, Post, PostUser
 from .PostMessage import Message
+from SMM.tasks import get_twitter_feed,get_gplus_feed,add_to_database
 template_name = "dashboard"
-keyword = ''
-
+keyword = ' '
 def load_forgetpassword_page(request):
     return render(request,'SMM/forgetpassword.html')
 
@@ -49,17 +49,22 @@ def home(request):
         print("authentic user")
         if request.method == "POST":
             keyword_form = KeywordForm(request.POST)
-
+            source_selection_form=SourceSelectionForm(request.POST)
             # current user information
 
-            user_id = request.POST.get('user_id')
-            user_fname=request.POST.get('user_fist_name')
-            user_lname=request.POST.get('user_last_name')
-            user_email=request.POST.get('user_email')
-            user_status=request.POST.get('user_status')
-            user_econform=request.POST.get('user_email_conform')
+            source_twitter=request.POST.get('source_twitter')
+            source_googleplus = request.POST.get('source_googleplus')
 
-            key_word=request.POST.get('search_keyword')
+            user_id = request.POST.get('user_id')
+            user_fname = request.POST.get('user_fist_name')
+            user_lname = request.POST.get('user_last_name')
+            user_email = request.POST.get('user_email')
+            user_status = request.POST.get('user_status')
+            user_econform = request.POST.get('user_email_conform')
+
+            key_word = request.POST.get('search_keyword')
+            shared_obj = request.session.get('SMMSession', {})  # set dict as default
+            shared_obj['search_keyword'] = key_word
 
             # create or get the user_id already exist
             # user, _ = User.objects.get_or_create(Userid=request.POST.get('user_id'))
@@ -69,16 +74,37 @@ def home(request):
             # updated_request.update({'alert_name': key_word})
             # updated_request.update({'Userid_id': user_id})
             # keyword_form= KeywordForm(data=updated_request)
-            if keyword_form.is_valid():
+            if keyword_form.is_valid() :
                 keyword_form = KeywordForm()
+
                 model_instance = keyword_form.save(commit=False)
                 model_instance.alert_name = key_word
                 model_instance.User_id = user_id
+                if source_googleplus=='on':
+                    model_instance.source_googleplus = 1
+                    shared_obj['source_googleplus'] = True
+                else:
+                    model_instance.source_googleplus = 0
+                    shared_obj['source_googleplus'] = False
+
+                model_instance.source_twitter = 0
+                shared_obj['source_twitter'] = False
+
+                request.session['SMMSession'] = shared_obj
+
+                #
+                # if source_twitter == 'on':
+                #     model_instance.source_twitter = 1
+                # else:
+                #     model_instance.source_twitter = 0
+
+                #model_instance.source_twitter = source_twitter
                 model_instance.save()
                 return redirect('dashboard')
         else:
             keyword_form = KeywordForm()
-            return render(request, "SMM/home.html", {'form': keyword_form})
+            source_selection_form=SourceSelectionForm()
+            return render(request, "SMM/home.html", {'form': keyword_form, 'source_selection_form' : source_selection_form})
     else:
         return redirect('login')
 
@@ -141,52 +167,71 @@ def fetch_posts(keyword_to_search):
     return list_of_data
 
 
-def insert_value(request,alert_keyword=None):
+def insert_value(request,  alert_keyword=None):
+    kwd_to_search=''
+    twitter_source=False
+    googleplus_source=False
+    shared_obj = request.session.get('SMMSession', {})
+
+    if not shared_obj:
+        # session was terminated, so initialize this object
+        shared_obj['search_keyword'] = 'NONE'
+    else:
+        kwd_to_search = shared_obj['search_keyword']
+        twitter_source=shared_obj['source_twitter']
+        googleplus_source=shared_obj['source_googleplus']
+
+    latest_keyword = Keyword.objects.order_by('-id')[:1]
+    for kwd in latest_keyword:
+
+        if twitter_source==True:
+
+            twitter_data =get_twitter_feed(kwd_to_search)
+            add_to_database(twitter_data,kwd.id)
+
+        if googleplus_source==True:
+
+            googleplus_data =get_twitter_feed(kwd_to_search,1)
+            add_to_database(googleplus_data,kwd.id)
     keywords = {}
     current_user = request.user
     Keyword_table=Keyword.objects.filter(User_id=current_user.id)
     for kwd in Keyword_table:
         keywords[kwd.id] = kwd.alert_name
-
-
-    if request.method == "POST":
-        print("I am here django")
-
-
-
     form = KeywordForm(request.POST)
     # if form.is_valid():'
     # return_5.delay()
 
-    keyword_to_search = 'Imran'
-    #  keyword_to_search="Nawaz Sharif"
-    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # keyword_to_search = 'Imran'
+    # #  keyword_to_search="Nawaz Sharif"
+    # # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # # list = setmoke_api.get_data()
+    # # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
+    # setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini", 2, source="googlePlus")
     # list = setmoke_api.get_data()
-    # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
-    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini", 2, source="googlePlus")
-    list = setmoke_api.get_data()
+    #
+    # sent_list=[]
+    # analysis=SentimentAnalysis()
+    #
+    # for mention in list:
+    #     sentiment = Sentiment()
+    #
+    #     sentiment.set_list(mention)
+    #     sent=analysis.analysis(mention.get_text(), "NLTK",
+    #                       "/home/rehab/PycharmProjects/PYPI package/SentimentAnalysis/my_classifier.pickle")
+    #
+    #     if sent=='Negative':
+    #         sentiment.set_sentiment(0)
+    #     else:
+    #         sentiment.set_sentiment(1)
+    #     sent_list.append(sentiment)
+    #
+    # # setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'rehab105', 'SMM_DB', current_user.id)
+    # # post = form.save(commit=False)
+    # # post.author = request.user
+    # # post.published_date = timezone.now()
+    # # post.save()
 
-    sent_list=[]
-    analysis=SentimentAnalysis()
-
-    for mention in list:
-        sentiment = Sentiment()
-
-        sentiment.set_list(mention)
-        sent=analysis.analysis(mention.get_text(), "NLTK",
-                          "/home/rehab/PycharmProjects/PYPI package/SentimentAnalysis/my_classifier.pickle")
-
-        if sent=='Negative':
-            sentiment.set_sentiment(0)
-        else:
-            sentiment.set_sentiment(1)
-        sent_list.append(sentiment)
-
-    # setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'rehab105', 'SMM_DB', current_user.id)
-    # post = form.save(commit=False)
-    # post.author = request.user
-    # post.published_date = timezone.now()
-    # post.save()
     Posts=[]
     list_of_data = {
         "post_data": Posts,
@@ -252,7 +297,6 @@ def display_feed(request, alert_id):
         message.set_Content(post.Content)
         message.set_CreatedAt(post.CreatedAt)
         message.set_ResharerCount(post.ResharerCount)
-        message.set_Source(post.Source)
         message.set_DisplayName(post.PostUser.DisplayName)
         message.set_DisplayPicture(post.PostUser.DisplayPicture)
         message.set_UserID( post.PostUser.UserID)

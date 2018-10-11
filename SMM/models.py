@@ -29,6 +29,10 @@ class Keyword(models.Model):
     optional_keywords = models.TextField(max_length=200,  null=True)
     required_keywords = models.TextField(max_length=200, null=True)
     excluded_keywords = models.TextField(max_length=200, null=True)
+    source_googleplus = models.BooleanField(default=0)
+    source_twitter = models.BooleanField(default=0)
+
+
     class Meta:
         db_table = 'Keyword'
 
@@ -59,7 +63,6 @@ class Post(models.Model):
    Content = models.TextField()
    CreatedAt = models.DateTimeField()
    ResharerCount = models.IntegerField()
-   Source = models.CharField(max_length=45)
    Sentiment=models.IntegerField(blank=True, null=True)
 
 
