@@ -194,7 +194,7 @@ def insert_value(request,  alert_keyword=None):
 
         if twitter_source==True:
 
-            twitter_data =get_twitter_feed(kwd_to_search)
+            twitter_data =get_twitter_feed(kwd_to_search, 10)
             add_to_database(twitter_data,kwd.id)
 
         if googleplus_source==True:

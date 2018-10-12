@@ -75,5 +75,7 @@ class Post(models.Model):
 class Resharer(models.Model):
    PostUser = models.ForeignKey(PostUser, on_delete=models.CASCADE)
    Post=models.ForeignKey(Post,on_delete=models.CASCADE)
+   Influence_score = models.IntegerField()
+
    class Meta:
        db_table = 'Resharer'

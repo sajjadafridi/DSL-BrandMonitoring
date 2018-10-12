@@ -167,7 +167,7 @@ div#scroll::-webkit-scrollbar-thumb {
                {% for message in post_data %}
 
 
-                <div class="row"onClick="reply_click('{{message.CreatedAt}}','{{ message.Content }}','{{  message.DisplayName}}','{{message.DisplayPicture }}','{{message.StatusID}}','{{ message.UserID  }}','{{ message.Source }}',{{ message.sentiment}})">
+                <div class="row"onClick="reply_click('{{message.CreatedAt}}','{{ message.Content | safe }}','{{  message.DisplayName}}','{{message.DisplayPicture }}','{{message.statusID}}','{{ message.UserID  }}','{{ message.Source }}',{{ message.Sentiment}})">
                     <div class="db-FeedSocial">
                         <div class="db-FeedSocialLeft">
 	    <span class="db-box Social-box">
@@ -216,7 +216,7 @@ function reply_click(time, text, name, picture, status_id , user_id, source,sent
   console.log("hello")
 $("#display_name").text(name);
   $("#created_at").text(time);
-  $("#text").text("hello");
+  $("#text").text(text);
   $('#display_picture').attr('src',picture);
    $('#display_picture_link').attr('href',"https://twitter.com/"+name);
 

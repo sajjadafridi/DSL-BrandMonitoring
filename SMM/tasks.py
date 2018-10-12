@@ -8,21 +8,18 @@ from SMM.Users import Users
 from SMM.models import *
 from datetime import datetime
 from celery.schedules import  crontab
-
-
-
-
-
+from Analysis.SentimentAnalysis import SentimentAnalysis
+import re
 @task()
 def scheduling_script():
     keywords = {}
     Keyword_table = Keyword.objects.all()
     for kwd in Keyword_table:
         if kwd.source_googleplus==True:
-            googleplus_response = get_gplus_feed(kwd.alert_name, 1)
+            googleplus_response = get_gplus_feed(kwd.alert_name, 3)
             add_to_database(googleplus_response, kwd.id)
         if kwd.source_twitter == True :
-            twitter_response = get_twitter_feed(kwd.alert_name, 1)
+            twitter_response = get_twitter_feed(kwd.alert_name, 3)
             add_to_database(twitter_response, kwd.id)
 
 
@@ -72,7 +69,16 @@ def get_twitter_feed(keyword, limit=1):
             retweet_user.set_total_likes(retweeter.user.favourites_count)
             retweet_user.set_total_post(retweeter.user.statuses_count)
             retweet_user.set_user_id(retweeter.user.id_str)
+            statuses=api.GetUserTimeline(user_id=retweeter.user.id_str, count=10)
+            t_text=''
+            for status in statuses:
+                    t_text +=status.full_text
+
+            keyword_mentioned_count = len(re.findall(keyword_to_search.lower(), t_text.lower()))
+            influence_score = keyword_mentioned_count * retweeter.user.followers_count
+            retweet_user.set_influence_score(influence_score)
             retweet_user.set_location(retweeter.user.location)
+            print(influence_score)
             created_at = datetime.strptime(retweeter.user.created_at, '%a %b %d %H:%M:%S %z %Y')
             retweet_user.set_time(created_at.strftime('%Y-%m-%d %H:%M:%S'))
             retweeter_list.append(retweet_user)
@@ -132,6 +138,13 @@ def get_gplus_feed(keyword, limit=1):
 def add_to_database(list, kwd_id):
 
     for message in list:
+        analysis = SentimentAnalysis()
+        sentiment=0
+        sent = analysis.analysis(message.get_text(), "NLTK","/home/rehab/PycharmProjects/PYPI package/SentimentAnalysis/my_classifier.pickle")
+        if sent=='Negative':
+            sentiment=0
+        else:
+            sentiment=1
 
 
         users = PostUser(UserID=message.get_user().get_user_id(), DisplayName=message.get_user().get_display_name(),
@@ -145,6 +158,7 @@ def add_to_database(list, kwd_id):
         post = Post(PostUser_id=users.id, Keyword_id=kwd_id, StatusID=message.get_status_id(),
                     Content=message.get_text(),
                     CreatedAt=message.get_time(), ResharerCount=message.get_reshare_count(),
+                    Sentiment=sentiment
                   )
         post.save()
         for resharer in [resharer for resharer in (message.get_resharer() or [])]:
@@ -156,7 +170,7 @@ def add_to_database(list, kwd_id):
                                      FollowerCount=resharer.get_follower_count(),
                                      Location=resharer.get_location())
             resharer_user.save()
-            resharers = Resharer(PostUser_id=resharer_user.id, Post_id=post.id)
+            resharers = Resharer(PostUser_id=resharer_user.id, Post_id=post.id, Influence_score=resharer.get_influence_score())
             resharers.save()
 
 
