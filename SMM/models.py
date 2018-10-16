@@ -46,6 +46,7 @@ class PostUser(models.Model):
    FollowingCount=models.IntegerField(null=True)
    FollowerCount=models.IntegerField( null=True)
    PostReshareCount=models.IntegerField(null=True)
+   Location=models.CharField(max_length=100)
 
    class Meta:
        db_table = 'PostUser'
@@ -59,6 +60,12 @@ class Post(models.Model):
    ResharerCount = models.IntegerField()
    Source = models.CharField(max_length=45)
    Sentiment=models.IntegerField(blank=True, null=True)
+
+
+   def set_statusID(self,id):
+       self.statusID=id
+   def get_statusID(self):
+       return self.statusID
 
    class Meta:
        db_table = 'Post'

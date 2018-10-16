@@ -15,6 +15,8 @@ from django.contrib import messages
 from Analysis.SentimentAnalysis import SentimentAnalysis
 from SMM.Sentiment import Sentiment
 from SMM.models import Keyword,Post,PostUser
+from SMM.models import Keyword, Post, PostUser
+from .PostMessage import Message
 template_name = "dashboard"
 keyword = ''
 
@@ -81,7 +83,7 @@ def home(request):
     else:
         return redirect('login')
 
-Sentiment
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -134,15 +136,26 @@ def fetch_posts(keyword_to_search):
     list = setmoke_api.get_data()
     setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB',1)
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
+    setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
+    setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
     list_of_data = {
         "list_of_data": list
     }
     return list_of_data
 
 
-def insert_value(request):
+def insert_value(request,alert_keyword=None):
+    keywords = {}
+    current_user = request.user
+    Keyword_table=Keyword.objects.filter(User_id=current_user.id)
+    for kwd in Keyword_table:
+        keywords[kwd.id] = kwd.alert_name
+
+
     if request.method == "POST":
         print("I am here django")
+
+
 
     form = KeywordForm(request.POST)
     # if form.is_valid():
@@ -152,6 +165,15 @@ def insert_value(request):
     # list = setmoke_api.get_data()
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
     # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # if form.is_valid():'
+    # return_5.delay()
+
+    keyword_to_search = 'Imran'
+    #  keyword_to_search="Nawaz Sharif"
+    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # list = setmoke_api.get_data()
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
+    setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini", 2, source="googlePlus")
     list = setmoke_api.get_data()
 
     sent_list=[]
@@ -169,13 +191,18 @@ def insert_value(request):
             sentiment.set_sentiment(1)
         sent_list.append(sentiment)
 
+
     setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB',1)
+
+    # setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'rehab105', 'SMM_DB', current_user.id)
     # post = form.save(commit=False)
     # post.author = request.user
     # post.published_date = timezone.now()
     # post.save()
+    Posts=[]
     list_of_data = {
-        "list_of_data": sent_list
+        "post_data": Posts,
+        "keyword_list": keywords
     }
     return render_to_response('SMM/dashboard1.html', list_of_data)
     # return render(request, 'SMM/dashboard1.html',)
@@ -237,3 +264,53 @@ def load_profile(user):
   except:  # this is not great, but trying to keep it simple
     profile = UserProfileForm.objects.create(user=user)
     return profile
+
+def update_sentiment(request, sentiment):
+    print(sentiment)
+    return HttpResponse("Succeefully updated")
+
+
+def display_feed(request, alert_id):
+    keywords = {}
+    current_user = request.user
+    Keyword_table = Keyword.objects.filter(User_id=current_user.id)
+    for kwd in Keyword_table:
+        keywords[kwd.id] = kwd.alert_name
+    Posts=[]
+    PostUsers=[]
+    post_table= Post.objects.select_related('PostUser').filter(Keyword_id=alert_id)
+    # post_table=Post.objects.filter(Keyword_id=alert_id)
+    for post in post_table:
+        message=Message()
+        message.set_ID(post.id)
+        message.set_statusID(post.StatusID)
+        message.set_Sentiment(post.Sentiment)
+        message.set_Content(post.Content)
+        message.set_CreatedAt(post.CreatedAt)
+        message.set_ResharerCount(post.ResharerCount)
+        message.set_Source(post.Source)
+        message.set_DisplayName(post.PostUser.DisplayName)
+        message.set_DisplayPicture(post.PostUser.DisplayPicture)
+        message.set_UserID( post.PostUser.UserID)
+
+
+        Posts.append(message)
+
+    list_of_data = {
+        "post_data": Posts,
+        "keyword_list": keywords
+    }
+    return render_to_response('SMM/dashboard1.html', list_of_data)
+
+class PostInfo:
+    def __init__(self, post, post_user):
+        self.post=post
+        self.post_user=post_user
+    def get_post(self):
+        return self.post
+    def get_post_user(self):
+        return self.post_user
+    def set_post(self,post):
+        self.post=post
+    def set_post_user(self, post_user):
+        self.post_user=post_user

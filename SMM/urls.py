@@ -10,6 +10,9 @@ urlpatterns = [
     url(r'^dashboard1/$', core_views.insert_value, name='dashboard'),
     url(r'^influencers/$',core_views.influenser,name='influencers'),
     url(r'^profile_edit/$', core_views.update_profile, name='profile_edit'),
+    url(r'^(?P<alert_id>[0-9]+)/$', core_views.display_feed, name='display_feed'),
+
+    url(r'^(?P<sentiment>[0-9]+)/$', core_views.update_sentiment, name='update_sentiment'),
 
     # url( r'^login/$',auth_views.LoginView.as_view(template_name="SMM/login.html"), name="login"),
     url(r'^logout/$', auth_views.logout, {'next_page': 'login'}, name='logout'),
