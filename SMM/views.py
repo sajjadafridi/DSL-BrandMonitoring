@@ -12,8 +12,6 @@ from SMM.tokens import account_activation_token
 from SMM.forms import SignUpForm,KeywordForm,ContactForm,UserProfileForm,UserEditForm, SourceSelectionForm
 from SETMOK_API.SETMOKE_API import SETMOKE_API
 from django.contrib import messages
-from Analysis.SentimentAnalysis import SentimentAnalysis
-from SMM.Sentiment import Sentiment
 from SMM.models import Keyword, Post, PostUser
 from .PostMessage import Message
 from SMM.tasks import get_twitter_feed,get_gplus_feed,add_to_database
@@ -312,6 +310,7 @@ def display_feed(request, alert_id):
 
         Posts.append(message)
 
+        Posts=Posts.reverse()
     list_of_data = {
         "post_data": Posts,
         "keyword_list": keywords

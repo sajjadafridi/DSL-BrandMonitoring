@@ -49,39 +49,66 @@ def get_twitter_feed(keyword, limit=1):
         tweet_info.set_time(created_at.strftime('%Y-%m-%d %H:%M:%S'))
         tweet_info.set_time(created_at)
         tweet_info.set_keyword(keyword_to_search)
-        tweet_user.set_display_name(tweet.user.screen_name)
-        tweet_user.set_display_picture(tweet.user.profile_image_url)
-        tweet_user.set_follower_count(tweet.user.followers_count)
-        tweet_user.set_following_count(tweet.user.friends_count)
-        tweet_user.set_total_likes(tweet.user.favourites_count)
-        tweet_user.set_total_post(tweet.user.statuses_count)
-        tweet_user.set_user_id(tweet.user.id_str)
-        tweet_user.set_location(tweet.user.location)
-        created_at = datetime.strptime(tweet.user.created_at, '%a %b %d %H:%M:%S %z %Y')
-        tweet_user.set_time(created_at.strftime('%Y-%m-%d %H:%M:%S'))
-        retweeter_resp = api.GetRetweets(tweet.id_str)
-        for retweeter in retweeter_resp:
-            retweet_user = Users()
-            retweet_user.set_display_name(retweeter.user.screen_name)
-            retweet_user.set_display_picture(retweeter.user.profile_image_url)
-            retweet_user.set_follower_count(retweeter.user.followers_count)
-            retweet_user.set_following_count(retweeter.user.friends_count)
-            retweet_user.set_total_likes(retweeter.user.favourites_count)
-            retweet_user.set_total_post(retweeter.user.statuses_count)
-            retweet_user.set_user_id(retweeter.user.id_str)
-            statuses=api.GetUserTimeline(user_id=retweeter.user.id_str, count=10)
-            t_text=''
-            for status in statuses:
-                    t_text +=status.full_text
+        user_name=''
+        no_of_followers_share = 0
+        no_of_follower=0
 
-            keyword_mentioned_count = len(re.findall(keyword_to_search.lower(), t_text.lower()))
-            influence_score = keyword_mentioned_count * retweeter.user.followers_count
-            retweet_user.set_influence_score(influence_score)
-            retweet_user.set_location(retweeter.user.location)
-            print(influence_score)
-            created_at = datetime.strptime(retweeter.user.created_at, '%a %b %d %H:%M:%S %z %Y')
-            retweet_user.set_time(created_at.strftime('%Y-%m-%d %H:%M:%S'))
-            retweeter_list.append(retweet_user)
+
+
+        if tweet.retweet_count==0:
+            user_name=tweet.user.screen_name
+            tweet_user.set_display_name(user_name)
+            tweet_user.set_display_picture(tweet.user.profile_image_url)
+            tweet_user.set_follower_count(tweet.user.followers_count)
+            no_of_follower = tweet.user.followers_count
+            print(tweet.user.followers_count)
+            tweet_user.set_following_count(tweet.user.friends_count)
+            tweet_user.set_total_likes(tweet.user.favourites_count)
+            tweet_user.set_total_post(tweet.user.statuses_count)
+            tweet_user.set_user_id(tweet.user.id_str)
+            tweet_user.set_location(tweet.user.location)
+            created_at = datetime.strptime(tweet.user.created_at, '%a %b %d %H:%M:%S %z %Y')
+            tweet_user.set_time(created_at.strftime('%Y-%m-%d %H:%M:%S'))
+        else:
+            user_name = tweet.retweeted_status.user.screen_name
+            tweet_user.set_display_name(user_name)
+            tweet_user.set_display_picture(tweet.retweeted_status.user.profile_image_url)
+            tweet_user.set_follower_count(tweet.retweeted_status.user.followers_count)
+            follower_count =tweet.retweeted_status.user.followers_count
+            print(tweet.retweeted_status.user.followers_count)
+            tweet_user.set_following_count(tweet.retweeted_status.user.friends_count)
+            tweet_user.set_total_likes(tweet.retweeted_status.user.favourites_count)
+            tweet_user.set_total_post(tweet.retweeted_status.user.statuses_count)
+            tweet_user.set_user_id(tweet.retweeted_status.user.id_str)
+            tweet_user.set_location(tweet.retweeted_status.user.location)
+            created_at = datetime.strptime(tweet.retweeted_status.user.created_at, '%a %b %d %H:%M:%S %z %Y')
+            tweet_user.set_time(created_at.strftime('%Y-%m-%d %H:%M:%S'))
+
+            reach= get_reach(user_name, api, follower_count,  tweet.id_str)
+
+            retweeter_resp = api.GetRetweets(tweet.id_str)
+            for retweeter in retweeter_resp:
+                retweet_user = Users()
+                retweet_user.set_display_name(retweeter.user.screen_name)
+                retweet_user.set_display_picture(retweeter.user.profile_image_url)
+                retweet_user.set_follower_count(retweeter.user.followers_count)
+                retweet_user.set_following_count(retweeter.user.friends_count)
+                retweet_user.set_total_likes(retweeter.user.favourites_count)
+                retweet_user.set_total_post(retweeter.user.statuses_count)
+                retweet_user.set_user_id(retweeter.user.id_str)
+                statuses = api.GetUserTimeline(user_id=retweeter.user.id_str, count=10)
+                t_text = ''
+                for status in statuses:
+                    t_text += status.full_text
+
+                keyword_mentioned_count = len(re.findall(keyword_to_search.lower(), t_text.lower()))
+                influence_score = keyword_mentioned_count * retweeter.user.followers_count
+                retweet_user.set_influence_score(influence_score)
+                retweet_user.set_location(retweeter.user.location)
+                print(influence_score)
+                created_at = datetime.strptime(retweeter.user.created_at, '%a %b %d %H:%M:%S %z %Y')
+                retweet_user.set_time(created_at.strftime('%Y-%m-%d %H:%M:%S'))
+                retweeter_list.append(retweet_user)
         count = count + 1
         tweet_info.set_user(tweet_user)
         tweet_info.set_resharer(retweeter_list)
@@ -172,5 +199,35 @@ def add_to_database(list, kwd_id):
             resharer_user.save()
             resharers = Resharer(PostUser_id=resharer_user.id, Post_id=post.id, Influence_score=resharer.get_influence_score())
             resharers.save()
+
+def get_reach(user_name, api, follower_count, post_id):
+    page_count = 0
+    loop = follower_count / 200
+    iterations = follower_count % 200
+    next_page = -1
+
+    while page_count < loop:
+
+        followers_list = api.GetFollowersPaged(screen_name=user_name, cursor=next_page)
+        next_page = followers_list[0]
+        for follower in followers_list[2]:
+            statuses = api.GetUserTimeline(user_id=follower.id)
+            for status in statuses:
+                if status.id_str == post_id:
+                    no_of_followers_share = no_of_followers_share + 1
+
+        page_count = page_count + 1
+
+    else:
+
+        followers_list = api.GetFollowersPaged(screen_name=user_name, count=iterations)
+        for follower in followers_list[2]:
+            statuses = api.GetUserTimeline(user_id=follower.id)
+            for status in statuses:
+                if status.id_str == post_id:
+                    no_of_followers_share = no_of_followers_share + 1
+
+    reach = follower_count + no_of_followers_share
+
 
 
