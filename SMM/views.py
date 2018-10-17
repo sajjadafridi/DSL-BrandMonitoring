@@ -255,8 +255,29 @@ def get_search(request):
         error = "error message"
     return render(request, template_name, {'error': error})
 
+
 def influenser(request):
-    return render(request, 'SMM/influencers.html')
+    selectedkwd = 0
+    if request.method == "GET":
+        data = request.GET
+        selectedkwd= data.get('selected_kwd')
+        print(data)
+
+    if  selectedkwd:
+        selectedkwd=int(selectedkwd)
+
+
+    keywords = {}
+
+    current_user = request.user
+    Keyword_table = Keyword.objects.filter(User_id=current_user.id)
+    for kwd in Keyword_table:
+        keywords[kwd.id] = kwd.alert_name
+    keywords = {
+        "keyword_list": keywords,
+        "set_keyword":selectedkwd
+    }
+    return render_to_response('SMM/influencers.html',keywords)
 
 def update_profile(request):
     profile = load_profile(request.user)
@@ -284,6 +305,9 @@ def update_sentiment(request, sentiment):
     print(sentiment)
     return HttpResponse("Succeefully updated")
 
+def temp(request, alert_id):
+
+    return HttpResponse(alert_id)
 
 def display_feed(request, alert_id):
     keywords = {}
@@ -310,7 +334,6 @@ def display_feed(request, alert_id):
 
         Posts.append(message)
 
-        Posts=Posts.reverse()
     list_of_data = {
         "post_data": Posts,
         "keyword_list": keywords
@@ -329,3 +352,9 @@ class PostInfo:
         self.post=post
     def set_post_user(self, post_user):
         self.post_user=post_user
+
+# class CreateMyModelView(CreateView):
+#     model = MyModel
+#     form_class = MyModelForm
+#     template_name = 'myapp/template.html'
+#     success_url = 'myapp/success.html'

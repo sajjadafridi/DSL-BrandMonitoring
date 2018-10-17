@@ -6,6 +6,17 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import RegexValidator
 
+COLOR_CHOICES = (
+    ('green','GREEN'),
+    ('blue', 'BLUE'),
+    ('red','RED'),
+    ('orange','ORANGE'),
+    ('black','BLACK'),
+)
+
+
+class MyModel(models.Model):
+  color = models.CharField(max_length=6, choices=COLOR_CHOICES, default='green')
 
 class Profile(models.Model):
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")

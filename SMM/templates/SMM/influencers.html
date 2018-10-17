@@ -26,8 +26,22 @@
 <h4 class="h3 font-weight-normal text-center mt-4 align-center" style="color:#28B463;">Influencers Table</h4><br><br>
 <div class="row mr-auto">
 <div class="col-0 col-md-2 col-lg-2"></div>
-<div class=" col-4 col-md-2 col-lg-2"><button class="button btn btn-default">Pepsi</button></div>
-<div class=" col-4 col-md-2 col-lg-2"><button class="button btn btn-default">Today</button></div>
+<div class=" col-4 col-md-2 col-lg-2">
+    <select  class="form-control" id="keyword_selection" onchange="update_keyword()">
+        <option value= 0 disabled selected> Keyword </option>
+        {%  for kwd_id, alert_name in keyword_list.items %}
+
+            {% if  kwd_id  ==  set_keyword  %}
+            <option  selected value={{ kwd_id }}> {{alert_name}} </option>
+            {% else %}
+                <option value={{ kwd_id }}> {{alert_name}} </option>
+
+            {%  endif%}
+        {% endfor %}
+    </select>
+</div>
+
+<div class=" col-4 col-md-2 col-lg-2"><button class="button btn btn-default" id="demo">Today</button></div>
 <div class=" col-4 col-md-2 col-lg-2"><button class="button btn btn-default">Twitter</button></div>
 <div class="col-0 col-md-2 col-lg-2"></div>
 <div class=" col-4 col-md-2 col-lg-2"><button class="button btn btn-default" onclick="on()">Influencers Filter</button></div>
@@ -104,9 +118,9 @@
           <option selected value="Today">Today</option>
           <option value="Yesterday">Yesterday</option>
           <option value="7days">7 Days</option>
-          <option>Last Week</option>
-		  <option>Last 30 Days</option>
-		  <option>Last Month</option>
+          <option value="LastWeek">Last Week</option>
+		  <option value="Last30Days">Last 30 Days</option>
+		  <option value="LastMonth">Last Month</option>
          </select>
 		 </div>
 	    </div>
@@ -125,6 +139,8 @@
          </select>
 		 </div>
         </div>
+
+
 		<div class="row">
 		<div class="col">
 		 <label for="Interest">Interest</label>
@@ -178,11 +194,12 @@
 	   </div>
 	   <br><br>
        <div class="row">
-		 <div class="col"><button class="button">Apply Filter</button></div>
+		 <div class="col"><button class="button" onclick="apply_filter()">Apply Filter</button></div>
 	   </div>
+          <input style="display: none" type="hidden" value="0" name="selected_kwd" id="keword_id">
       </form>
 	  </div>
-	 
+
 </div>
 </div>
 </div>
@@ -201,16 +218,42 @@ function off() {
 var expanded = false;
 
 function showCheckboxes() {
-  var checkboxes = document.getElementById("checkboxes");
-  if (!expanded) {
-    checkboxes.style.display = "block";
-    expanded = true;
-  } else {
-    checkboxes.style.display = "none";
-    expanded = false;
-  }
+    var checkboxes = document.getElementById("checkboxes");
+    if (!expanded) {
+        checkboxes.style.display = "block";
+        expanded = true;
+    } else {
+        checkboxes.style.display = "none";
+        expanded = false;
+    }
+}
+
+function apply_filter() {
+    var keyword_selection = document.getElementById("keyword_selection");
+
+    document.getElementById("keword_id").innerText = keyword_selection.value;
+    var x=document.getElementById("keword_id").innerText;
+    window(x);
+
+
+{#    document.getElementById("demo").innerText = keyword_selection.value;#}
+{#    var time = document.getElementById("time");#}
+{#    #}
+{#    document.getElementById("demo").innerText = time.value;#}
+
+
+}
+
+function update_keyword() {
+     var keyword_selection = document.getElementById("keyword_selection");
+    document.getElementById("keword_id").setAttribute('value',keyword_selection.value);
+
+
+
 }
 </script>
+
+
    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
@@ -241,6 +284,12 @@ function showCheckboxes() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
             integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
             crossorigin="anonymous"></script>
+
+
+
+
+
+
 </body>
 </html>
 {% endblock %}
