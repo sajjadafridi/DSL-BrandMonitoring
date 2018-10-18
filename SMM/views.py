@@ -9,27 +9,13 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import EmailMessage,send_mail, BadHeaderError
 from SMM.tokens import account_activation_token
-<<<<<<< HEAD
-from SMM.forms import SignUpForm,KeywordForm,ContactForm,UserProfileForm,UserEditForm
-# from SETMOK_API.SETMOKE_API import SETMOKE_API
-from django.contrib import messages
-# from Analysis.SentimentAnalysis import SentimentAnalysis
-from SMM.Sentiment import Sentiment
-from SMM.models import Keyword,Post,PostUser
-from SMM.models import Keyword, Post, PostUser
-from .PostMessage import Message
-template_name = "dashboard"
-keyword = ''
-=======
 from SMM.forms import SignUpForm,KeywordForm,ContactForm,UserProfileForm,UserEditForm, SourceSelectionForm
-from SETMOK_API.SETMOKE_API import SETMOKE_API
 from django.contrib import messages
 from SMM.models import Keyword, Post, PostUser
 from .PostMessage import Message
 from SMM.tasks import get_twitter_feed,get_gplus_feed,add_to_database
->>>>>>> 8733bb652ada1917441a7bed1aab8798d5838556
-
 from _datetime import datetime, timedelta
+
 template_name = "dashboard"
 keyword = ' '
 def load_forgetpassword_page(request):
@@ -178,19 +164,16 @@ def activate(request, uidb64, token):
 
 
 def fetch_posts(keyword_to_search):
-<<<<<<< HEAD
     # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
     # list = setmoke_api.get_data()
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB',1)
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
     # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
-=======
-    setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
-    list = setmoke_api.get_data()
-    setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
-    setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
->>>>>>> 8733bb652ada1917441a7bed1aab8798d5838556
+    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # list = setmoke_api.get_data()
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
     list_of_data = {
         "list_of_data": list
     }
@@ -229,7 +212,6 @@ def insert_value(request,  alert_keyword=None):
     for kwd in Keyword_table:
         keywords[kwd.id] = kwd.alert_name
     form = KeywordForm(request.POST)
-<<<<<<< HEAD
     # if form.is_valid():
     # keyword_to_search = 'Fatima Jinnah'
     keyword_to_search="Nawaz Sharif"
@@ -271,7 +253,6 @@ def insert_value(request,  alert_keyword=None):
     # post.author = request.user
     # post.published_date = timezone.now()
     # post.save()
-=======
     # if form.is_valid():'
     # return_5.delay()
 
@@ -305,7 +286,6 @@ def insert_value(request,  alert_keyword=None):
     # # post.published_date = timezone.now()
     # # post.save()
 
->>>>>>> 8733bb652ada1917441a7bed1aab8798d5838556
     Posts=[]
     list_of_data = {
         "post_data": Posts,

@@ -51,10 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'celery',
-<<<<<<< HEAD
     'corsheaders',
-=======
->>>>>>> 8733bb652ada1917441a7bed1aab8798d5838556
     'SMM.apps.SmmConfig',
 
 ]
@@ -63,10 +60,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-<<<<<<< HEAD
     'corsheaders.middleware.CorsMiddleware',
-=======
->>>>>>> 8733bb652ada1917441a7bed1aab8798d5838556
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -91,10 +85,7 @@ TEMPLATES = [
         },
     },
 ]
-<<<<<<< HEAD
 CORS_ORIGIN_ALLOW_ALL = True
-=======
->>>>>>> 8733bb652ada1917441a7bed1aab8798d5838556
 
 WSGI_APPLICATION = 'BrandMonitoring.wsgi.application'
 
@@ -115,11 +106,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'SMM_DB',
         'USER': 'root',
-<<<<<<< HEAD
         'PASSWORD': 'sajjadafridi',
-=======
-        'PASSWORD': 'rehab105',
->>>>>>> 8733bb652ada1917441a7bed1aab8798d5838556
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
