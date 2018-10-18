@@ -1,8 +1,6 @@
-window.onerror = function () {
-    console.log(arguments);
-}
+
 //dynamically created list should be selected using on
-$('#rlist').on('click', 'li', function(){
+$jQuery_3_1_1('#rlist').on('click', 'li', function(){
     $('#rlist').hide();
     var searchvalue = $(this).text();
     $('#search-input').val(searchvalue);
@@ -15,10 +13,21 @@ $('#rlist').on('click', 'li', function(){
 
 });
 
-$('#image-source').on('click', function()
+$jQuery_3_1_1('#companyModalDiv').on('click', function()
 {
-        $('#search-input').val(" ");
+    $('#companyOrcompetitorH').html("Enter the name of Company or Brand you want to search or monitor.");
+     $('#CompanyorCompetitorHtop').html("What's the Brand?");
+});
+$jQuery_3_1_1('#competitorModalDiv').on('click', function()
+{
+        $('#companyOrcompetitorH').html("Enter the name of Competitor you want to search or monitor.");
+         $('#CompanyorCompetitorHtop').html("What's the Name?");
+});
+$jQuery_3_1_1('#image-source,#modelclosebtn').on('click', function()
+{
+        $('#search-input').val("");
         $('#input-image').attr('src',"");
+        $('#rlist').hide();
 
 
 });

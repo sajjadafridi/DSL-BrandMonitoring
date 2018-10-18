@@ -1,4 +1,5 @@
 var keyworddata = new Map();
+jQuery.noConflict();
 $jQuery_2_2_4(document).ready(function () {
 
     $("button#brandbtn").click(function (event)
@@ -125,7 +126,7 @@ $jQuery_2_2_4(document).ready(function () {
 
     });
 
-    $('input#facebooklink,input#twitterlink,input#linkdinlink').mentiony({
+    $jQuery_2_2_4('input#facebooklink,input#twitterlink,input#linkdinlink').mentiony({
         // triggerChar: '@',
         onDataRequest: function (mode, keyword, onDataRequestCompleteCallback) {
             $.ajax({
@@ -160,7 +161,7 @@ $jQuery_2_2_4(document).ready(function () {
 });
 
 function search_url() {
-    $.ajax({
+    $jQuery_3_1_1.ajax({
         url: 'https://company-stream.clearbit.com/v2/companies/find?',
         dataType: 'json',
         data: {

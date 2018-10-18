@@ -11,6 +11,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'SMM/BrandSelection.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css' %}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
@@ -23,7 +24,54 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/token-input-facebook.css' %}" type="text/css"/>
         <link rel="stylesheet" href="{% static 'bootstrap/css/jquery.mentiony.css' %}" type="text/css">
 
+        <style>
+            .m-left {
+                margin-left: 50%;
+                width: 45%;
+            }
 
+            .m-right {
+                margin-right: 60px;
+            }
+
+            .mg-top {
+                margin-top: 5px;
+            }
+
+            .mg-pr-top {
+                margin-top: 15px;
+            }
+
+            .nxt-btn {
+                margin-left: -150px;
+            }
+
+            .btn-arrow {
+                padding: 0;
+                margin-left: -30px;
+            }
+
+            .src-lang-leftarrow-btn {
+                padding: 0;
+                margin-left: -40px;
+            }
+
+            .src-lang-rightarrow-btn {
+                padding: 0;
+                margin-left: -20px;
+            }
+
+            .row-btn {
+                margin-left: 50%;
+                margin-top: -20px;
+                margin-bottom: auto;
+                margin-right: -300px;
+            }
+
+            .ml-20 {
+                margin-left: -20px;
+            }
+        </style>
         <style>
             #resTabsrc {
 
@@ -91,7 +139,7 @@
     <section>
         <div class="container">
             <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
+                <div class="col-sm-4 col-md-4 col-lg-4" id="companyModalDiv">
                     <a class="button-selection" data-toggle="modal" data-target="#CompanyModal">
                         <div class="box selector bounceUp animated">
                             <div class="item text-center">
@@ -103,12 +151,12 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                    <a class="button-selection" data-toggle="modal" data-target="#myModal">
+                <div class="col-sm-4 col-md-4 col-lg-4" id="competitorModalDiv">
+                    <a class="button-selection" data-toggle="modal" data-target="#CompanyModal">
                         <div class="box selector bounceUp animated">
                             <div class="item text-center">
                                 <div class="selector-header"><img class="image-responsive image-selector"
-                                                                  src="{% static 'images/competitor.png' %}"></div>
+                                                                  src="{% static  'images/competitor.png' %}"></div>
                                 <h4 class="font-weight-normal">Competitor</h4>
                                 <p>Recommended to monitor compititor's new coverage and online presence</p>
                             </div>
@@ -116,11 +164,11 @@
                     </a>
                 </div>
                 <div class="col-sm-4 col-md-4 col-lg-4">
-                    <a class="button-selection" data-toggle="modal" data-target="#Othermodal">
+                    <a class="button-selection" data-toggle="modal" data-target="#OtherModal">
                         <div class="box selector bounceUp animated">
                             <div class="item text-center">
                                 <div class="selector-header"><img class="image-responsive image-selector"
-                                                                  src="{% static 'images/other.png' %}"></div>
+                                                                  src="{% static  'images/other.png' %}"></div>
                                 <h4 class="font-weight-normal">Anything Else</h4>
                                 <p>Recommended to monitor a topic or person etc.</p>
                             </div>
@@ -129,236 +177,360 @@
                 </div>
             </div>
         </div>
-        <!--Comapny Modal-->
-        <div class="modal fade " id="CompanyModal" role="dialog">
-            <div class="modal-dialoge">
-                <!--Comapny Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <img class="img-diagonal" src="{% static 'images/file.jpeg' %}" align="left">
-                    <div class="text-center modalpage-head">
-	       <span>
-	       <h1 class="h3 font-weight-normal text-center">
-	      <img class="logo-pic image-responsive" src="{% static 'images/icon-trans.png' %}" alt="">
-             What's the brand?</h1>
-	       </span><br>
-                        <h4 class="h6 font-weight-normal">Enter the name of Company or Brand you want to search or
-                            monitor.</h4>
-                    </div>
+    </section>
 
-                    <div class="modal-form" id="companymodal">
-                        <div class="row row-no-padding">
-                            <div class="awesomplete" id="ajax-example">
-                                <div class="row" id="image-source">
-                                    <div class="col-1.5"
-                                         style="alignment: center; padding: 5px">
-                                        <img id="input-image" src="" width=13/>
-                                    </div>
-                                    <div class="col-10" style="padding-left: 0px;">
-                                        <input id="search-input" type="text"
-                                               class="modal-form-input form-control"
-                                               style="padding-left:0;
+    <!--Comapny Modal-->
+    <div class="modal fade md-alert" id="CompanyModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg md-dial-alert">
+            <div class="modal-content md-con-alert">
+                <div class="modal-header">
+                    <button type="button" id="modelclosebtn" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <img class="img-diagonal" src="{% static 'images\file.jpeg' %}" align="left">
+                <div class="text-center modalpage-head">
+	    <span>
+	    <h1 class="h3 font-weight-normal text-center" id="CompanyorCompetitorHtop">
+	    <img class="logo-pic image-responsive" src="{% static 'images\icon-trans.png' %}" alt="">
+         What's the brand?</h1>
+	    </span><br>
+                    <h4 class="h6 font-weight-normal" id="companyOrcompetitorH">Enter the name of Company or Brand you want to search or
+                        monitor.</h4>
+                </div>
+
+                <div class="modal-form" id="companymodal">
+                    <div class="row row-no-padding">
+                        <div class="awesomplete" id="ajax-example">
+                            <div class="row" id="image-source">
+                                <div class="col-1.5"
+                                     style="alignment: center; padding: 5px">
+                                    <img id="input-image" src="" width=13/>
+                                </div>
+                                <div class="col-10" style="padding-left: 0px;">
+                                    <input id="search-input" type="text"
+                                           class="modal-form-input form-control"
+                                           style="padding-left:0;
                                                box-sizing: unset;
                                                box-shadow: unset;
                                                border: unset;
                                                padding-bottom: unset;"
-                                               placeholder="Search Company Or Brand!.."
-                                               required autofocus
-                                               autocomplete="off" value="pepsi"
-                                               name="Search">
-                                        <input type="hidden" id="domain-input" value="none" name="domain-input">
-                                        <img src="" id="image-input" style="display: none" name="image-input">
-                                    </div>
+                                           placeholder="Search Company Or Brand!.."
+                                           required autofocus
+                                           autocomplete="off"
+                                           name="Search">
+                                    <input type="hidden" id="domain-input" value="none" name="domain-input">
+                                    <img src="" id="image-input" style="display: none" name="image-input">
                                 </div>
-
-                                <ul id="rlist" class=" result form-control" style="padding-left: unset">
-
-                                </ul>
                             </div>
-                            <br>
+
+                            <ul id="rlist" class=" result form-control" style="padding-left: unset">
+
+                            </ul>
                         </div>
-                        <div class="rows">
-                            <button id="brandbtn" class="button company-form-button btn-default" type="submit"
-                                    data-toggle="modal"
-                                    data-target="#PriorityModal" id="srchbtn">
-                                Next Site!<span class="fa fa-arrow-right"></span></button>
-                        </div>
+                        <br>
+                    </div>
+                    <div class="rows">
+                        <button id="brandbtn" class="button company-form-button btn-default" type="submit"
+                                data-toggle="modal"
+                                data-target="#PriorityModal" id="srchbtn">
+                            Next Site!<span class="fa fa-arrow-right"></span></button>
                     </div>
                 </div>
             </div>
         </div>
-        <!--Periority page Modal-->
-        <div class="modal fade " id="PriorityModal" role="dialog">
-            <div class="modal-dialoge">
-                <!--Priority page Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
+    </div>
+    <!-- The Competitor modal -->
+
+{#    <div class="modal fade md-alert" id="CompetitorModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge"#}
+{#         aria-hidden="true">#}
+{#        <div class="modal-dialog modal-lg md-dial-alert">#}
+{#            <div class="modal-content md-con-alert">#}
+{#                <div class="modal-header">#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
+{#                            aria-hidden="true">&times;</span></button>#}
+{#                </div>#}
+{#                <img class="img-diagonal" src="{% static 'images\file.jpeg' %}" align="left">#}
+{#                <div class="text-center modalpage-head">#}
+{#	    <span>#}
+{#	    <h1 class="h3 font-weight-normal text-center">#}
+{#	    <img class="logo-pic image-responsive" src="{% static 'images\icon-trans.png' %}" alt="">#}
+{#         What's the brand?</h1>#}
+{#	    </span><br>#}
+{#                    <h4 class="h6 font-weight-normal">Enter the name of Company or Brand you want to search or#}
+{#                        monitor.</h4>#}
+{#                </div>#}
+{##}
+{#                <div class="modal-form" id="companymodal">#}
+{#                    <div class="row row-no-padding">#}
+{#                        <div class="awesomplete" id="ajax-example">#}
+{#                            <div class="row" id="image-source">#}
+{#                                <div class="col-1.5"#}
+{#                                     style="alignment: center; padding: 5px">#}
+{#                                    <img id="input-image" src="" width=13/>#}
+{#                                </div>#}
+{#                                <div class="col-10" style="padding-left: 0px;">#}
+{#                                    <input id="search-input" type="text"#}
+{#                                           class="modal-form-input form-control"#}
+{#                                           style="padding-left:0;#}
+{#                                               box-sizing: unset;#}
+{#                                               box-shadow: unset;#}
+{#                                               border: unset;#}
+{#                                               padding-bottom: unset;"#}
+{#                                           placeholder="Search Company Or Brand!.."#}
+{#                                           required autofocus#}
+{#                                           autocomplete="off" value="pepsi"#}
+{#                                           name="Search">#}
+{#                                    <input type="hidden" id="domain-input" value="none" name="domain-input">#}
+{#                                    <img src="" id="image-input" style="display: none" name="image-input">#}
+{#                                </div>#}
+{#                            </div>#}
+{##}
+{#                            <ul id="rlist" class=" result form-control" style="padding-left: unset">#}
+{##}
+{#                            </ul>#}
+{#                        </div>#}
+{#                        <br>#}
+{#                    </div>#}
+{#                    <div class="rows">#}
+{#                        <button id="brandbtn" class="button company-form-button btn-default" type="submit"#}
+{#                                data-toggle="modal"#}
+{#                                data-target="#PriorityModal" id="srchbtn">#}
+{#                            Next Site!<span class="fa fa-arrow-right"></span></button>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+{#    <div class="modal fade md-alert" id="CompetitorModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge"#}
+{#         aria-hidden="true">#}
+{#        <div class="modal-dialog modal-lg md-dial-alert">#}
+{#            <div class="modal-content md-con-alert">#}
+{#                <div class="modal-header">#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
+{#                            aria-hidden="true">&times;</span></button>#}
+{#                </div>#}
+{#                <img class="img-diagonal" src="{% static 'images\file.jpeg' %}" align="left">#}
+{#                <div class="text-center modalpage-head">#}
+{#	       <span>#}
+{#	       <h1 class="h3 font-weight-normal text-center">#}
+{#	      <img class="logo-pic image-responsive" src="{% static 'images\icon-trans.png' %}" alt="">#}
+{#             What's the name?</h1>#}
+{#	       </span><br>#}
+{#                    <h4 class="h6 font-weight-normal">Enter the name of Competitor you want to search or monitor.</h4>#}
+{#                </div>#}
+{##}
+{#                <div class="modal-form">#}
+{#                    <div class="row">#}
+{#                        <input type="text" class="modal-form-input form-control" name="Search"#}
+{#                               placeholder="Search Competitor!.." required autofocus>#}
+{#                    </div>#}
+{#                    <br>#}
+{#                    <div class="rows">#}
+{#                        <button class="button  btn-default" type="submit" data-toggle="modal"#}
+{#                                data-target="#PriorityModal">#}
+{#                            Next Site<span class="fa fa-arrow-right mt-auto p-1 ml-20"></span></button>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+    <!--Other Modal-->
+    <div class="modal fade md-alert" id="OtherModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg md-dial-alert">
+            <div class="modal-content md-con-alert">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <img class="img-diagonal" src="{% static 'images\file.jpeg' %}" align="left">
+                <div class="text-center modalpage-head">
+	       <span>
+	       <h1 class="h3 font-weight-normal text-center" >
+	      <img class="logo-pic image-responsive" src="{% static 'images\icon-trans.png' %}" alt="">
+             What's the name?</h1>
+	       </span><br>
+                    <h4 class="h6 font-weight-normal">Enter name of anything you want to search or monitor.</h4>
+                </div>
+
+                <form class="modal-form">
+                    <div class="row">
+                        <input type="text" class="modal-form-input form-control" name="Search"
+                               placeholder="Search Anything!.." required autofocus>
                     </div>
-                    <img class="img-diagonal" src="{% static 'images\priority.jpg' %}" align="left">
-                    <div class="text-center modalpage-head">
+                    <br>
+                    <div class="rows">
+                        <button class="button  btn-default" type="submit" data-toggle="modal"
+                                data-target="#PriorityModal">
+                            Next Site<span class="fa fa-arrow-right mt-auto p-1 ml-20"></span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--Priority Modal-->
+    <div class="modal fade md-alert" id="PriorityModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg md-dial-alert">
+            <div class="modal-content md-con-alert">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <br>
+                <br>
+                <img class="img-diagonal" src="{% static 'images\priority.jpg' %}" align="left">
+
+                <div class="text-center modalpage-head mg-pr-top">
 	       <span>
 	       <h1 class="h3 font-weight-normal text-center">
 	      <img class="logo-pic image-responsive" src="{% static 'images\icon-trans.png' %}" alt="">
              Priority Pages</h1>
 	       </span>
-                        <h4 class="h6 font-weight-normal">Your alert will monitor these pages and related links.</h4>
+                    <h4 class="h6 font-weight-normal">Your alert will monitor these pages and related links.</h4>
+                </div>
+
+                <div class="rows">
+                    <div class="form-label-group m-left">
+                        <label>Company Name</label>
+                        <input type="text" class="form-control input-width"
+                               id="companyname"
+                               name="CompanyName" placeholder="Company Name.." required autofocus>
                     </div>
-                    <br>
-                    <div class="p-page-modal-form">
-
-                        <div class="rows">
-                            <div class="form-label-group">
-                                <label>Company Name</label>
-                                <input type="text" class="form-control input-width" style="width:550px;"
-                                       id="companyname"
-                                       name="CompanyName" placeholder="Company Name.." required autofocus>
-                            </div>
-                        </div>
+                </div>
 
 
-                        <section>
+                <div class="rows">
+                    <div class="form-label-group m-left">
+                        <label>Facebook Page</label>
+                        <input id="facebooklink" type="input" class="form-control"
+                               placeholder="Facebook Profile.." required autofocus> </input>
 
-
-                            <div class="rows">
-                                <div class="form-label-group">
-                                    <label>Facebook Page</label>
-                                    <input id="facebooklink" type="input" class="form-control"
-                                           placeholder="Facebook Profile.." required autofocus></input>
-
-                                    {#                                    <input type="input" id="facebooklink" class="form-control " style="width:550px;"#}
-                                    {#                                       placeholder="Facebook Profile.." required autofocus>#}
-                                </div>
-                            </div>
-                        </section>
-
-                        <div class="rows">
-                            <div class="form-label-group">
-                                <label>Twitter Profile</label>
-                                <input type="input" id="twitterlink" class="form-control input-width"
-                                       style="width:550px"
-                                       placeholder="Twitter Page.." required autofocus>
-                            </div>
-                        </div>
-                        <div class="rows">
-                            <div class="form-label-group">
-                                <label>LinkedIn Profile</label>
-                                <input type="input" id="linkdinlink" class="form-control " style="width:550px;"
-                                       placeholder="LinkedIn Profile.." required autofocus>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="rows">
-                            <div class="col-6">
-                                <button class="button modal-form-button btn-default" type="button" data-toggle="modal"
-                                        data-target="#CompanyModal">
-                                    <span class="pull-right"> &nbsp;&nbsp;  Previous Site!</span>
-                                    <i class="fa fa-arrow-left pull-left btn-left-arrow" style=""></i></button>
-                            </div>
-                            <div class="col-6">
-                                <button class="button modal-form-button btn-default nxt-btn" type="submit"
-                                        data-toggle="modal" data-target="#SourcesModal">
-                                    <span class="pull-left">Next Site!&nbsp;&nbsp; </span>
-                                    <i class="fa fa-arrow-right btn-right-arrow"></i></button>
-                            </div>
-                        </div>
+                        {#                                    <input type="input" id="facebooklink" class="form-control " style="width:550px;"#}
+                        {#                                       placeholder="Facebook Profile.." required autofocus>#}
+                    </div>
+                </div>
+                <div class="rows">
+                    <div class="form-label-group m-left">
+                        <label>Twitter Profile</label>
+                        <input type="input" id="twitterlink" class="form-control input-width"
+                               placeholder="Twitter Page.." required autofocus>
+                    </div>
+                </div>
+                <div class="rows">
+                    <div class="form-label-group m-left">
+                        <label>LinkedIn Profile</label>
+                        <input type="input" id="linkdinlink" class="form-control "
+                               placeholder="LinkedIn Profile.." required autofocus>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-2">
+                        <button class="button btn-default" type="button" data-dismiss="modal">
+                            <span class="pull-right"> &nbsp;&nbsp;  Previous Site!</span>
+                            <i class="fa fa-arrow-left pull-left btn-arrow"></i></button>
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="col-2">
+                        <button class="button btn-default" type="submit" data-toggle="modal"
+                                data-target="#SourcesModal">
+                            <span class="pull-left">Next Site!&nbsp;&nbsp; </span>
+                            <i class="fa fa-arrow-right btn-arrow"></i></button>
                     </div>
                 </div>
             </div>
         </div>
-        <!--Sources and language model-->
-        <form class="modal-form" method="post" action="">
-            <div class="row">
-                <div class="modal fade" id="SourcesModal" role="dialog">
-                    <div class="modal-dialoge">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                        aria-hidden="true">&times;</span></button>
-                            </div>
-                            <img class="img-diagonal" src="{% static 'images/source.png' %}" align="left">
-                            <div class="text-center modalpage-head">
+    </div>
+    </div>
+    <!--Sources and language model-->
+    <form class="modal-form" method="post" action="">
+        <div class="modal fade md-alert" id="SourcesModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg md-dial-alert">
+                <div class="modal-content md-con-alert">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <br>
+                    <br>
+                    <img class="img-diagonal" src="{% static 'images\source.png' %}" align="left">
+                    <div class="text-center modalpage-head mg-top">
 	       <span>
 	       <h1 class="h3 font-weight-normal text-center">
-	       <img class="logo-pic image-responsive" src="{% static 'images/icon-trans.png' %}" alt="">
-             Sources and Languages</h1>
+	       <img class="logo-pic image-responsive" src="{% static 'images\icon-trans.png' %}" alt="">
+             Sources</h1>
+<br>
 	       </span>
-                                <h4 class="h6 font-weight-normal">Your alert will monitor from following of these
-                                    sources and
-                                    languages: </h4>
-                            </div>
-                            <div class="row">
-                                <div id="resTabsrc" class="c_b">
-                                    <table class="table table-hover">
-                                        <thead><h1 class="h4 font-weight-normal"><b>Sources</b></h1></thead>
-                                        <tbody>
-                                        <tr>
-                                            <td class="text-right label">Facebook</td>
-                                            <td class="text-center">
-                                                <input name="sourceselection" id="ad_Checkbox1"  type="checkbox"  value="facebook"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right label">Linkedin</td>
-                                            <td class="text-center">
-                                                <input name="sourceselection" id="ad_Checkbox1"  type="checkbox" value="linkedin"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right label">Twitter</td>
-                                            <td class="text-center">
-                                                <input name="sourceselection" id="ad_Checkbox1"  type="checkbox" value="twitter"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right label">Google+</td>
-                                            <td class="text-center">
-                                                <input name="sourceselection" id="ad_Checkbox1"  type="checkbox" value="google"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                        <h4 class="h6 font-weight-normal">Your alert will monitor from following of these sources: </h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-6"></div>
+                        <div class="col-2">
+                            <table class="table table-hover">
+                                <thead><h1 class="h4 font-weight-normal"><b>Sources</b></h1></thead>
+                                <tbody>
 
-                            </div>
-                            <div class="rows">
-                                <div class="col-6">
-                                    <button class="button modal-form-button btn-default" style="margin-left:750px;"
-                                            type="button">
-                                        <span class="pull-right">  Previous!</span>
-                                        <i class="fa fa-arrow-left pull-left"
-                                           style="margin-left:750px;top:0;left:0;padding-right:20px;"></i></button>
-                                </div>
-                                    <input id="user_id" name="user_id" type="hidden" value={{ user.id }}>
-                                    <input id="user_status" name="user_status" type="hidden" value={{ user.is_active }}>
-                                    <input id="user_fist_name" name="user_first_name" type="hidden"
-                                       value={{ user.first_name }}>
-                                    <input id="user_last_name" name="user_last_name" type="hidden"
-                                       value={{ user.last_name }}>
-                                    <input id="user_email_conform" name="user_email_conform" type="hidden"
-                                       value={{ user.profile.email_confirmed }}>
-                                    <input id="user_email" name="user_email" type="hidden" value={{ user.email }}>
-                                <div id="hereare" class="col-6">
-                                            {% csrf_token %}
-                                    <input type="hidden" id="search_keyword" value="none" name="search_keyword">
-                                            {{ form.as_p }}
-{#                                    {{ form.excluded_keywords.value|default_if_none:"NONE" }}#}
-
-                                    <button class="button modal-form-button btn-default"
-                                            style="margin-left:70%;margin-right:10px" type="submit" data-toggle="modal" id="source-selection-btn">
-                                        <span class="pull-left">Submit&nbsp;&nbsp; </span>
-                                        <i class="fa fa-arrow-right"
-                                           style="margin:0;top:4px;left:530px;padding-left:20px;"></i>
-                                    </button>
-                                </div>
-                            </div>
-
+                                <tr>
+                                    <td class="text-right label">Twitter</td>
+                                    <td class="text-center">
+                                        <input name="sourceselection" id="ad_Checkbox1" type="checkbox"
+                                               value="twitter"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right label">Google+</td>
+                                    <td class="text-center">
+                                        <input name="sourceselection" id="ad_Checkbox1" type="checkbox"
+                                               value="google"></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
+
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-2">
+                            <button class="button modal-form-button btn-default" type="button" data-dismiss="modal">
+                                <span class="pull-right">Previous Site!</span>
+                                <i class="fa fa-arrow-left pull-left src-lang-leftarrow-btn"></i></button>
+                        </div>
+                        <input id="user_id" name="user_id" type="hidden" value={{ user.id }}>
+                        <input id="user_status" name="user_status" type="hidden" value={{ user.is_active }}>
+                        <input id="user_fist_name" name="user_first_name" type="hidden"
+                               value={{ user.first_name }}>
+                        <input id="user_last_name" name="user_last_name" type="hidden"
+                               value={{ user.last_name }}>
+                        <input id="user_email_conform" name="user_email_conform" type="hidden"
+                               value={{ user.profile.email_confirmed }}>
+                        <input id="user_email" name="user_email" type="hidden" value={{ user.email }}>
+
+                        {% csrf_token %}
+                        <input type="hidden" id="search_keyword" value="none" name="search_keyword">
+                        {{ form.as_p }}
+                        {#                                    {{ form.excluded_keywords.value|default_if_none:"NONE" }}#}
+
+                        <div class="col-2"></div>
+                        <div class="col">
+                            <button class="button modal-form-button btn-default" type="submit">
+                                <span class="pull-left">Submit</span>
+                                <i class="fa fa-arrow-right src-lang-rightarrow-btn"></i></button>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
+    </form>
     </section>
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -377,10 +549,12 @@
             src="https://code.jquery.com/jquery-3.1.1.js"
             integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
             crossorigin="anonymous"></script>
+    <script>var $jQuery_3_1_1 = $.noConflict(true);
+    {#alert("Version: "+$jQuery_3_1_1.fn.jquery);#}
+    </script>
     <script src="https://fastcdn.org/Underscore.js/1.8.3/underscore-min.js"></script>
 
-    {#    <script>jQuery.noConflict();</script>#}
-    {#    <script src="{% static '/bootstrap/js/keyword.js' %}"></script>#}
+    {#        <script>jQuery.noConflict();</script>#}
     <script src="{% static 'bootstrap/js/facebook_twitter_lindin.js' %}"></script>
     <script src="{% static '/bootstrap/js/auto_suggestion.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
@@ -392,7 +566,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
             integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
             crossorigin="anonymous"></script>
-
     </body>
     </html>
 {% endblock %}
