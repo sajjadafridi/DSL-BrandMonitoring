@@ -6,6 +6,17 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import RegexValidator
 
+COLOR_CHOICES = (
+    ('green','GREEN'),
+    ('blue', 'BLUE'),
+    ('red','RED'),
+    ('orange','ORANGE'),
+    ('black','BLACK'),
+)
+
+
+class MyModel(models.Model):
+  color = models.CharField(max_length=6, choices=COLOR_CHOICES, default='green')
 
 class Profile(models.Model):
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
@@ -28,6 +39,10 @@ class Keyword(models.Model):
     optional_keywords = models.TextField(max_length=200,  null=True)
     required_keywords = models.TextField(max_length=200, null=True)
     excluded_keywords = models.TextField(max_length=200, null=True)
+    source_googleplus = models.BooleanField(default=0)
+    source_twitter = models.BooleanField(default=0)
+
+
     class Meta:
         db_table = 'Keyword'
 
@@ -58,7 +73,6 @@ class Post(models.Model):
    Content = models.TextField()
    CreatedAt = models.DateTimeField()
    ResharerCount = models.IntegerField()
-   Source = models.CharField(max_length=45)
    Sentiment=models.IntegerField(blank=True, null=True)
 
 
@@ -72,5 +86,7 @@ class Post(models.Model):
 class Resharer(models.Model):
    PostUser = models.ForeignKey(PostUser, on_delete=models.CASCADE)
    Post=models.ForeignKey(Post,on_delete=models.CASCADE)
+   Influence_score = models.IntegerField()
+
    class Meta:
        db_table = 'Resharer'
