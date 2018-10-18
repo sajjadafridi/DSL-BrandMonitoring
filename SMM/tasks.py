@@ -96,6 +96,7 @@ def get_twitter_feed(keyword, limit=1):
                 retweet_user.set_total_likes(retweeter.user.favourites_count)
                 retweet_user.set_total_post(retweeter.user.statuses_count)
                 retweet_user.set_user_id(retweeter.user.id_str)
+
                 statuses = api.GetUserTimeline(user_id=retweeter.user.id_str, count=10)
                 t_text = ''
                 for status in statuses:

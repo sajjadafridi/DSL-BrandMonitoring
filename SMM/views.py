@@ -15,6 +15,8 @@ from django.contrib import messages
 from SMM.models import Keyword, Post, PostUser
 from .PostMessage import Message
 from SMM.tasks import get_twitter_feed,get_gplus_feed,add_to_database
+
+from _datetime import datetime, timedelta
 template_name = "dashboard"
 keyword = ' '
 def load_forgetpassword_page(request):
@@ -258,16 +260,37 @@ def get_search(request):
 
 def influenser(request):
     selectedkwd = 0
+    selectedtime='Time'
     if request.method == "GET":
         data = request.GET
         selectedkwd= data.get('selected_kwd')
+        selectedtime=data.get('selected_time')
         print(data)
 
     if  selectedkwd:
         selectedkwd=int(selectedkwd)
+    if not selectedtime:
+        selectedtime='Time'
 
 
     keywords = {}
+    if selectedkwd and selectedtime:
+        date_to_select=get_time(selectedtime)
+        Posts = []
+        post_table = Post.objects.select_related('PostUser').filter(Keyword_id=selectedkwd, CreatedAt__gte=date_to_select)
+        print(len(post_table))
+        for post in post_table:
+            message = Message()
+            message.set_ID(post.id)
+            message.set_statusID(post.StatusID)
+            message.set_Sentiment(post.Sentiment)
+            message.set_Content(post.Content)
+            message.set_CreatedAt(post.CreatedAt)
+            message.set_ResharerCount(post.ResharerCount)
+            message.set_DisplayName(post.PostUser.DisplayName)
+            message.set_DisplayPicture(post.PostUser.DisplayPicture)
+            message.set_UserID(post.PostUser.UserID)
+            Posts.append(message)
 
     current_user = request.user
     Keyword_table = Keyword.objects.filter(User_id=current_user.id)
@@ -275,7 +298,8 @@ def influenser(request):
         keywords[kwd.id] = kwd.alert_name
     keywords = {
         "keyword_list": keywords,
-        "set_keyword":selectedkwd
+        "set_keyword":selectedkwd,
+        'set_time':selectedtime
     }
     return render_to_response('SMM/influencers.html',keywords)
 
@@ -358,3 +382,29 @@ class PostInfo:
 #     form_class = MyModelForm
 #     template_name = 'myapp/template.html'
 #     success_url = 'myapp/success.html'
+
+def get_time(time_string):
+    dates=0
+    if time_string=="Today":
+        dates=datetime.now()
+        return dates.date()
+    elif time_string=="Yesterday":
+        dates = datetime.now()- timedelta(days=1)
+        return dates.date()
+    elif time_string=="7 days":
+        dates = datetime.now() - timedelta(days=6)
+        return dates.date()
+    elif time_string == "Last Week":
+        dates = datetime.now() - timedelta(days=13)
+        return dates.date()
+    elif time_string == "Last 30 Days":
+        dates = datetime.now() - timedelta(days=29)
+        return dates.date()
+    elif time_string == "Last Month":
+        dates = datetime.now() - timedelta(days=59)
+        return dates.date()
+
+
+
+
+
