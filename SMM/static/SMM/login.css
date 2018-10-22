@@ -342,7 +342,7 @@ margin-top:0;
 .p-page-modal-form{
   background-color: #ffffff;
   margin:0;
-  width:70%;
+  width:50%;
   min-width: 300px;
   height:auto;
   overflow:auto;
@@ -378,6 +378,13 @@ top:45%;
 position:absolute;
 margin-left:50%;
 width:40%;
+}
+.keywordform
+{
+  margin-top: 5%;
+  position: relative;
+  margin-left: 50%;
+  width: 40%;
 }
 .company-form-button{
 	margin:0%;

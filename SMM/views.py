@@ -10,13 +10,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import EmailMessage,send_mail, BadHeaderError
 from SMM.tokens import account_activation_token
 from SMM.forms import SignUpForm,KeywordForm,ContactForm,UserProfileForm,UserEditForm, SourceSelectionForm
-from SETMOK_API.SETMOKE_API import SETMOKE_API
 from django.contrib import messages
 from SMM.models import Keyword, Post, PostUser
 from .PostMessage import Message
 from SMM.tasks import get_twitter_feed,get_gplus_feed,add_to_database
-
 from _datetime import datetime, timedelta
+
 template_name = "dashboard"
 keyword = ' '
 def load_forgetpassword_page(request):
@@ -51,7 +50,6 @@ def home(request):
             keyword_form = KeywordForm(request.POST)
             source_selection_form=SourceSelectionForm(request.POST)
             # current user information
-
             source_twitter=request.POST.get('source_twitter')
             source_googleplus = request.POST.get('source_googleplus')
 
@@ -165,10 +163,16 @@ def activate(request, uidb64, token):
 
 
 def fetch_posts(keyword_to_search):
-    setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
-    list = setmoke_api.get_data()
-    setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
-    setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
+    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # list = setmoke_api.get_data()
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB',1)
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
+    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # list = setmoke_api.get_data()
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB')
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB')
     list_of_data = {
         "list_of_data": list
     }
@@ -207,6 +211,47 @@ def insert_value(request,  alert_keyword=None):
     for kwd in Keyword_table:
         keywords[kwd.id] = kwd.alert_name
     form = KeywordForm(request.POST)
+    # if form.is_valid():
+    # keyword_to_search = 'Fatima Jinnah'
+    keyword_to_search="Nawaz Sharif"
+    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # list = setmoke_api.get_data()
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
+    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # if form.is_valid():'
+    # return_5.delay()
+
+    keyword_to_search = 'Imran'
+    #  keyword_to_search="Nawaz Sharif"
+    # setmoke_api = SETMOKE_API(keyword_to_search, "D:/config.ini")
+    # list = setmoke_api.get_data()
+    # setmoke_api.add_to_database(list, 'localhost', 'root', 'rehab105', 'SMM_DB3')
+    # setmoke_api = SETMOKE_API(keyword_to_search, "/home/rehab/PycharmProjects/conf/config.ini", 2, source="googlePlus")
+    # list = setmoke_api.get_data()
+
+    sent_list=[]
+    # analysis=SentimentAnalysis()
+
+    # for mention in list:
+    #     sentiment = Sentiment()
+
+        # sentiment.set_list(mention)
+        # sent=analysis.analysis(mention.get_text(), "NLTK","E:\Pycharm Project\DSL-BrandMonitoring\my_classifier.pickle")
+
+        # if sent=='Negative':
+        #     sentiment.set_sentiment(0)
+        # else:
+            # sentiment.set_sentiment(1)
+        # sent_list.append(sentiment)
+
+
+    # setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'sajjadafridi', 'SMM_DB',1)
+
+    # setmoke_api.add_to_database(sent_list, 'localhost', 'root', 'rehab105', 'SMM_DB', current_user.id)
+    # post = form.save(commit=False)
+    # post.author = request.user
+    # post.published_date = timezone.now()
+    # post.save()
     # if form.is_valid():'
     # return_5.delay()
 

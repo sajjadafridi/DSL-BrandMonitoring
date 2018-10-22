@@ -23,10 +23,16 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-.idea/
+.idea/*.xml
+.idea/*.iml
+SMM/__pycache__/*.pyc
+SMM/templatetags/*.pyc
+SMM/migrations/__pycache__/*.pyc
 *.iml
-settings.py
+.idea/
+.idea/inspectionProfiles/*
 **/migrations/*
+SMM/__pycache__/*.pyc
 MANIFEST
 
 # PyInstaller

@@ -4,7 +4,9 @@ anyjson==0.3.3
 pytz==2015.4
 redis==2.10.5
 requests==2.7.0
-SETMOKE-API==1.5
 pymysql
 celery==4.2.0
 python-twitter==3.4.2
+Pillow
+django-cors-headers
+SMD-Analysis==1.1
