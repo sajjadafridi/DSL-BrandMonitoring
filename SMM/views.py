@@ -335,28 +335,44 @@ def temp(request, alert_id):
 
 def display_feed(request, alert_id):
     keywords = {}
+    required_kwd=[]
+    excluded_kwd=[]
+    optional_kwd=[]
+    Posts = []
     current_user = request.user
     Keyword_table = Keyword.objects.filter(User_id=current_user.id)
     for kwd in Keyword_table:
         keywords[kwd.id] = kwd.alert_name
-    Posts=[]
-    PostUsers=[]
+
+    Keyword_table = Keyword.objects.filter(id=alert_id)
+    for kwd in Keyword_table:
+        optional_kwd = kwd.optional_keywords.split(' ')
+        required_kwd = kwd.required_keywords.split(' ')
+        excluded_kwd = kwd.excluded_keywords.split(' ')
+
     post_table= Post.objects.select_related('PostUser').filter(Keyword_id=alert_id)
     # post_table=Post.objects.filter(Keyword_id=alert_id)
     for post in post_table:
-        message=Message()
-        message.set_ID(post.id)
-        message.set_statusID(post.StatusID)
-        message.set_Sentiment(post.Sentiment)
-        message.set_Content(post.Content)
-        message.set_CreatedAt(post.CreatedAt)
-        message.set_ResharerCount(post.ResharerCount)
-        message.set_DisplayName(post.PostUser.DisplayName)
-        message.set_DisplayPicture(post.PostUser.DisplayPicture)
-        message.set_UserID( post.PostUser.UserID)
+        status = post.Content.split()  # breaks response into words
+        if any(s in excluded_kwd for s in status):
+            continue
 
 
-        Posts.append(message)
+        if any(s in required_kwd for s in status):
+
+            message = Message()
+            message.set_ID(post.id)
+            message.set_statusID(post.StatusID)
+            message.set_Sentiment(post.Sentiment)
+            message.set_Content(post.Content)
+            message.set_CreatedAt(post.CreatedAt)
+            message.set_ResharerCount(post.ResharerCount)
+            message.set_DisplayName(post.PostUser.DisplayName)
+            message.set_DisplayPicture(post.PostUser.DisplayPicture)
+            message.set_UserID(post.PostUser.UserID)
+
+            Posts.append(message)
+
 
     list_of_data = {
         "post_data": Posts,
@@ -364,24 +380,6 @@ def display_feed(request, alert_id):
     }
     return render_to_response('SMM/dashboard1.html', list_of_data)
 
-class PostInfo:
-    def __init__(self, post, post_user):
-        self.post=post
-        self.post_user=post_user
-    def get_post(self):
-        return self.post
-    def get_post_user(self):
-        return self.post_user
-    def set_post(self,post):
-        self.post=post
-    def set_post_user(self, post_user):
-        self.post_user=post_user
-
-# class CreateMyModelView(CreateView):
-#     model = MyModel
-#     form_class = MyModelForm
-#     template_name = 'myapp/template.html'
-#     success_url = 'myapp/success.html'
 
 def get_time(time_string):
     dates=0
@@ -403,6 +401,8 @@ def get_time(time_string):
     elif time_string == "Last Month":
         dates = datetime.now() - timedelta(days=59)
         return dates.date()
+
+
 
 
 
