@@ -454,8 +454,11 @@
             <div class="row">
             <span class="col-md-12 text-center small"> Your alert will collect mentions that contain any of these keywords, plus all required keywords. </span>
             </div>
-            <textarea id="optionalword" class="form-control input-width" required autofocus>
+
+            <textarea id="optionalword" class="form-control rounded-0" required autofocus>
             </textarea>
+                      <div class="small text-right">Press 'enter' to add</div>
+
 
         </div>
       <div class="keywordform">
@@ -463,10 +466,12 @@
             </div>
             <label>Required Keywords</label>
             <div class="row">
-            <span class="col-md-12 text-center small"> Your alert will collect mentions that contain any of these keywords, plus all required keywords. </span>
+            <span class="col-md-12 text-center small"> Your alert will collect mentions that contain all of these keywords </span>
             </div>
-            <textarea id="requiredword" class="form-control input-width" required autofocus>
+            <textarea id="requiredword" class="form-control rounded-0" required autofocus>
             </textarea>
+                  <div class="small text-right">Press 'enter' to add</div>
+
 
         </div>
       <div class="keywordform">
@@ -474,11 +479,14 @@
             </div>
             <label>Excluded Keywords</label>
             <div class="row">
-            <span class="col-md-12 text-center small"> Your alert will collect mentions that contain any of these keywords, plus all required keywords. </span>
+            <span class="col-md-12 text-center small"> Your alert will not bring in mentions with any of the following keywords.
+            </span>
             </div>
-            <textarea id="excludedword" class="form-control input-width" required autofocus>
+          <div class="container">
+            <textarea id="excludedword" class="form-control rounded-0" >
             </textarea>
-          <div class="tips">Press 'enter' to add</div>
+         <div class="small text-right">Press 'enter' to add</div>
+          </div>
         </div>
 
 		   <br>
