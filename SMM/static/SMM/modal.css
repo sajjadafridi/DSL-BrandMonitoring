@@ -136,3 +136,30 @@
   .modal-lg { max-width: $modal-lg; }
 }
 
+
+/* unvisited link */
+a:link {
+    color: darkcyan;
+}
+
+/* visited link */
+a:visited {
+    color: lightseagreen;
+}
+
+/* mouse over link */
+a:hover {
+    color: teal;
+}
+
+/* selected link */
+a:active {
+    color: forestgreen;
+}
+
+.btn-link
+{
+  width: 100px;
+  height: auto;
+
+}

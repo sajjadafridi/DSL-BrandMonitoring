@@ -32,6 +32,7 @@ SMM/migrations/__pycache__/*.pyc
 .idea/
 .idea/inspectionProfiles/*
 **/migrations/*
+SMM/__pycache__/*.pyc
 MANIFEST
 
 # PyInstaller

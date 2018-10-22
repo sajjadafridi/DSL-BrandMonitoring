@@ -23,7 +23,6 @@ class KeywordForm(ModelForm):
     class Meta:
         model = Keyword
         exclude = ['alert_name', 'User', 'optional_keywords', 'excluded_keywords', 'required_keywords', 'source_twitter', 'source_googleplus']
-
 class SourceSelectionForm(ModelForm):
     source_googleplus = forms.BooleanField(initial=0, label='GooglePlus',widget=forms.CheckboxInput())
     source_twitter    = forms.BooleanField(initial=0, label='Twitter', widget=forms.CheckboxInput())

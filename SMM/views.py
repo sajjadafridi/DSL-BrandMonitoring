@@ -50,7 +50,6 @@ def home(request):
             keyword_form = KeywordForm(request.POST)
             source_selection_form=SourceSelectionForm(request.POST)
             # current user information
-
             source_twitter=request.POST.get('source_twitter')
             source_googleplus = request.POST.get('source_googleplus')
 
