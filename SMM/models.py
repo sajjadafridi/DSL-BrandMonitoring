@@ -74,6 +74,7 @@ class Post(models.Model):
    CreatedAt = models.DateTimeField()
    ResharerCount = models.IntegerField()
    Sentiment=models.IntegerField(blank=True, null=True)
+   Source=models.IntegerField()
 
 
    def set_statusID(self,id):

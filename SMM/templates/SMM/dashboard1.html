@@ -166,8 +166,8 @@ div#scroll::-webkit-scrollbar-thumb {
 
                {% for message in post_data %}
 
-
-                <div class="row"onClick="reply_click('{{message.CreatedAt}}','{{ message.Content | safe }}','{{  message.DisplayName}}','{{message.DisplayPicture }}','{{message.statusID}}','{{ message.UserID  }}','{{ message.Source }}',{{ message.Sentiment}})">
+{#                      {{ message.Content }}#}
+                <div class="row" onClick="reply_click('{{message.CreatedAt}}','{{message.Content|safe}}','{{  message.DisplayName}}','{{message.DisplayPicture }}','{{message.statusID}}','{{ message.UserID  }}','{{ message.Source }}','{{ message.Sentiment}}')" >
                     <div class="db-FeedSocial">
                         <div class="db-FeedSocialLeft">
 	    <span class="db-box Social-box">
@@ -189,12 +189,12 @@ div#scroll::-webkit-scrollbar-thumb {
                         </div>
                         <div class="db-FeedSocialMid">
                             <div class="db-FeedSocialName highlight">{{   message.DisplayName}}</div>
-                            <div class="db-FeedSocialTitle">{{  message.Content|slice:":40"}}</div>
+                            <div class="db-FeedSocialTitle">{{  message.Content|safe}}</div>
                             <div class="db-FeedSocialDesc highlight">
-                                {% if message.Source == "GooglePlus" %}
-                                <a target="_blank" href="https://plus.google.com/{{ message.UserID}}/posts/{{ message.StatusID }}">https://plus.google.com/{{ message.UserID }}/posts/{{ message.StatusID }}</a>
-                                {% elif message.Source == "Twitter" %}
-                                <a target="_blank" href="https://twitter.com/{{  message.DisplayName }}/status/{{message.StatusID }}">https://twitter.com/{{  message.DisplayName}}/status/{{ message.StatusID }}</a>
+                                {% if message.Source == 1%}
+                                <a target="_blank" href="https://plus.google.com/{{ message.UserID}}/posts/{{ message.statusID }}">https://plus.google.com/{{ message.UserID }}/posts/{{ message.statusID }}</a>
+                                {% elif message.Source == 2%}
+                                <a target="_blank" href="https://twitter.com/{{  message.DisplayName }}/status/{{message.statusID }}">https://twitter.com/{{  message.DisplayName}}/status/{{ message.statusID }}</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -211,7 +211,7 @@ div#scroll::-webkit-scrollbar-thumb {
                  {% endfor %}
 </div>
 <script>
-function reply_click(time, text, name, picture, status_id , user_id, source,sentiment)
+function reply_click(time, text, name, picture, status_id , user_id, source, sentiment)
 {
   console.log("hello")
 $("#display_name").text(name);
@@ -220,16 +220,16 @@ $("#display_name").text(name);
   $('#display_picture').attr('src',picture);
    $('#display_picture_link').attr('href',"https://twitter.com/"+name);
 
-  if(source=="GooglePlus")
+  if(source=='1')
   {
 
     $("#post_url").attr('href',"https://plus.google.com/"+user_id+"/posts/"+status_id);
-    $("#post_url").attr('src',"https://plus.google.com/"+user_id+"/posts/"+status_id);
+    $("#post_url").html("https://plus.google.com/"+user_id+"/posts/"+status_id);
   }
-  else if(source=="Twitter")
+  else if(source=="2")
       {
            $("#post_url").attr('href',"https://twitter.com/"+name+"/status/"+status_id);
-            $("#post_url").attr('src',"https://twitter.com/"+name+"/status/"+status_id);
+            $("#post_url").html("https://twitter.com/"+name+"/status/"+status_id);
       }
     if(sentiment=='1')
     {
@@ -383,7 +383,7 @@ function click_alert(keyword_id) {
 
                             <div class="db-mainFeedContent">
                                 <div  id="display_name" class="db-FeedSocialName highlight">@SocialMonitoring.com</div>
-                                <div  id="text" class="db-FeedSocialTitle" style="width: 100%; height: auto "></div>
+                                <div><p id="text" ></p></div>
                                 <div class="db-FeedSocialDesc highlight"><a id="post_url" target="_blank" href="#">https://www.socialmediamonitoring.com/2018/07/july-2018/</a>
                                 </div>
                             </div>

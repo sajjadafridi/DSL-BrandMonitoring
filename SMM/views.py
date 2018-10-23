@@ -15,7 +15,7 @@ from SMM.models import Keyword, Post, PostUser
 from .PostMessage import Message
 from SMM.tasks import get_twitter_feed,get_gplus_feed,add_to_database
 from _datetime import datetime, timedelta
-
+import re
 template_name = "dashboard"
 keyword = ' '
 def load_forgetpassword_page(request):
@@ -388,35 +388,46 @@ def display_feed(request, alert_id):
     Keyword_table = Keyword.objects.filter(User_id=current_user.id)
     for kwd in Keyword_table:
         keywords[kwd.id] = kwd.alert_name
-
-    Keyword_table = Keyword.objects.filter(id=alert_id)
-    for kwd in Keyword_table:
-        optional_kwd = kwd.optional_keywords.split(' ')
-        required_kwd = kwd.required_keywords.split(' ')
-        excluded_kwd = kwd.excluded_keywords.split(' ')
+    #
+    # Keyword_table = Keyword.objects.filter(id=alert_id)
+    # for kwd in Keyword_table:
+    #     optional_kwd = kwd.optional_keywords.split(' ')
+    #     required_kwd = kwd.required_keywords.split(' ')
+    #     excluded_kwd = kwd.excluded_keywords.split(' ')
 
     post_table= Post.objects.select_related('PostUser').filter(Keyword_id=alert_id)
     # post_table=Post.objects.filter(Keyword_id=alert_id)
     for post in post_table:
-        status = post.Content.split()  # breaks response into words
-        if any(s in excluded_kwd for s in status):
-            continue
+        message = Message()
+        message.set_ID(post.id)
+        message.set_statusID(post.StatusID)
+        message.set_Sentiment(post.Sentiment)
+        content = post.Content.replace("'", r"\'")
+        message.set_Content(content)
+        message.set_CreatedAt(post.CreatedAt)
+        message.set_ResharerCount(post.ResharerCount)
+        message.set_DisplayName(post.PostUser.DisplayName)
+        message.set_DisplayPicture(post.PostUser.DisplayPicture)
+        message.set_UserID(post.PostUser.UserID)
+        message.set_Source(post.Source)
+        # content=post.Content
+        # content1=""
+        # status = post.Content.split()  # breaks response into words
+        # if any(s in excluded_kwd for s in status):
+        #     continue
+        #
+        #
+        # if any(s in required_kwd for s in status):
+        #
+        #     for s in status:
+        #         if s in required_kwd:
+        #             content1 =re.sub(s, "<mark>"+s+"</mark>", content)
+        #
 
 
-        if any(s in required_kwd for s in status):
 
-            message = Message()
-            message.set_ID(post.id)
-            message.set_statusID(post.StatusID)
-            message.set_Sentiment(post.Sentiment)
-            message.set_Content(post.Content)
-            message.set_CreatedAt(post.CreatedAt)
-            message.set_ResharerCount(post.ResharerCount)
-            message.set_DisplayName(post.PostUser.DisplayName)
-            message.set_DisplayPicture(post.PostUser.DisplayPicture)
-            message.set_UserID(post.PostUser.UserID)
 
-            Posts.append(message)
+        Posts.append(message)
 
 
     list_of_data = {

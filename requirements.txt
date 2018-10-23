@@ -8,5 +8,4 @@ pymysql
 celery==4.2.0
 python-twitter==3.4.2
 Pillow
-django-cors-headers
 SMD-Analysis==1.1

@@ -44,11 +44,11 @@ def get_twitter_feed(keyword, limit=1):
         tweet_info.set_status_id(tweet.id_str)
         print(tweet.id_str)
         tweet_info.set_reshare_count(tweet.retweet_count)
-        tweet_info.set_source("twitter")
         created_at = datetime.strptime(tweet.created_at, '%a %b %d %H:%M:%S %z %Y')
         tweet_info.set_time(created_at.strftime('%Y-%m-%d %H:%M:%S'))
         tweet_info.set_time(created_at)
         tweet_info.set_keyword(keyword_to_search)
+        tweet_info.set_source(1)
         user_name=''
         no_of_followers_share = 0
         no_of_follower=0
@@ -186,7 +186,7 @@ def add_to_database(list, kwd_id):
         post = Post(PostUser_id=users.id, Keyword_id=kwd_id, StatusID=message.get_status_id(),
                     Content=message.get_text(),
                     CreatedAt=message.get_time(), ResharerCount=message.get_reshare_count(),
-                    Sentiment=sentiment
+                    Sentiment=sentiment, Source=message.get_Source()
                   )
         post.save()
         for resharer in [resharer for resharer in (message.get_resharer() or [])]:
