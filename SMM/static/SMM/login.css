@@ -376,15 +376,16 @@ margin-top:0;
 .modal-form{
 top:45%;
 position:absolute;
-margin-left:50%;
+margin-left:49.9%;
 width:40%;
 }
+textarea {resize: none}
 .keywordform
 {
-  margin-top: 5%;
+  margin-top: 3%;
   position: relative;
   margin-left: 50%;
-  width: 40%;
+  width: 49%;
 }
 .company-form-button{
 	margin:0%;
