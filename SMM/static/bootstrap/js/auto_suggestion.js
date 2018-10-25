@@ -1,6 +1,21 @@
+$jQuery_3_1_1('#advanceopt').hide();
 
-// $jQuery_3_1_1('div#advanceopt').hide();
-//dynamically crea  ted list should be selected using on
+$('#brandbtn').prop('disabled', true);
+// $('#optionalword1,#requiredword1,#excludedword1').bind('input propertychange', function(){
+//     if($('#optionalword1').val().length > 0 || $('#requiredword1').val().length > 0 || $('#excludedword1').val().length > 0)
+//     {
+//         // alert("yes")
+//         $('#otherbtn').prop('disabled', false);
+//     }
+//     else
+//     {
+//         $('#otherbtn').prop('disabled', true);
+//     }
+//     });
+
+
+
+//dynamically create  ted list should be selected using on
 $jQuery_3_1_1('#rlist').on('click', 'li', function(){
     $('#rlist').hide();
     var searchvalue = $(this).text();
@@ -15,9 +30,14 @@ $jQuery_3_1_1('#rlist').on('click', 'li', function(){
     {
         $('div#advanceopt').show();
     }
+    $('#brandbtn').prop('disabled', false);
+});
 
+$jQuery_3_1_1('#search-input').on('click',function () {
+     $('#brandbtn').prop('disabled', true);
 
 });
+
 
 $jQuery_3_1_1('#companyModalDiv').on('click', function()
 {
@@ -84,32 +104,6 @@ function doSearch() {
     };
     ajax.send();
 }
-
-
-//cancel button click action
-
-// $jQuery_3_1_1(function () {
-//      alert("iam clicked");
-//      $("#CompanyModal .close").click()
-//    $('#CompanyModal').modal('toggle');
-// });
-
-
-$jQuery_3_1_1('#modelclosebtn,#priorModalbtn,#srclngModalbtn').on('click', function()
-{
-    $('#PriorityModal').modal('hide');
-    $("#modelclosebtn,#priorModalbtn,#otherModalbtn").trigger("click");
-    $('#CompanyModal').modal('hide');
-    $('#OtherModal').modal('hide');
-
-     $(".modal").modal('hide');
-});
-// $("#CompanyModal .close").click(
-
-// $jQuery_3_1_1("#modelclosebtn").on(function(){
-//     alert("iam clicked");
-//        $('#CompanyModal').modal('hide');
-// });
 
 
 

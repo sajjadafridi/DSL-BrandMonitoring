@@ -1,9 +1,9 @@
 var keyworddata = new Map();
-jQuery.noConflict();
-$jQuery_2_2_4(document).ready(function () {
+$(document).ready(function () {
 
-    $("button#brandbtn").click(function (event)
+    $("button#brandbtn,#advlnk").click(function (event)
     {
+
         var domain_word = $("#domain-input").val();
         $("#companyname").val(domain_word);
         console.log(domain_word);
@@ -126,15 +126,15 @@ $jQuery_2_2_4(document).ready(function () {
 
     });
 
-    $jQuery_2_2_4('input#facebooklink,input#twitterlink,input#linkdinlink').mentiony({
+    $('input#facebooklink,input#twitterlink,input#linkdinlink').mentiony({
         // triggerChar: '@',
         onDataRequest: function (mode, keyword, onDataRequestCompleteCallback) {
-            $.ajax({
+            $jQuery_3_1_1.ajax({
                 method: "GET",
                 url: "https://autocomplete.clearbit.com/v1/companies/suggest?query=:" + keyword,
                 dataType: "json",
                 success: function (response) {
-                    data = ""
+                    data = "";
                     var data=[];
                     // var lest = response;
                     // console.log(response);

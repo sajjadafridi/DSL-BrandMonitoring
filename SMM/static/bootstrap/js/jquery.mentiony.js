@@ -96,7 +96,7 @@ var tmpEle = null;
 
             templates:          {
                 container:        '<div id="mentiony-container-[ID]" class="mentiony-container"></div>',
-                content:          '<div id="mentiony-content-[ID]" class="mentiony-content form-control" contenteditable="true"></div>',
+                content:          '<div id="mentiony-content-[ID]" class=" form-control" contenteditable="true"></div>',
                 popover:          '<div id="mentiony-popover-[ID]" class="mentiony-popover"></div>',
                 list:             '<ul id="mentiony-popover-[ID]" class="mentiony-list"></ul>',
                 listItem:         '<li class="mentiony-item" data-item-id="">' +

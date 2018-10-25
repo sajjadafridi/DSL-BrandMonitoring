@@ -15,7 +15,7 @@ from SMM.models import Keyword, Post, PostUser
 from .PostMessage import Message
 from SMM.tasks import get_twitter_feed,get_gplus_feed,add_to_database
 from _datetime import datetime, timedelta
-import re
+
 template_name = "dashboard"
 keyword = ' '
 def load_forgetpassword_page(request):
@@ -59,6 +59,9 @@ def home(request):
             user_email = request.POST.get('user_email')
             user_status = request.POST.get('user_status')
             user_econform = request.POST.get('user_email_conform')
+            optional_input = request.POST.get('optional-input')
+            required_input = request.POST.get('required-input')
+            excluded_input = request.POST.get('excluded-input')
 
             key_word = request.POST.get('search_keyword')
             shared_obj = request.session.get('SMMSession', {})  # set dict as default
@@ -74,9 +77,11 @@ def home(request):
             # keyword_form= KeywordForm(data=updated_request)
             if keyword_form.is_valid() :
                 keyword_form = KeywordForm()
-
                 model_instance = keyword_form.save(commit=False)
                 model_instance.alert_name = key_word
+                model_instance.optional_keywords=optional_input
+                model_instance.required_keywords = required_input
+                model_instance.excluded_keywords = excluded_input
                 model_instance.User_id = user_id
                 if source_googleplus=='on':
                     model_instance.source_googleplus = 1
@@ -388,46 +393,35 @@ def display_feed(request, alert_id):
     Keyword_table = Keyword.objects.filter(User_id=current_user.id)
     for kwd in Keyword_table:
         keywords[kwd.id] = kwd.alert_name
-    #
-    # Keyword_table = Keyword.objects.filter(id=alert_id)
-    # for kwd in Keyword_table:
-    #     optional_kwd = kwd.optional_keywords.split(',')
-    #     required_kwd = kwd.required_keywords.split(',')
-    #     excluded_kwd = kwd.excluded_keywords.split(',')
+
+    Keyword_table = Keyword.objects.filter(id=alert_id)
+    for kwd in Keyword_table:
+        optional_kwd = kwd.optional_keywords.split(' ')
+        required_kwd = kwd.required_keywords.split(' ')
+        excluded_kwd = kwd.excluded_keywords.split(' ')
 
     post_table= Post.objects.select_related('PostUser').filter(Keyword_id=alert_id)
     # post_table=Post.objects.filter(Keyword_id=alert_id)
     for post in post_table:
-        message = Message()
-        message.set_ID(post.id)
-        message.set_statusID(post.StatusID)
-        message.set_Sentiment(post.Sentiment)
-        content = post.Content.replace("'", r"\'")
-        message.set_Content(content)
-        message.set_CreatedAt(post.CreatedAt)
-        message.set_ResharerCount(post.ResharerCount)
-        message.set_DisplayName(post.PostUser.DisplayName)
-        message.set_DisplayPicture(post.PostUser.DisplayPicture)
-        message.set_UserID(post.PostUser.UserID)
-        message.set_Source(post.Source)
-        # content=post.Content
-        # content1=""
-        # status = post.Content.split()  # breaks response into words
-        # if any(s in excluded_kwd for s in status):
-        #     continue
-        #
-        #
-        # if any(s in required_kwd for s in status):
-        #
-        #     for s in status:
-        #         if s in required_kwd:
-        #             content1 =re.sub(s, "<mark>"+s+"</mark>", content)
-        #
+        status = post.Content.split()  # breaks response into words
+        if any(s in excluded_kwd for s in status):
+            continue
 
 
+        if any(s in required_kwd for s in status):
 
+            message = Message()
+            message.set_ID(post.id)
+            message.set_statusID(post.StatusID)
+            message.set_Sentiment(post.Sentiment)
+            message.set_Content(post.Content)
+            message.set_CreatedAt(post.CreatedAt)
+            message.set_ResharerCount(post.ResharerCount)
+            message.set_DisplayName(post.PostUser.DisplayName)
+            message.set_DisplayPicture(post.PostUser.DisplayPicture)
+            message.set_UserID(post.PostUser.UserID)
 
-        Posts.append(message)
+            Posts.append(message)
 
 
     list_of_data = {

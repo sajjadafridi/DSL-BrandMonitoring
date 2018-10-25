@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
         <link rel="icon" href="{% static 'images/icon-trans.png' %}">
-
+        <link rel="stylesheet" href="{% static 'bootstrap/css/jquery.tag-editor.css' %}" type="text/css"/>
         <link rel="stylesheet" href="{% static 'bootstrap/css/token-input.css' %}" type="text/css"/>
         <link rel="stylesheet" href="{% static 'bootstrap/css/token-input-facebook.css' %}" type="text/css"/>
         <link rel="stylesheet" href="{% static 'bootstrap/css/jquery.mentiony.css' %}" type="text/css">
@@ -223,20 +223,20 @@
                                 </div>
                             </div>
 
-                            <ul id="rlist" class=" result form-control" style="padding-left: unset">
+                            <ul id="rlist" class="result" style="padding-left: unset">
 
                             </ul>
                         </div>
                         <br>
                     </div>
                     <div id="advanceopt">
-                        <a href="#" data-toggle="modal" data-target="#anythingModal"> Advance Search</a>
+                        <a href="#" id="advlnk" data-toggle="modal" data-target="#anythingModal"> Advance Search</a>
                     </div>
                     <div class="rows">
-                        <button id="brandbtn" class="button company-form-button btn-default" type="submit"
-                                data-toggle="modal"
+                        <button id="brandbtn" class="button btn-default" type="submit" data-toggle="modal"
                                 data-target="#PriorityModal" id="srchbtn">
-                            Next Site!<span class="fa fa-arrow-right"></span></button>
+                            <span class="pull-left">Next Site!&nbsp;&nbsp; </span>
+                            <i class="fa fa-arrow-right btn-arrow"></i></button>
                     </div>
                 </div>
             </div>
@@ -255,24 +255,63 @@
                 <div class="text-center modalpage-head">
 	       <span>
 	       <h1 class="h3 font-weight-normal text-center">
-	      <img class="logo-pic image-responsive" src="{% static 'images\icon-trans.png' %}" alt="">
-             What's the name?</h1>
-	       </span><br>
-                    <h4 class="h6 font-weight-normal">Enter name of anything you want to search or monitor.</h4>
+
+               <img class="logo-pic image-responsive" src="{% static 'images\icon-trans.png' %}" alt="">
+             Keywords Settings</h1>
+	       </span>
+                    <h6 class="h6 font-weight-normal">Enter the required keyword in the boxes</h6>
                 </div>
 
-                <form class="modal-form">
+                <div class="keywordform">
+                    <div class="row row-no-padding">
+                    </div>
+                    <label>Optional Keywords</label>
                     <div class="row">
-                        <input type="text" class="modal-form-input form-control" name="Search"
-                               placeholder="Search Anything!.." required autofocus>
+                        <span class="col-md-12 text-center small"> Your alert will collect mentions that contain any of these keywords, plus all required keywords. </span>
                     </div>
-                    <br>
-                    <div class="rows">
-                        <button class="button  btn-default" type="submit" data-toggle="modal"
-                                data-target="#PriorityModal">
-                            Next Site<span class="fa fa-arrow-right mt-auto p-1 ml-20"></span></button>
+                    <textarea id="optionalword1" class="form-control rounded-0" required autofocus></textarea>
+                    <div class="small text-right">Press 'enter' to add</div>
+
+
+                </div>
+                <div class="keywordform">
+                    <div class="row row-no-padding">
                     </div>
-                </form>
+                    <label>Required Keywords</label>
+                    <div class="row">
+                        <span class="col-md-12 text-center small"> Your alert will collect mentions that contain all of these keywords </span>
+                    </div>
+                    <textarea data-role="tagsinput" id="requiredword1" class="form-control rounded-0" required
+                              autofocus></textarea>
+                    <div class="small text-right">Press 'enter' to add</div>
+                </div>
+                <div class="keywordform">
+                    <div class="row row-no-padding">
+                    </div>
+                    <label>Excluded Keywords</label>
+                    <div class="row">
+                        <span class="col-md-12 text-center small"> Your alert will collect mentions that contain all of these keywords </span>
+                    </div>
+                    <textarea data-role="tagsinput" id="excludedword1" class="form-control rounded-0" required
+                              autofocus></textarea>
+                    <div class="small text-right">Press 'enter' to add</div>
+                </div>
+                <div class="row">
+                    <div class="col-6"></div>
+                    <!--<div class="col-2">#}-->
+                        <!--<button class="button btn-default" type="button" data-dismiss="modal">#}-->
+                            <!--<span class="pull-right"> &nbsp;&nbsp;  Previous Site!</span>#}-->
+                            <!--<i class="fa fa-arrow-left pull-left btn-arrow"></i></button>#}-->
+                    <!--</div>#}-->
+                    <div class="col-2"></div>
+                    <div class="col-2">
+                        <button class="button btn-default" id="otherbtn" type="submit" data-toggle="modal" data-target="#PriorityModal">
+                            <span class="pull-left">Next Site!&nbsp;&nbsp; </span>
+                            <i class="fa fa-arrow-right btn-arrow"></i></button>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -303,7 +342,7 @@
                         <label>Company Name</label>
                         <input type="text" class="form-control input-width"
                                id="companyname"
-                               name="CompanyName" placeholder="Company Name.." required autofocus>
+                               name="CompanyName" style="width: 100%;" placeholder="Company Name.." required autofocus>
                     </div>
                 </div>
 
@@ -314,8 +353,8 @@
                         <input id="facebooklink" type="input" class="form-control"
                                placeholder="Facebook Profile.." required autofocus> </input>
 
-                        {#                                    <input type="input" id="facebooklink" class="form-control " style="width:550px;"#}
-                        {#                                       placeholder="Facebook Profile.." required autofocus>#}
+                                                            <!--<input type="input" id="facebooklink" class="form-control " style="width:550px;"}-->
+                                                              <!--placeholder="Facebook Profile.." required autofocus>}-->
                     </div>
                 </div>
                 <div class="rows">
@@ -336,7 +375,7 @@
                 <div class="row">
                     <div class="col-6"></div>
                     <div class="col-2">
-                        <button class="button btn-default" type="button" data-dismiss="modal">
+                        <button id="priprvbtn" class="button btn-default" type="button" data-dismiss="modal">
                             <span class="pull-right"> &nbsp;&nbsp;  Previous Site!</span>
                             <i class="fa fa-arrow-left pull-left btn-arrow"></i></button>
                     </div>
@@ -352,7 +391,7 @@
         </div>
     </div>
     </div>
-    <!--Sources and language model-->
+    <!--Sources -->
     <form class="modal-form" method="post" action="">
         {% csrf_token %}
         <div class="modal fade md-alert" id="SourcesModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge"
@@ -382,7 +421,7 @@
                                     <td class="text-right label">Twitter</td>
                                     <td class="text-center">
                                         {{ source_selection_form.source_twitter }}
-                                        </td>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="text-right label">Google+</td>
@@ -412,11 +451,14 @@
                                value={{ user.profile.email_confirmed }}>
                         <input id="user_email" name="user_email" type="hidden" value={{ user.email }}>
                         <div id="hereare" class="col-6">
+                            <input type="hidden" id="optional-input" value="none" name="optional-input">
+                            <input type="hidden" id="required-input" value="none" name="required-input">
+                            <input type="hidden" id="excluded-input" value="none" name="excluded-input">
                             <input type="hidden" id="search_keyword" value="none" name="search_keyword">
                             {{ form.as_p }}
                             {#                                    {{ form.excluded_keywords.value|default_if_none:"NONE" }}#}
 
-                            <button class="button modal-form-button btn-default" type="submit">
+                            <button id="sourcebtn" class="button modal-form-button btn-default" type="submit">
                                 <span class="pull-left">Submit</span>
                                 <i class="fa fa-arrow-right src-lang-rightarrow-btn"></i></button>
                         </div>
@@ -428,122 +470,126 @@
         </div>
     </form>
     <!--anything Modal-->
-<div class="modal fade md-alert" id="anythingModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge" aria-hidden="true">
-<div class="modal-dialog modal-lg md-dial-alert">
-<div class="modal-content md-con-alert">
-<div class="modal-header">
- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-</div>
-<br>
-    <br>
-    <img class="img-diagonal" src="{%  static 'images\priority.jpg'%}" align="left">
+    <div class="modal fade md-alert" id="anythingModal"  tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg md-dial-alert">
+            <div class="modal-content md-con-alert">
+                <div class="modal-header">
+                    <button type="button" class="close" id="anythingclosebtn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                </div>
+                <br>
+                <br>
+                <img class="img-diagonal" src="{% static 'images\priority.jpg' %}" align="left">
 
-           <div class="text-center modalpage-head mg-pr-top">
+                <div class="text-center modalpage-head mg-pr-top">
 	       <span>
 	       <h1 class="h3 font-weight-normal text-center">
-	      <img class="logo-pic image-responsive" src="{% static 'images\icon-trans.png'%}" alt="">
+	      <img class="logo-pic image-responsive" src="{% static 'images\icon-trans.png' %}" alt="">
              Keywords Settings</h1>
 	       </span>
-	       <h6 class="h6 font-weight-normal">Enter the required keyword in the boxes</h6>
-	      </div>
+                    <h6 class="h6 font-weight-normal">Enter the required keyword in the boxes</h6>
+                </div>
 
-        <div class="keywordform">
-            <div class="row row-no-padding">
+                <div class="keywordform">
+                    <div class="row row-no-padding">
+                    </div>
+                    <label>Optional Keywords</label>
+                    <div class="row">
+                        <span class="col-md-12 text-center small"> Your alert will collect mentions that contain any of these keywords, plus all required keywords. </span>
+                    </div>
+                    <textarea id="optionalword" class="form-control rounded-0" required autofocus></textarea>
+                    <div class="small text-right">Press 'enter' to add</div>
+
+
+                </div>
+                <div class="keywordform">
+                    <div class="row row-no-padding">
+                    </div>
+                    <label>Required Keywords</label>
+                    <div class="row">
+                        <span class="col-md-12 text-center small"> Your alert will collect mentions that contain all of these keywords </span>
+                    </div>
+                    <textarea data-role="tagsinput" id="requiredword" class="form-control rounded-0" required
+                              autofocus></textarea>
+                    <div class="small text-right">Press 'enter' to add</div>
+                </div>
+                <div class="keywordform">
+                    <div class="row row-no-padding">
+                    </div>
+                    <label>Excluded Keywords</label>
+                    <div class="row">
+                        <span class="col-md-12 text-center small"> Your alert will collect mentions that contain all of these keywords </span>
+                    </div>
+                    <textarea data-role="tagsinput" id="excludedword" class="form-control rounded-0" required
+                              autofocus></textarea>
+                    <div class="small text-right">Press 'enter' to add</div>
+                </div>
+
+                <br>
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-2">
+                        <button id="prevanything" class="button btn-default" type="button"  data-dismiss="modal">
+                            <span class="pull-right"> &nbsp;&nbsp;  Previous Site!</span>
+                            <i class="fa fa-arrow-left pull-left btn-arrow"></i></button>
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="col-2">
+                        <button id="srcotherModalbtn"  data-toggle="modal" data-dismiss="modal" class="button modal-form-button btn-default" type="button"
+                                data-target="#PriorityModal">
+                            <span class="pull-left">Next Site!&nbsp;&nbsp; </span>
+                            <i class="fa fa-arrow-right btn-arrow"></i></button>
+                    </div>
+                </div>
             </div>
-            <label>Optional Keywords</label>
-            <div class="row">
-            <span class="col-md-12 text-center small"> Your alert will collect mentions that contain any of these keywords, plus all required keywords. </span>
-            </div>
-
-            <textarea id="optionalword" class="form-control rounded-0" required autofocus>
-            </textarea>
-                      <div class="small text-right">Press 'enter' to add</div>
-
-
         </div>
-      <div class="keywordform">
-            <div class="row row-no-padding">
-            </div>
-            <label>Required Keywords</label>
-            <div class="row">
-            <span class="col-md-12 text-center small"> Your alert will collect mentions that contain all of these keywords </span>
-            </div>
-            <textarea id="requiredword" class="form-control rounded-0" required autofocus>
-            </textarea>
-                  <div class="small text-right">Press 'enter' to add</div>
+    </div>
 
-
-        </div>
-      <div class="keywordform">
-            <div class="row row-no-padding">
-            </div>
-            <label>Excluded Keywords</label>
-            <div class="row">
-            <span class="col-md-12 text-center small"> Your alert will not bring in mentions with any of the following keywords.
-            </span>
-            </div>
-          <div class="container">
-            <textarea id="excludedword" class="form-control rounded-0" >
-            </textarea>
-         <div class="small text-right">Press 'enter' to add</div>
-          </div>
-        </div>
-
-		   <br>
-            <div class="row">
-			<div class="col-6"></div>
-			<div class="col-2">
-             <button class="button btn-default" type="button" data-dismiss="modal">
-			<span class="pull-right"> &nbsp;&nbsp;  Previous Site!</span>
-			<i class="fa fa-arrow-left pull-left btn-arrow"></i></button>
-            </div>
-			<div class="col-2"></div>
-            <div class="col-2">
-			 <button class="button btn-default"  type="submit" data-toggle="modal" data-target="#SourcesModal">
-			 <span class="pull-left">Next Site!&nbsp;&nbsp; </span>
-			 <i class="fa fa-arrow-right btn-arrow"></i></button>
-            </div>
-			</div>
-          </div>
-</div>
-</div>
-</div>
-
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
-            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-            crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous">
     </script>
     <script>var $jQuery_2_2_4 = $.noConflict(true);
-    {#alert("Version: "+$jQuery_2_2_4.fn.jquery);#}
+    // {#alert("Version: "+$jQutag-editorery_2_2_4.fn.jquery);}
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
     <script
             src="https://code.jquery.com/jquery-3.1.1.js"
             integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
             crossorigin="anonymous"></script>
     <script>var $jQuery_3_1_1 = $.noConflict(true);
-    {#alert("Version: "+$jQuery_3_1_1.fn.jquery);#}
+    // {#alert("Version: "+$jQuery_3_1_1.fn.jquery);}
     </script>
-    <script src="https://fastcdn.org/Underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="{% static 'bootstrap/js/jquery.tag-editor.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/jquery.caret.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/KeywordSelection.js' %}"></script>
 
-    {#        <script>jQuery.noConflict();</script>#}
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
     <script src="{% static 'bootstrap/js/facebook_twitter_lindin.js' %}"></script>
-    <script src="{% static '/bootstrap/js/auto_suggestion.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/bootstrap/js/auto_suggestion.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap/js/jquery.mentiony.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap/js/tags-input.js' %}"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
             integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
             crossorigin="anonymous"></script>
+
     </body>
     </html>
 {% endblock %}
