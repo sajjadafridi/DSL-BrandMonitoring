@@ -391,9 +391,9 @@ def display_feed(request, alert_id):
     #
     # Keyword_table = Keyword.objects.filter(id=alert_id)
     # for kwd in Keyword_table:
-    #     optional_kwd = kwd.optional_keywords.split(' ')
-    #     required_kwd = kwd.required_keywords.split(' ')
-    #     excluded_kwd = kwd.excluded_keywords.split(' ')
+    #     optional_kwd = kwd.optional_keywords.split(',')
+    #     required_kwd = kwd.required_keywords.split(',')
+    #     excluded_kwd = kwd.excluded_keywords.split(',')
 
     post_table= Post.objects.select_related('PostUser').filter(Keyword_id=alert_id)
     # post_table=Post.objects.filter(Keyword_id=alert_id)

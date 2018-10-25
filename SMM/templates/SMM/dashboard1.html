@@ -247,7 +247,15 @@ function click_alert(keyword_id) {
 }
 
 </script>
-
+ <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 8
+        });
+      }
+    </script>
 {#                <div class="row">#}
 {#                    <div class="db-FeedSocial">#}
 {#                        <div class="db-FeedSocialLeft">#}
@@ -387,6 +395,7 @@ function click_alert(keyword_id) {
                                 <div class="db-FeedSocialDesc highlight"><a id="post_url" target="_blank" href="#">https://www.socialmediamonitoring.com/2018/07/july-2018/</a>
                                 </div>
                             </div>
+                             <div id="map" style="height:100%"></div>
                             <div class="row">
                                 <div title="Reply" class="col"><i class="fa fa-reply"
                                                                   style="font-size:24px;margin-left:26px;padding:0px;"></i>Reply
@@ -427,6 +436,8 @@ function click_alert(keyword_id) {
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLfBMAZCWsBeu6H5rbmtnFFQC2-dwpp0gAIzaSyBLfBMAZCWsBeu6H5rbmtnFFQC2-dwpp0g&callback=initMap">
+    </script>
 
 
     </body>
