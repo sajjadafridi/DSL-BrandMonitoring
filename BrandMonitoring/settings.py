@@ -16,11 +16,11 @@ from celery.schedules import crontab
 
 #  for email verificaiton
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'muhammad.sajjad@kics.edu.pk'
-EMAIL_HOST_PASSWORD = 'saj427272727()()()()()()()'
-EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'muhammad.sajjad@kics.edu.pk'
+# EMAIL_HOST_PASSWORD = 'saj427272727()()()()()()()'
+# EMAIL_PORT = 587
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -35,10 +35,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '7wua1i=7zyr+ffg$qr_+m1+^!6)dnobrs4$th+g2j^%1%#)&on'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -108,8 +108,8 @@ DATABASES = {
         'NAME': 'SMM_DB',
         'USER': 'root',
         # 'PASSWORD': 'fatima103',
-        #'PASSWORD': 'sajjadafridi',
-	'PASSWORD' : 'smm',
+        'PASSWORD': 'sajjadafridi',
+        # 'PASSWORD': 'smm',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
@@ -175,9 +175,8 @@ LOGIN_URL = 'remember_me_login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'redirect_login'
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 CELERY_BROKER_URL = 'redis://localhost:6379'

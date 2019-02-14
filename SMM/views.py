@@ -203,6 +203,9 @@ def signup(request):
                 email = EmailMessage(mail_subject, message, to=[to_email])
                 email.send()
                 return redirect('account_activation_sent')
+        else:
+            # print(form.data['first_name'])
+            return render(request, 'SMM/signup.html', {'form': form})
     else:
         form = SignUpForm()
     return render(request, 'SMM/signup.html', {'form': form})
