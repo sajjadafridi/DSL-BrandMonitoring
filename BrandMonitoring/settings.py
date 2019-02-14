@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from celery.schedules import  crontab
+from celery.schedules import crontab
 
 
 #  for email verificaiton
@@ -23,11 +23,11 @@ from celery.schedules import  crontab
 # EMAIL_PORT = 587
 
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# import os.path
+# SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-print(BASE_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -67,17 +67,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'BrandMonitoring.urls'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.AllowAllUsersModelBackend']
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -104,7 +107,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'SMM_DB',
         'USER': 'root',
-        'PASSWORD': 'sajjadafridi',
+        'PASSWORD': 'fatima103',
+        # 'PASSWORD': 'sajjadafridi',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
@@ -115,15 +119,16 @@ DATABASES = {
     }
 }
 
-STATICFILES_DIRS = [
-
-    # "/home/rehab/PycharmProjects/SMM/DSL-BrandMonitoring/static/",
-    "E:/Pycharm Project/DSL-BrandMonitoring/SMM/templates/SMM",
-    "E:/Pycharm Project/DSL-BrandMonitoring/SMM/static/",
-    # ("CSS_BOOTSTRAP", "/home/sajjad/PycharmProjects/BrandMonitoring/SMM/static/bootstrap"),
-    # ("JS", "/home/sajjad/PycharmProjects/BrandMonitoring/SMM/static/js"),
-]
-STATIC_ROOT="E:/Pycharm Project/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')
+# MEDIA_URL = '/media/'
+# # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static/'),
+)
+# STATIC_ROOT="E:/Pycharm Project/"
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
@@ -133,12 +138,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 6,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
 ]
 
@@ -164,19 +172,20 @@ USE_TZ = True
 STATIC_URL = '/static/'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'redirect_login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE='Asia/Karachi'
+CELERY_TIMEZONE = 'Asia/Karachi'
 CELERY_BEAT_SCHEDULE = {
 
-'scheduling_script': {
+    'scheduling_script': {
         'task': 'SMM.tasks.scheduling_script',
         'schedule': crontab(minute='*/2'),
     }

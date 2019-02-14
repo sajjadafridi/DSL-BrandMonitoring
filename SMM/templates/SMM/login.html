@@ -1,32 +1,33 @@
-{% extends 'SMM/base1.html' %}
+{% extends 'SMM/base_nav.html' %}
 {% block content %}
     {% load staticfiles %}
     <!DOCTYPE html>
     <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>Social Media Monitor</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-              integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-              crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css' %}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="icon" href="{% static 'images/icon-trans.png' %}">
-        <link rel="stylesheet" href="{% static 'SMM/login.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
+        <link rel="icon" href="{% static 'images/icon-trans.png' %}">
     </head>
     <body>
     <div class="container-fluid">
     <div class="text-center">
   <span>
-   <h1 class="h3  font-weight-normal text-logo">
-    <img class=" logo-pic image-responsive" src="{% static 'images/icon-trans.png' %}" alt="">
-       Social Media Monitor</h1>
+   <!--<h1 class="h3  font-weight-normal text-logo">-->
+    <!--<img class=" logo-pic image-responsive" src="{% static 'images/icon-trans.png' %}" alt="">-->
+       <!--Social Media Monitor</h1>-->
   </span>
     </div>
-    <form class="loginform" method="post" action="">
+    <form class="loginform" method="post" action="" style="margin-top:50px  ">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}"/>
 {#        {% for field in form %}#}
@@ -68,30 +69,7 @@
                     <a class="links" href="{% url 'password_reset' %}">Forgot password?</a></div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-5">
-                <hr>
-            </div>
-            <div class="col-2">
-                <p> OR </p></div>
-            <div class="col-5">
-                <hr>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <a href="#" class="fa fa-facebook white-link"></a>
-            </div>
-            <div class="col">
-                <a href="#" class="fa fa-linkedin  white-link"></a>
-            </div>
-            <div class="col">
-                <a href="#" class="fa fa-twitter white-link"></a>
-            </div>
-            <div class="col">
-                <a href="#" class="fa fa-google white-link"></a>
-            </div>
-        </div>
+
         <br>
         <br>
         <div class="text-center">
@@ -105,16 +83,33 @@
     </form>
 {% endblock %}
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
+        <!--integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
+        <!--crossorigin="anonymous"></script>-->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"-->
+        <!--integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"-->
+        <!--crossorigin="anonymous"></script>-->
 
 
-
+   <script
+            src="https://code.jquery.com/jquery-3.1.1.js"
+            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
 
 </body>

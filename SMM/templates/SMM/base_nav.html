@@ -1,0 +1,79 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Social Media Monitor</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
+    <link rel="icon" href="{% static 'images/icon-trans.png' %}">
+
+</head>
+<style>
+    .header-nav-link-text{
+ font-size:18px;
+ }
+</style>
+<body>
+
+<!--NavBar-->
+    <nav class="navbar navbar-expand-md hm-bg-clr navbar-dark sticky-top text-white">
+        <div class="container-fluid">
+  <span>
+      <image class="navbar-brand logo-pic" src="{% static 'images/icon-trans.png' %}" alt=""> </image>
+   <h5 class="h4 font-weight-normal header-text h-brandName">Social Media Monitor</h5>
+   </span>
+            <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse"
+                    data-target="#mainNavbarCollapse" aria-expanded="true" aria-controls="mainNavbarCollapse">&#9776;
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbarCollapse">
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="{% url 'index' %}"><span
+                            class="fa fa-home db-icon" style="font-size:18px"></span><span class="header-nav-link-text">Home</span></a></li>
+
+                     <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="{% url 'redirect_login' %}"><span class="fa fa-clipboard db-icon header-nav-link-text"></span><span class="header-nav-link-text">Feeds</span></a></li>
+
+                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="#about">
+                        <span class="fa fa-info-circle db-icon header-nav-link-text"></span>
+                        <span class="header-nav-link-text">About Us</span>
+                       </a></li>
+                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="#main"><span
+                            class="fa fa-phone-square db-icon header-nav-link-text"></span><span class="header-nav-link-text">Contact Us</span></a></li>
+                    <!--<li class="nav-item db-nav-item"><a class="nav-link text-white" href="{% url 'login' %}"><img-->
+                            <!--src="{% static 'images/login.png' %}">Log In</a></li>-->
+                {% if user.is_authenticated %}
+                     <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="/SMM/logout/"><span
+                                class="fa fa-sign-out db-icon header-nav-link-text"></span><span class="header-nav-link-text">Sign Out</span></a></li>
+                {% else %}
+                     <li class="nav-item db-nav-item" ><a class="nav-link db-nav-link text-white"  href="{% url 'logout' %}">
+                         <span class="fa fa-sign-in db-icon header-nav-link-text"></span>
+                         <span style="font-size:18px">Log In</span></a></li>
+                {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<!--Main body-->
+<main>
+
+</main>
+{% block content %}
+{% endblock %}
+<script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>
+

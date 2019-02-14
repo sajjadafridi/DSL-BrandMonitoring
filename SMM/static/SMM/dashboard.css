@@ -17,6 +17,15 @@ background-color:#4CAF50;
 	margin:10px  20px;
 	font-size:20px;
 }
+.alert_badge_count{
+    border-radius: 10px;
+    padding: 2px 10px;
+    background-color: #4b9d99;
+    font-size: 14px;
+    color: #ffffff;
+    margin-left: 10px;
+    font-weight: normal;
+}
 .db-nav-ic-item{position:relative;
 	color:white;
 	margin:10px;
@@ -40,6 +49,8 @@ background-color:#4CAF50;
 	margin:10px 20px;
 	font-size:18px;
 	font-family:Raleway;
+	list-style-type: none;
+    margin-left: 0;
 }
 .db-side-link{color:#4CAF50;text-decoration:none;}
 .db-side-link:hover{color:#4CAF50;text-decoration:none;}
@@ -50,8 +61,16 @@ background-color:#4CAF50;
     pointer-events: none;
 }
 .db-list-icon{margin-left:-50px;padding:0px;}
-.db-list-add-icon{margin-left:-50px;padding:0px;position:relative;}
-.alert-button{margin-top:20px;margin-left:-35px;padding:20px 40px;display:inline-block;color:white;position:relative;}
+.db-list-newalert{
+display: inline-block;
+margin-left:20px;
+}
+.db-list-add-icon{margin-left:-50px;padding:0px;position:relative;
+padding-left: 10px;
+    width: 0px;
+    font-size: 14px;
+}
+.alert-button{margin-top:20px;padding:20px 40px;display:inline-block;color:white;position:relative;}
 .db-search{
 	position: relative;
     padding: 1rem 15px;
@@ -136,7 +155,7 @@ z-index:2;
 .db-FeedSocial {
     position: relative;
     box-sizing: border-box;
-    height:120px;
+    /*height:120px;*/
     border-bottom: 1px solid #dfe6ec;
     box-shadow: 0 0 0 0 #1799dd;
     padding: 16px 12px 20px 16px;

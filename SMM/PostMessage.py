@@ -1,3 +1,5 @@
+import json
+
 class Message:
 
     def set_statusID(self,statusID):
@@ -49,3 +51,18 @@ class Message:
         self.UserID = UserID
     def get_UserID(self):
         return self.UserID
+
+    def set_EscapedContent(self, EscapedContent):
+        self.EscapedContent = EscapedContent
+    def get_EscapedContent(self):
+        return self.EscapedContent
+
+    def toJSON(self):
+        return json.dumps(vars(self))
+        # return json.dumps(self, default=lambda o: o.__dict__,
+        #                   sort_keys=True, indent=4)
+
+    # @staticmethod
+    # def toJSON(posts):
+    #     return json.dumps(posts, default=lambda o: o.__dict__,
+    #                       sort_keys=True, indent=4)

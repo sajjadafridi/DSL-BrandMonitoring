@@ -2,59 +2,72 @@ from django import forms
 from django.forms import ModelForm, PasswordInput, Textarea, TextInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Keyword,Profile
+from .models import Keyword, Profile, COMPANY_SIZE
+from django.utils.safestring import mark_safe
 from django.core.files.images import get_image_dimensions
+from string import Template
 
 form_control_class = forms.TextInput(attrs={'class': 'form-control'})
 
+
+class PictureWidget(forms.widgets.Widget):
+    def render(self, name, value, attrs=None):
+        html = Template("""<img src="$link"/>""")
+        return mark_safe(html.substitute(link=value))
+
+
 class SignUpForm(UserCreationForm):
-    username = forms.CharField(max_length=30, required=True, widget=form_control_class)
-    first_name = forms.CharField(max_length=30, required=True, widget=form_control_class)
-    last_name = forms.CharField(max_length=30, required=True, widget=form_control_class)
+    username = forms.CharField(
+        max_length=30, required=True, widget=form_control_class)
+    first_name = forms.CharField(
+        max_length=30, required=True, widget=form_control_class)
+    last_name = forms.CharField(
+        max_length=30, required=True, widget=form_control_class)
     email = forms.EmailField(max_length=254, widget=form_control_class)
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'New password'}))
-    password2=forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'Conform password',}),help_text="Enter the same password as before, for verification.")
+    password1 = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'New password'}))
+    password2 = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Conform password', }), help_text="Enter the same password as before, for verification.")
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
+        fields = ('username', 'first_name', 'last_name',
+                  'email', 'password1', 'password2',)
+
 
 class KeywordForm(ModelForm):
     class Meta:
         model = Keyword
-        exclude = ['alert_name', 'User', 'optional_keywords', 'excluded_keywords', 'required_keywords', 'source_twitter', 'source_googleplus']
-class SourceSelectionForm(ModelForm):
-    source_googleplus = forms.BooleanField(initial=0, label='GooglePlus',widget=forms.CheckboxInput())
-    source_twitter    = forms.BooleanField(initial=0, label='Twitter', widget=forms.CheckboxInput())
+        exclude = ['alert_name', 'User']
 
-    class Meta:
-        model = Keyword
-        exclude = ['alert_name', 'User', 'optional_keywords', 'excluded_keywords', 'required_keywords']
-
-
-class KeywordForm_One(ModelForm):
-    class Meta:
-        model = Keyword
-        fields = ['alert_name', 'optional_keywords']
-        widgets = {
-            'alert_name': TextInput(attrs={'placeholder': 'Here we are', 'type': 'hidden'}),
-            'optional_keywords': Textarea(attrs={'placeholder': 'add optional keyword here'}),
-
-        }
 
 class ContactForm(forms.Form):
     email_address = forms.EmailField(max_length=254, widget=form_control_class)
-    subject=forms.CharField(max_length=500, required=True, widget=form_control_class)
-    message = forms.CharField(required=True,widget=forms.Textarea)
+    subject = forms.CharField(
+        max_length=500, required=True, widget=form_control_class)
+    message = forms.CharField(required=True, widget=forms.Textarea)
 
     class Meta:
         model = Keyword
         fields = ['email_address', 'subject', 'message']
 
+
 class UserProfileForm(forms.ModelForm):
+    profile_image = forms.ImageField(label=('Profile Image'), required=False, error_messages={
+                                     'invalid': ("Image files only")}, widget=forms.FileInput)
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        if self.instance.id:
+            self.fields['company_size'] = forms.ChoiceField(
+                choices=COMPANY_SIZE, widget=forms.Select(attrs={'class': 'form-control'}))
+            self.fields['company_name'] = forms.CharField(
+                widget=form_control_class, required=False)
+
     class Meta:
         model = Profile
-        exclude = ['id', 'bio', 'location', 'email_confirmed', 'user_id']
+        exclude = ['id', 'bio', 'location', 'email_confirmed', 'user_id',
+                   'user', 'phone_number', 'country', 'birth_date', 'full_name', 'email']
 
     def clean_avatar(self):
         avatar = self.cleaned_data['avatar']
@@ -89,12 +102,18 @@ class UserProfileForm(forms.ModelForm):
 
         return avatar
 
+
 class UserEditForm(forms.ModelForm):
-    username = forms.CharField(required=True)
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)
+    email = forms.EmailField(
+        required=True, widget=form_control_class, disabled=True)
+    first_name = forms.CharField(required=False, widget=form_control_class)
+    last_name = forms.CharField(required=False, widget=form_control_class)
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email']
+        exclude = ['username']
+        fields = ['first_name', 'last_name', 'email']
+
+
+class RemoveUser(forms.Form):
+    username = forms.CharField(widget=forms.HiddenInput(), required=False)

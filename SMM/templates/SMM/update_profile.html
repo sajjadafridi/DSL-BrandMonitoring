@@ -1,0 +1,234 @@
+{% extends 'SMM/dashboard_base.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+{% block content %}
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Social Media Monitor</title>
+        {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}"> {% endcomment %}
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css' %}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
+        <link rel="icon" href="{% static 'images/icon-trans.png' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/style.css' %}">
+    </head>
+    <body>
+    <div id="profileSettingsBar">
+        <div class="toggle-btn active" onclick="toogleProfileSettingsBar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul>
+            <li id="myProfileTab" onclick="myProfileTabClick()">My Profile</li>
+            <li id="changePasswordTab" onclick="changePasswordTabClick()">Change Password</li>
+            <li id="deleteAccountTab" onclick="deleteAccountTabClick()">Delete Account</li>
+        </ul>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" id="myProfileArea" class="settingsArea">
+        {% csrf_token %}
+        <div class="row" id="heading">
+            <h2>My Profile</h2>
+        </div>
+        <div id="inputsDiv">
+
+            <div class="row">
+                <label for="name" class="input-labels">Profile Image</label>
+                {% if profile_form.profile_image %}
+                    {% comment %} <img src='{{ profile_form.profile_image }}' width='240' id="profileImagePlaceHolder" alt=""/> {% endcomment %}
+                  <img src='{{profile_form.instance.profile_image.url}}' width='240' id="profileImagePlaceHolder" alt=""/>
+                {% endif %}
+                <input type="file" name="{{ profile_form.profile_image.html_name }}" id="{{ profile_form.profile_image.id_for_label }}" value="{{ profile_form.profile_image.url }}" class="form-control" onchange="loadImage()">
+                {% comment %} <input type="file" id="profileImageInput" class="form-control" name="profileImage" id="fileToUpload" onchange="loadImage()"> {% endcomment %}
+            </div>
+
+            <div class="row">
+                <label for="{{ user_form.first_name.id_for_label }}" class="input-labels">First Name</label>
+                {{ user_form.first_name }}
+                {{ user_form.first_name.errors }}
+                {% comment %} <input type="text" id="fname" class="form-control" placeholder="First Name" required autofocus> {% endcomment %}
+            </div>
+            <div class="row">
+                <label for="{{ user_form.last_name.id_for_label }}" class="input-labels">Last Name</label>
+                {% comment %} <input type="text" id="lname" class="form-control" placeholder="Last Name" required autofocus> {% endcomment %}
+                {{ user_form.last_name }}
+                {{ user_form.last_name.errors }}
+
+            </div>
+
+            <div class="row">
+                <label for="{{ user_form.email.id_for_label }}" class="input-labels">Email address</label>
+                {{ user_form.email }}
+                {{ user_form.email.errors }}
+                 {% comment %} <input type="email" id="Email" class="form-control" placeholder="Email address" required autofocus> {% endcomment %}
+            </div>
+
+            <div class="row">
+                <label for="{{ profile_form.company_name.id_for_label }}" class="input-labels">Company Name</label>
+                {{ profile_form.company_name }}
+                {{ profile_form.company_name.errors }}
+
+                {% comment %} <input type="text" id="companyname" class="form-control" placeholder="Company" required autofocus> {% endcomment %}
+            </div>
+
+            <div class="row">
+                <label for="{{ profile_form.company_size.id_for_label }}" class="input-labels">Company Size</label>
+                <input hidden type="text" id="employeRange" class="form-control">
+                {{ profile_form.company_size }}
+
+                         {% comment %} <select class="form-control">
+                             <option selected="selected" disabled>Objects on page:</option>
+                        	<option>5-10 employees</option>
+                        	<option>10-25 employees</option>
+                         	<option>25-50 employees</option>
+                         	<option>50-100 employees</option>
+                         	<option>>100 employees</option>
+                        </select> {% endcomment %}
+            </div>
+            {% if messages %}
+  {% for msg in messages %}
+    <div class="alert alert-success alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      {{msg.message}}
+    </div>
+  {% endfor %}
+{% endif %}
+             <div class="rows">
+             <br>
+            <div class="row">
+                <input class="btn-success " type="submit" name="profileupdatebtn" value="update">
+            </div>
+        </div>
+        </div>
+    </form>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+            {% comment %} {{ change_password.as_p }} {% endcomment %}
+        <div id="changePasswordArea" class="settingsArea">
+            <div class="row" id="heading">
+                <h2>Change Password</h2>
+            </div>
+            <div id="inputsDiv">
+                <div class="row">
+                    <label for="oldPasswordInput" class="input-labels">Old Password</label>
+                    <input type="password" name="{{ change_password.old_password.html_name }}"
+                           id="{{ change_password.old_password.id_for_label }}" class="form-control"
+                           placeholder="Old Password" required autofocus>
+                </div>
+                <div class="row">
+                    <label for="newPasswordInput" class="input-labels">New Password</label>
+                    <input name="{{ change_password.new_password1.html_name }}" type="password"
+                           id="{{ change_password.new_password1.id_for_label }}" class="form-control"
+                           placeholder="New Password" required autofocus>
+
+                </div>
+                <div class="row">
+                    <label for="confirmPasswordInput" class="input-labels">Confirm New Password</label>
+                    <input type="password" name="{{ change_password.new_password2.html_name }}"
+                           id="{{ change_password.new_password2.id_for_label }}" class="form-control"
+                           placeholder="Confirm New Passsword" required autofocus>
+                </div>
+
+ <div class="alerts errorlist">
+                    
+                <div class="row">
+                {% for error1 in change_password.old_password.errors %}
+            <p style="color: red"> {{error1}} </p>
+            {% endfor %} </div>
+                <div class="row">
+                 {% for error in change_password.new_password1.errors %}
+            <p style="color: red"> {{error}} </p>
+            {% endfor %}
+             <div class="row">
+                 {% for error in change_password.new_password2.errors %}
+            <p style="color: red"> {{error}} </p>
+            {% endfor %}
+                </div>
+                </div>
+                <div class="row">
+                    <button class="btn-success " id="updatepasswordbtn" name="updatepasswordbtn" type="submit">Update</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+    <div id="deleteAccountArea" class="settingsArea">
+    <div class="row" id="heading">
+            <h2>Delete Account</h2>
+        </div>
+        <div id="inputsDiv">
+            <div class="row">
+                <p>We do our best to give you a great experience - we'll be sad to see you leave us.</p>
+                <button id="deleteAccountbtn" class="links" type="submit" name="deleteAccountbtn">Delete my account.</button>
+            </div>
+        </div>
+
+
+<!-- The Modal -->
+<div class="modal fade" id="mi-modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Delete Confirm</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          Are you sure to delete your account?
+        </div>
+        
+        <!-- Modal footer -->
+        <form method="POST" enctype="multipart/form-data" id="delaccountform">
+        <div class="modal-footer">
+           {% csrf_token %}
+           {{removeuser_form.username}}    
+          <button type="submit" class="btn btn-default" id="modal-btn-yes" name='deleteconfirmbtn'>Yes</button>
+          </form>
+        <button type="button" class="btn btn-primary" id="modal-btn-no">No</button>
+        </div>
+        
+      </div>
+    </div>
+</div>
+
+<div class="alert" role="alert" id="result"></div>
+    </div>
+
+    <!-- Main body ends -->
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.js"
+            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/profile_setting.js' %}"></script>
+
+    </body>
+    </html>
+{% endblock %}

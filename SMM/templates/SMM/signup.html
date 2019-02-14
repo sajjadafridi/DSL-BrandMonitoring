@@ -1,3 +1,4 @@
+{% extends 'SMM/base_nav.html' %}
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
@@ -20,9 +21,9 @@
     <div class="container-fluid">
         <div class="text-center">
             <span>
-	 <h1 class="h3 font-weight-normal text-logo">
-		<img class=" logo-pic image-responsive" src="{% static 'images/icon-trans.png' %}" alt="">
-			 Social Media Monitor</h1>
+	 <!--<h1 class="h3 font-weight-normal text-logo">-->
+		<!--<img class=" logo-pic image-responsive" src="{% static 'images/icon-trans.png' %}" alt="">-->
+			 <!--Social Media Monitor</h1>-->
 	</span>
         </div>
         <form class="signup-form" method="post">
@@ -56,8 +57,11 @@
             <small style="color: grey">{{ field.help_text }}</small> {% endif %} {% for error in field.errors %}
             <p style="color: red">{{ error }}</p>
             {% endfor %} {% endfor %}
+        <br>
+        <br>
             <button class="btnn" type="submit">Create Your Account</button>
             <br>
+        <!-- For social accounts sign up
             <div class="row">
                 <div class="col-5">
                     <hr>
@@ -86,7 +90,7 @@
                     <a href="#" class="fa fa-google white-link"></a>
                 </div>
             </div>
-            <br>
+            <br>-->
             <br>
             <div class="text-center">
                 <p>Already have an account? <a class="SignIn-links" href="{% url 'login' %}">SignIn</a></p>

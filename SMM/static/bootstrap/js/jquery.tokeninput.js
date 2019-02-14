@@ -7,7 +7,7 @@
  * choose which one suits your project best!
  *
  */
-;(function ($) {
+(function ($) {
   var DEFAULT_SETTINGS = {
     // Search settings
     method: "GET",

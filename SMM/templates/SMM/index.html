@@ -1,3 +1,4 @@
+{% extends 'SMM/base_nav.html' %}
 {% load staticfiles %}
 <!DOCTYPE html>
 {% block content %}
@@ -17,32 +18,24 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
         <link rel="icon" href="{% static 'images/icon-trans.png' %}">
+            <script
+            src="https://code.jquery.com/jquery-3.1.1.js"
+            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+
     </head>
     <body>
-    <!--NavBar-->
-    <nav class="navbar navbar-expand-md hm-bg-clr navbar-dark sticky-top text-white">
-        <div class="container-fluid">
-  <span>
-      <image class="navbar-brand logo-pic" src="{% static 'images/icon-trans.png' %}" alt=""> </image>
-   <h5 class="h4 font-weight-normal header-text h-brandName">Social Media Monitor</h5>
-   </span>
-            <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse"
-                    data-target="#mainNavbarCollapse">&#9776;
-            </button>
-            <div class="collapse navbar-collapse" id="mainNavbarCollapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="#about"><img
-                            src="{% static 'images/about-us.png' %}" style="margin-right:5px" width="29px"
-                            height="29px">About
-                        Us</a></li>
-                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="#main"><span
-                            class="fa fa-phone-square db-icon" style="font-size:26px"></span>Contact Us</a></li>
-                    <li class="nav-item db-nav-item"><a class="nav-link text-white" href="{% url 'login' %}"><img
-                            src="{% static 'images/login.png' %}">Log In</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
     <!--Carousel Intro-->
     <section id="intro">
         <div id="Carousel" class="carousel slide carousel-fade" data-ride="carousel">
@@ -222,12 +215,13 @@
                             <div class="form-label-group">
                                 <div class="rows">
                                     {% if messages %}
-                                        {% for message in messages %}
-                                            {% if message.tags %}
-                                            {% endif %}
-                                            {{ message }}
-                                        {% endfor %}
-                                    {% endif %}
+                                        {% for msg in messages %}
+    <div class="alert alert-success alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      {{msg.message}}
+    </div>
+  {% endfor %}
+{% endif %}
 
                                     <button class="button btn-default ml-auto hm-bg-clr">Submit!</button>
                                 </div>
@@ -281,25 +275,20 @@
 
         </div>
     </section>
+    <script>
+    $(document).ready(function () {
+        var index = 'profile_tab';
+//  Define friendly data store name
+var dataStore = window.sessionStorage;
+	dataStore.setItem(index, 'myProfileTabClick');
+});
+    </script>
     <!--script-->
-    <script
-            src="https://code.jquery.com/jquery-3.1.1.js"
-            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
-            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"
-            integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!--<script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>-->
+    <!--<script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>-->
+    <!--<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>-->
+    <!--<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>-->
     </body>
     </html>
 {% endblock %}

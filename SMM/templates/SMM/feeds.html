@@ -1,0 +1,231 @@
+{% extends 'SMM/dashboard_base.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+{% block content %}
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Social Media Monitor</title>
+    
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
+        <link rel="icon" href="{% static 'images/icon-trans.png' %}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+        <!--Angular JS-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+            <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css' %}">
+
+<style>
+/* width */
+div#scroll::-webkit-scrollbar {
+    width: 10px;
+}
+/* Handle */
+div#scroll::-webkit-scrollbar-thumb {
+    background: green;
+    border-radius: 10px;
+}
+
+</style>
+    </head>
+    <body>
+    <!--Main -->
+    <div class="container-fluid" ng-app="FeedsApp" ng-controller="FeedsController" style="margin-top:10px">
+        <div class="row d-flex flex-row h-100">
+            <!--Side Bar-->
+            <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2 d-flex flex-column float-left">
+                <div class="row d-flex flex-row border-right">
+        <div class="col-12">
+                            <a class="button btn alert-button text-white"  href="{% url 'new_alert'  %}" style="padding:3px">
+                                <i class="fa fa-plus-square db-list-add-icon" style="font-size:14px;"></i><span class="db-list-newalert">New Alert</span></a>
+
+        </div>
+                    <div class="col-12">
+                        <div id ="scroll1"  style="overflow-y: auto; height:500px; overflow-x: hidden">
+                    <div  ng-repeat="keyword in alerts" ng-click="loadData(keyword.alert_id,$index)">
+
+                        <!--{%  for kwd_id, alert_name in keyword_list.items %}-->
+                        <!--<li  class="db-list-item">-->
+                            <!--<a  id="alert_redirect" onclick="return false;" ng-click="loadData('{{kwd_id}}')" href="/" class="db-side-link">-->
+                            <!--<span class="d-none d-md-inline">{{alert_name }}</span>-->
+                                <!--<span>{$ badgeCounter[] $}</span>-->
+                            <!--</a>-->
+                         <!--</li>-->
+                        <!--{% endfor %}-->
+                         <li  class="db-list-item">
+                            <a  id="alert_redirect" onclick="return false;" href="/" class="db-side-link">
+                            <span class="d-none d-md-inline alert">{$ keyword.alert_name $}</span>
+                                <span class="alert_badge_count" class="ng-cloak">{$ badges[$index] $}</span>
+                            </a>
+                         </li>
+                    </div>
+</div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!--Feed Panel-->
+            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 db-sidebar border-right">
+
+<div id ="scroll"  style="overflow-y: auto; height:500px; overflow-x: hidden" class="feedsScrollDiv">
+
+                <div class="row" ng-repeat="message in feeds" id="feed_{$ message.ID $}" scroll-feeds="message.ID == scrolledFeedID" >
+
+                    <div class="db-FeedSocial" ng-click="reply_click(message)">
+                        <div class="db-FeedSocialLeft">
+	    <span class="db-box Social-box">
+		   <div class="db-position">
+		      <span class="Social-box-image" style="height:40px;line-height:40px; width:40px;">
+			      <span class="Social-box-image-wrap"
+                        style="height:40px; line-height: 40px; margin-left: -233px; width: 500px;">
+				     <img class="Social-box-image-img" src= '{$ message.DisplayPicture $}'
+                          style="max-height:40px;">
+				  </span>
+				  <div class=""></div>
+				</span>
+			</div>
+		</span>
+                            <div class="db-SocialFeed-unread"></div>
+                        </div>
+                        <div class="db-FeedSocialNotif">
+                            <div class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">{$ message.CreatedAt $}</div>
+                        </div>
+                        <div class="db-FeedSocialMid">
+                            <div class="db-FeedSocialName highlight">{$   message.DisplayName $}</div>
+                            <div class="db-FeedSocialTitle">{$  message.Content $}</div>
+                            <div class="db-FeedSocialDesc highlight">
+                            <a target="_blank" href="https://twitter.com/{$  message.DisplayName $}/status/{$ message.statusID $}">https://twitter.com/{$  message.DisplayName $}/status/{$ message.statusID $}</a>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+</div>
+<script>
+function reply_click(time, text, name, picture, status_id , user_id,sentiment)
+{
+  console.log("hello")
+    $("#display_name").text(name);
+    $("#created_at").text(time);
+    $("#text").text(text);
+    $('#display_picture').attr('src',picture);
+    $('#display_picture_link').attr('href',"https://twitter.com/"+name);
+    $("#post_url").attr('href',"https://twitter.com/"+name+"/status/"+status_id);
+    $("#post_url").html("https://twitter.com/"+name+"/status/"+status_id);
+    if(sentiment=='1')
+    {
+          $('#dropdownEmotionButton').attr('src','{% static 'images/happy.png' %}');
+    }else {
+      $('#dropdownEmotionButton').attr('src','{% static 'images/sad.svg' %}');
+    }
+}
+
+function click_alert(keyword_id) {
+
+    kwd_id=parseInt(keyword_id)
+    $('#alert_redirect').attr('href', "{% url 'display_feed' alert_id=1 %}")
+}
+</script>
+
+
+            </div>
+            <!--Main Panel-->
+            <div class="col-lg-6 col-xl-6 d-flex flex-column"  style="width:auto;height:auto;">
+                <div class="row">
+                    <div class="col">
+                        <div class="db-FeedSocial-expand h-100">
+                            <div class="db-action-bar">
+                                <div class="row m-2">
+                                    <div class="col-1 col-sm-1 col-md-10 col-lg-10"></div>
+                                    <div title="Add Your Response" class="col-3 col-sm-3 col-md-2 col-lg-2">
+
+                                        <div class="dropdown">
+                                            <img class="image-emotion dropdown-toggle"
+                                                 src="{% static 'images/smily.jpg' %}" id="dropdownEmotionButton"
+                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <div class="dropdown-menu dropdown-content"
+                                                 aria-labelledby="dropdownEmotionButton">
+                                                <a class="dropdown-item" href="{% url 'update_sentiment' sentiment=0 %}">Positive <img
+                                                        class="image-emotion-dropdown ml-auto" align="left"
+                                                        src="{% static 'images/happy.png' %}"></a>
+                                                <a class="dropdown-item"href="{% url 'update_sentiment' sentiment=2 %}">Nuetral <img
+                                                        class="image-emotion-dropdown ml-auto" align="left"
+                                                        src="{% static 'images/emotion.svg' %}"></a>
+                                                <a class="dropdown-item" href="{% url 'update_sentiment' sentiment=1 %}">Negitive<img
+                                                        class="image-emotion-dropdown ml-auto" align="left"
+                                                        src="{% static 'images/sad.svg' %}"></a>
+
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="db-FeedSocialLeft">
+	    <span class="db-box Social-box">
+		   <div class="db-position">
+		      <span class="Social-box-image" style="height:100px;width:100px;">
+			      <span class="Social-box-image-wrap" style="height:100px; margin-left: -233px; width: 500px;">
+				    <a id="display_picture_link" target="_blank" href="#">
+                      <img  id="display_picture" class="Social-box-image-img"src="{% static 'images/profilepic.png' %}"
+                          style="max-height:100px;width:100px;margin-left:50px"></a>
+				  </span>
+				</span>
+			</div>
+		</span>
+                            </div>
+                            <div class="db-FeedSocialNotif" style="width:auto;height:auto;">
+                                <div id ="created_at" class="db-FeedSocialTime db-AlertFeedSocial-notif highlight">31 Jul 11:30 A.M</div>
+                            </div>
+
+                            <div class="db-mainFeedContent">
+                                <div  id="display_name" class="db-FeedSocialName highlight">@SocialMonitoring.com</div>
+                                <div><p id="text" ></p></div>
+                                <div class="db-FeedSocialDesc highlight"><a id="post_url" target="_blank" href="#">https://www.socialmediamonitoring.com/2018/07/july-2018/</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--script-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.js'%}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js'%}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js'%}"></script>
+    <script src="{% static 'SMM/feeds.js' %}"></script>
+    <!--Scroll To-->
+    <!--<script src="{% static 'jquery.scrollTo-2.1.2/jquery.scrollTo.min.js' %}"></script>-->
+
+    <!--<script src="{% static 'jquery.scrollTo-2.1.2/jquery.scrollTo.js'%}"></script>-->
+    <!--<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
+
+    </body>
+    </html>
+{% endblock %}
