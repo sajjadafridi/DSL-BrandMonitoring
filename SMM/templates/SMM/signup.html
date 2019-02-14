@@ -31,14 +31,14 @@
                 <div class="form-label-group">
                     <label for="{{form.username.id_for_label}}" class="label">Username:</label>
                     <input name="{{form.username.html_name}}" class="form-control" maxlength="30" autofocus="" required=""
-                        id="{{form.username.id_for_label}}" placeholder="Enter user name" type="input" class="form-control" value="{{form.username.value}}">
+                        id="{{form.username.id_for_label}}" placeholder="Enter user name" type="input" class="form-control" {% if form.username.value %} value="{{form.username.value}}"{% endif %}>
                         <p style="color: red">{{ form.username.errors.0 }}</p>
                 </div>
                 <div class="form-label-group">
                     <label for="{{form.first_name.id_for_label}}" class="label">First Name:</label>
                     <input name="{{form.first_name.html_name}}" class="form-control" maxlength="30" autofocus=""
                         required="" id="{{form.fist_name.id_for_label}}" placeholder="Enter first name" type="input"
-                        class="form-control" value="{{form.first_name.value}}"}}">
+                        class="form-control" {% if form.first_name.value %} value="{{form.first_name.value}}"{% endif %}>
                     <p style="color: red">{{ form.first_name.errors.0 }}</p>
 
                 </div>
@@ -46,14 +46,14 @@
                     <label for="{{form.last_name.id_for_label}}" class="label">Last Name:</label>
                     <input name="{{form.last_name.html_name}}" class="form-control" maxlength="30" autofocus=""
                         required="" id="{{form.last_name.id_for_label}}" placeholder="Enter last name" type="input"
-                        class="form-control" value="{{form.last_name.value}}">
+                        class="form-control" {% if form.last_name.value %} value="{{form.last_name.value}}"{% endif %}>
 <p style="color: red">{{ form.last_name.errors.0 }}</p>
 
                 </div>
                 <div class="form-label-group">
                     <label for="{{form.email.id_for_label}}" class="label">Email:</label>
                     <input name="{{form.email.html_name}}" class="form-control" maxlength="256" required id="{{form.email.id_for_label}}"
-                        placeholder="Enter email" type="input" class="form-control" value="{{form.email.value}}">
+                        placeholder="Enter email" type="input" class="form-control" {% if form.email.value %} value="{{form.email.value}}"{% endif %}>
 <p style="color: red">{{ form.email.errors.0 }}</p>
 
                 </div>
