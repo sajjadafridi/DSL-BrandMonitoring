@@ -16,6 +16,7 @@ eggs/
 libs/*
 libs/
 *.pyc
+.vscode/
 
 SMM/__pycache__/*
 .eggs/
