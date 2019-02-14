@@ -18,11 +18,8 @@ background-color:#4CAF50;
 	font-size:20px;
 }
 .alert_badge_count{
-    border-radius: 10px;
-    padding: 2px 10px;
-    background-color: #4b9d99;
     font-size: 14px;
-    color: #ffffff;
+    color: #000000;
     margin-left: 10px;
     font-weight: normal;
 }

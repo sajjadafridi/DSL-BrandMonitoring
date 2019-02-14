@@ -21,7 +21,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    url(r'^SMM/', include('SMM.urls')),
+    url(r'', include('SMM.urls')),
+    #url(r'^SMM/', include('SMM.urls')),
     path('admin/', admin.site.urls),
 ]
 if settings.DEBUG is True:

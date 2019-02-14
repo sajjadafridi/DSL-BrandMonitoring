@@ -8,8 +8,14 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.mail import EmailMessage, send_mail, BadHeaderError
-
+from django.contrib.auth import views as auth_views
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from SMM.forms import AuthenticationRememberMeForm
 from SMM.tasks import scheduling_script
+from django.template import RequestContext
+from BrandMonitoring import settings
 from SMM.tokens import account_activation_token
 from SMM.forms import SignUpForm, KeywordForm, ContactForm, UserProfileForm, UserEditForm, RemoveUser
 from django.contrib.auth.forms import PasswordChangeForm
@@ -19,12 +25,16 @@ from .PostMessage import Message
 from _datetime import datetime, timedelta
 import asyncio
 import time
+from django.forms.utils import ErrorList
+from django.contrib.auth import login as auth_login
+
 from SMM.TwintThread import TwintThread
 import os
 import json
 
 template_name = "feeds"
 keyword = ' '
+
 
 def load_forgetpassword_page(request):
     return render(request, 'SMM/password_reset.html')
@@ -53,81 +63,146 @@ def index(request):
         return render(request, "SMM/index.html", {'contact_form': contactform})
 
 
-@login_required
 def redirect_login(request):
-    if not check_existing_keyword(request):
-        return redirect('new_alert')
-    else:
-        request.session['search_keyword'] = None
-        return redirect('feeds')
-
-
-@login_required
-def new_alert(request):
-    keyword = ''
     if request.user.is_authenticated:
-        if request.method == "POST":
-            keyword_form = KeywordForm(request.POST)
-            # current user information
-            user_id = request.POST.get('user_id')
-            user_fname = request.POST.get('user_fist_name')
-            user_lname = request.POST.get('user_last_name')
-            user_email = request.POST.get('user_email')
-            user_status = request.POST.get('user_status')
-            user_econform = request.POST.get('user_email_conform')
-            search_input = request.POST.get('search_keyword')
-            keyword_input = request.POST.get('keyword_input')
-            if(keyword_input == ''):
-                keyword = search_input
-            else:
-                keyword = keyword_input
-
-            request.session['search_keyword'] = keyword
-            if keyword_form.is_valid():
-                keyword_form = KeywordForm()
-                model_instance = keyword_form.save(commit=False)
-                model_instance.alert_name = keyword
-                model_instance.User_id = user_id
-                model_instance.save()
-                return redirect(template_name)
-                # if check_user_keyword(request,keyword):
-                #     keyword_form = KeywordForm()
-                #     model_instance = keyword_form.save(commit=False)
-                #     model_instance.alert_name = keyword
-                #     model_instance.User_id = user_id
-                #     model_instance.save()
-                #     return redirect(template_name)
-                # else:
-                #     messages.error(request,'Keyword Already Present')
-                #     return render(request, "SMM/new_alert.html", {'form': keyword_form})
+        if not check_existing_keyword(request):
+            return redirect('new_alert')
         else:
-            keyword_form = KeywordForm()
-            return render(request, "SMM/new_alert.html", {'form': keyword_form})
+            request.session['search_keyword'] = None
+            return redirect('feeds')
     else:
-        return redirect('login')
+        return redirect('remember_me_login')
+
+
+@csrf_protect
+@never_cache
+def remember_me_login(request, template_name='SMM/login.html',
+                      redirect_field_name=REDIRECT_FIELD_NAME,
+                      authentication_form=AuthenticationRememberMeForm):
+
+    redirect_to = request.POST.get(redirect_field_name, '')
+
+    if request.method == "POST":
+        form = authentication_form(data=request.POST)
+        if form.is_valid():
+            # Light security check -- make sure redirect_to isn't garbage.
+            if not redirect_to or ' ' in redirect_to:
+                redirect_to = settings.LOGIN_REDIRECT_URL
+
+            # Heavier security check -- redirects to http://example.com should
+            # not be allowed, but things like /view/?param=http://example.com
+            # should be allowed. This regex checks if there is a '//' *before* a
+            # question mark.
+            elif '//' in redirect_to and re.match(r'[^\?]*//', redirect_to):
+                redirect_to = settings.LOGIN_REDIRECT_URL
+
+            if not form.cleaned_data.get('remember_me'):
+                request.session.set_expiry(0)
+
+            # Okay, security checks complete. Log the user in.
+            auth_login(request, form.get_user())
+
+            if request.session.test_cookie_worked():
+                request.session.delete_test_cookie()
+
+            return redirect(redirect_to)
+
+    else:
+        form = authentication_form(request)
+
+    request.session.set_test_cookie()
+
+    current_site = get_current_site(request)
+
+    return render(request, template_name, {
+        'form': form,
+        redirect_field_name: redirect_to,
+        'site': current_site,
+        'site_name': current_site.name,
+    })
+
+
+def new_alert(request):
+    if request.user.is_authenticated:
+        keyword = ''
+        if request.user.is_authenticated:
+            if request.method == "POST":
+                keyword_form = KeywordForm(request.POST)
+                # current user information
+                user_id = request.POST.get('user_id')
+                user_fname = request.POST.get('user_fist_name')
+                user_lname = request.POST.get('user_last_name')
+                user_email = request.POST.get('user_email')
+                user_status = request.POST.get('user_status')
+                user_econform = request.POST.get('user_email_conform')
+                search_input = request.POST.get('search_keyword')
+                keyword_input = request.POST.get('keyword_input')
+                if(keyword_input == ''):
+                    keyword = search_input
+                else:
+                    keyword = keyword_input
+
+                request.session['search_keyword'] = keyword
+                if keyword_form.is_valid():
+                    keyword_form = KeywordForm()
+                    model_instance = keyword_form.save(commit=False)
+                    model_instance.alert_name = keyword
+                    model_instance.User_id = user_id
+                    model_instance.save()
+                    return redirect(template_name)
+                    # if check_user_keyword(request,keyword):
+                    #     keyword_form = KeywordForm()
+                    #     model_instance = keyword_form.save(commit=False)
+                    #     model_instance.alert_name = keyword
+                    #     model_instance.User_id = user_id
+                    #     model_instance.save()
+                    #     return redirect(template_name)
+                    # else:
+                    #     messages.error(request,'Keyword Already Present')
+                    #     return render(request, "SMM/new_alert.html", {'form': keyword_form})
+            else:
+                keyword_form = KeywordForm()
+                return render(request, "SMM/new_alert.html", {'form': keyword_form})
+        else:
+            return redirect('remember_me_login')
+    else:
+        return redirect('remember_me_login')
+
+
+def check_email(form_request):
+    email = form_request.cleaned_data.get('email')
+    if User.objects.filter(email=email).exists():
+        return True
+    else:
+        return False
 
 
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save()
-            current_site = get_current_site(request)
-            subject = 'Social Media Brand Monitoring'
-            message = render_to_string('SMM/account_activation_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-                'token': account_activation_token.make_token(user),
-            })
-            user.email_user(subject, message, user.email)
-            mail_subject = subject
-            to_email = form.cleaned_data.get('email')
-            email = EmailMessage(mail_subject, message, to=[to_email])
-            email.send()
-            return redirect('account_activation_sent')
+            if check_email(form):
+                errors = form._errors.setdefault("email", ErrorList())
+                errors.append(u"Email already exist!")
+                return render(request, 'SMM/signup.html', {'form': form})
+            else:
+                user = form.save(commit=False)
+                user.is_active = False
+                user.save()
+                current_site = get_current_site(request)
+                subject = 'Social Media Brand Monitoring'
+                message = render_to_string('SMM/account_activation_email.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                    'token': account_activation_token.make_token(user),
+                })
+                user.email_user(subject, message, user.email)
+                mail_subject = subject
+                to_email = form.cleaned_data.get('email')
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+                return redirect('account_activation_sent')
     else:
         form = SignUpForm()
     return render(request, 'SMM/signup.html', {'form': form})
@@ -154,31 +229,38 @@ def activate(request, uidb64, token):
         return render(request, 'SMM/account_activation_invalid.html')
 
 
-@login_required
 def feeds(request,  alert_keyword=None):
-    kwd_to_search = request.session['search_keyword']
-    request.session['search_keyword'] = None
-    if not kwd_to_search == None:
-        latest_keyword = Keyword.objects.order_by('-id')[:1]
-        for kwd in latest_keyword:
-                # startThreadTwitterFeed(1, 'PayPal')
-            obj = TwintThread()
-            obj.startThreadTwitterFeeds(kwd_to_search, kwd.id)
-            # scheduling_script();
-        time.sleep(3)
-        keywords = {}
-        posts = {}
-        current_user = request.user
-        Keyword_table = Keyword.objects.filter(User_id=current_user.id)
-        for kwd in Keyword_table:
-            keywords[kwd.id] = kwd.alert_name
-        Posts = []
-        list_of_data = {
-            "post_data": Posts,
-            "keyword_list": keywords
-        }
-        return render_to_response('SMM/feeds.html', list_of_data)
-    return render(request, 'SMM/feeds.html')
+    if request.user.is_authenticated:
+        kwd_to_search = ''
+        if 'search_keyword' not in request.session:
+            request.session['search_keyword'] = None
+
+        kwd_to_search = request.session['search_keyword']
+        request.session['search_keyword'] = None
+        if not kwd_to_search == None:
+            latest_keyword = Keyword.objects.order_by('-id')[:1]
+            for kwd in latest_keyword:
+                    # startThreadTwitterFeed(1, 'PayPal')
+                obj = TwintThread()
+                obj.startThreadTwitterFeeds(kwd_to_search, kwd.id)
+                # scheduling_script();
+            time.sleep(3)
+            keywords = {}
+            posts = {}
+            current_user = request.user
+            Keyword_table = Keyword.objects.filter(User_id=current_user.id)
+            for kwd in Keyword_table:
+                keywords[kwd.id] = kwd.alert_name
+            Posts = []
+            list_of_data = {
+                "post_data": Posts,
+                "keyword_list": keywords
+            }
+            return render_to_response('SMM/feeds.html', list_of_data)
+        return render(request, 'SMM/feeds.html')
+    else:
+        return redirect('remember_me_login')
+
 
 def get_search(request):
     if request.method == 'GET':
@@ -189,7 +271,7 @@ def get_search(request):
     return render(request, template_name, {'error': error})
 
 
-def influenser(request):
+def influencers(request):
     selectedkwd = 0
     selectedtime = 'Time'
     if request.method == "GET":
@@ -235,58 +317,59 @@ def influenser(request):
     return render_to_response('SMM/influencers.html', keywords)
 
 
-@login_required
 def update_profile(request):
-    if request.method == 'POST' and 'profileupdatebtn' in request.POST:
-        user_form = UserEditForm(instance=request.user, data=request.POST)
-        profile_form = UserProfileForm(
-            instance=request.user.profile, data=request.POST, files=request.FILES, )
-        if profile_form.is_valid() and user_form.is_valid():
-            profile_form.save(commit=False)
-            profile_form.instance.full_name = request.user.first_name + \
-                " " + request.user.last_name
-            # profile = Profile.objects.get(request.user.id)
-            profile = Profile.objects.get(user_id=request.user.id)
-            profile = profile.profile_image.file.name
-            if profile != "default_profile_image.png":
-                if os.path.exists(profile):
-                    os.remove(profile)
-            user_form.save()
-            profile_form.save()
-            messages.success(request, 'Your profile is successfully updated!')
-            return HttpResponseRedirect(request.path)
-    elif request.method == 'POST' and 'updatepasswordbtn' in request.POST:
-        change_password = PasswordChangeForm(
-            data=request.POST, user=request.user)
-        if change_password.is_valid():
-            user = change_password.save()
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            update_session_auth_hash(request, user)
-            messages.success(request, 'Your password is successfully updated!')
-            return redirect('index')
+    if request.user.is_authenticated:
+        if request.method == 'POST' and 'profileupdatebtn' in request.POST:
+            user_form = UserEditForm(instance=request.user, data=request.POST)
+            profile_form = UserProfileForm(
+                instance=request.user.profile, data=request.POST, files=request.FILES, )
+            if profile_form.is_valid() and user_form.is_valid():
+                profile_form.save(commit=False)
+                profile_form.instance.full_name = request.user.first_name + \
+                    " " + request.user.last_name
+                # profile = Profile.objects.get(request.user.id)
+                usr_profile = Profile.objects.get(user_id=request.user.id)
+                profile = usr_profile.profile_image.file.name
+                if usr_profile.profile_image.name != "default_profile_image.png":
+                    if os.path.exists(profile):
+                        os.remove(profile)
+                user_form.save()
+                profile_form.save()
+                messages.success(
+                    request, 'Your profile is successfully updated!')
+                return HttpResponseRedirect(request.path)
+        elif request.method == 'POST' and 'updatepasswordbtn' in request.POST:
+            change_password = PasswordChangeForm(
+                data=request.POST, user=request.user)
+            if change_password.is_valid():
+                user = change_password.save()
+                login(request, user,
+                      backend='django.contrib.auth.backends.ModelBackend')
+                update_session_auth_hash(request, user)
+                messages.success(
+                    request, 'Your password is successfully updated!')
+                return redirect('index')
+            else:
+                user_form = UserEditForm(instance=request.user)
+                profile_form = UserProfileForm(instance=request.user.profile)
+                userdelform = RemoveUser()
+
+                return render(request, 'SMM/update_profile.html',
+                              {'user_form': user_form, 'profile_form': profile_form, 'change_password': change_password, 'removeuser_form': userdelform})
+        elif request.method == 'POST' and 'deleteconfirmbtn' in request.POST:
+            userdelform = RemoveUser(request.POST)
+            if userdelform.is_valid():
+                delete_account(request)
+                return redirect('account_delete')
         else:
+            change_password = PasswordChangeForm(user=request.user)
             user_form = UserEditForm(instance=request.user)
             profile_form = UserProfileForm(instance=request.user.profile)
-            userdelform = RemoveUser()
+            userdelform = RemoveUser(request.POST)
 
-            # messages.error(request, change_password.errors.new_password2)
             return render(request, 'SMM/update_profile.html',
                           {'user_form': user_form, 'profile_form': profile_form, 'change_password': change_password, 'removeuser_form': userdelform})
-    elif request.method == 'POST' and 'deleteconfirmbtn' in request.POST:
-        userdelform = RemoveUser(request.POST)
-        if userdelform.is_valid():
-            delete_account(request)
-            return redirect('account_delete')
-            # except User.DoesNotExist:
-            #     return HttpResponseRedirect('SMM/update_profile.html')
-    else:
-        change_password = PasswordChangeForm(user=request.user)
-        user_form = UserEditForm(instance=request.user)
-        profile_form = UserProfileForm(instance=request.user.profile)
-        userdelform = RemoveUser()
-
-        return render(request, 'SMM/update_profile.html',
-                      {'user_form': user_form, 'profile_form': profile_form, 'change_password': change_password, 'removeuser_form': userdelform})
+        return redirect('remember_me_login')
 
 
 def load_profile(user):
@@ -297,37 +380,46 @@ def load_profile(user):
         return profile
 
 
-def update_sentiment(request, sentiment):
-    print(sentiment)
-    return HttpResponse("Succeefully updated")
+def update_sentiment(request):
+    Post.objects.filter(id=request.GET.get('post_id')).update(
+        Sentiment=request.GET.get('sentiment'))
+    print(request.GET.get('sentiment'))
+
+    return HttpResponse(request)
 
 
 def temp(request, alert_id):
 
     return HttpResponse(alert_id)
 
+
 def display_feed_badge(request):
     keywords = []
     current_user = request.user
-    Keyword_table = Keyword.objects.filter(User_id=current_user.id).order_by('-id')
+    Keyword_table = Keyword.objects.filter(
+        User_id=current_user.id).order_by('-id')
     for kwd in Keyword_table:
         keyword = {}
-        keyword['alert_id']=kwd.id
+        keyword['alert_id'] = kwd.id
         keyword['alert_name'] = kwd.alert_name
         keyword['alert_badge_count'] = Post.objects.select_related(
             'PostUser').filter(Keyword_id=kwd.id).count()
         keywords.append(json.dumps(keyword))
     return JsonResponse(keywords, safe=False)
 
+
 def display_feed_angular(request):
     keywords = {}
     Posts = []
-    init=False
+    init = False
     current_user = request.user
-    alert_id=request.GET.get("alert_id");
-    if alert_id=="init":
-        init=True
-    no_of_feeds=request.GET.get("no_of_feeds");
+    alert_id = request.GET.get("alert_id")
+    if alert_id == "init":
+        init = True
+
+    no_of_feeds = request.GET.get("no_of_feeds")
+    print(no_of_feeds)
+    print(alert_id)
     Keyword_table = Keyword.objects.filter(User_id=current_user.id)
     for kwd in Keyword_table:
         keywords[kwd.id] = kwd.alert_name
@@ -336,12 +428,12 @@ def display_feed_angular(request):
     post_table = Post.objects.select_related(
         'PostUser').filter(Keyword_id=alert_id).order_by('-CreatedAt')
     print(post_table.count)
-    if int(no_of_feeds)>post_table.count():
-        no_of_feeds=post_table.count()
+    if int(no_of_feeds) > post_table.count():
+        no_of_feeds = post_table.count()
     else:
-        post_table=post_table[:int(no_of_feeds)]
+        post_table = post_table[:int(no_of_feeds)]
 
-    jsonResult=[]
+    jsonResult = []
     for post in post_table:
 
         message = Message()
@@ -427,16 +519,19 @@ def check_existing_keyword(user_request):
     else:
         return False
 
+
 def check_user_keyword(request):
-    keyword=request.GET.get('keyword')
-    keyword_count=Keyword.objects.filter(User_id=request.user.id,alert_name=keyword).count()
-    if keyword_count>0:
-        return JsonResponse('{"Exists":"Yes"}',safe=False)
-    return JsonResponse('{"Exists":"No"}',safe=False)
+    keyword = request.GET.get('keyword')
+    keyword_count = Keyword.objects.filter(
+        User_id=request.user.id, alert_name=keyword).count()
+    if keyword_count > 0:
+        return JsonResponse('{"Exists":"Yes"}', safe=False)
+    return JsonResponse('{"Exists":"No"}', safe=False)
+
 
 def get_user_keywords(request):
-    user_keywords=Keyword.objects.filter(User_id=request.user.id)
-    keywords=[]
+    user_keywords = Keyword.objects.filter(User_id=request.user.id)
+    keywords = []
     for kwd in user_keywords:
         keywords.append(kwd.alert_name)
     return JsonResponse(keywords, safe=False)
@@ -453,10 +548,11 @@ def delete_account(user_request):
         Post.objects.filter(Keyword_id=key.id).delete()
     Keyword.objects.filter(User_id=user_id).delete()
     profile = Profile.objects.get(user_id=user_request.user.id)
-    if profile.profile_image.name != "default_profile_image.png":
+    if profile.profile_image.name != "profile_image/default_profile_image.png":
         if os.path.exists(profile.profile_image.file.name):
             os.remove(profile.profile_image.file.name)
     User.objects.get(id=user_id).delete()
+
 
 def account_delete(request):
     return render(request, 'SMM/account_delete.html')

@@ -1,4 +1,3 @@
-
 var index = 'profile_tab';
 //  Define friendly data store name
 var dataStore = window.sessionStorage;
@@ -6,6 +5,7 @@ var dataStore = window.sessionStorage;
 function toogleProfileSettingsBar() {
 	document.getElementById("profileSettingsBar").classList.toggle('active');
 }
+
 function myProfileTabClick() {
 	document.getElementById("myProfileTab").style.color = "darkgreen";
 	document.getElementById("myProfileArea").style.display = "block";
@@ -16,6 +16,7 @@ function myProfileTabClick() {
 
 	dataStore.setItem(index, 'myProfileTabClick')
 }
+
 function changePasswordTabClick() {
 	document.getElementById("changePasswordTab").style.color = "darkgreen";
 	document.getElementById("changePasswordArea").style.display = "block";
@@ -26,6 +27,7 @@ function changePasswordTabClick() {
 
 	dataStore.setItem(index, 'changePasswordTabClick')
 }
+
 function deleteAccountTabClick() {
 	document.getElementById("deleteAccountTab").style.color = "darkgreen";
 	document.getElementById("deleteAccountArea").style.display = "block";
@@ -47,8 +49,7 @@ function loadImage() {
 		$('#profileImagePlaceHolder').attr('src', '');
 		$('#profileImagePlaceHolder').css("background-size", 200 + "px " + 200 + "px");
 
-	} else {
-	}
+	} else {}
 }
 
 

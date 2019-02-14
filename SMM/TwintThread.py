@@ -12,9 +12,10 @@ from SMM.UrduSentimentPredication import *
 
 import asyncio
 
+
 class TwintThread(threading.Thread):
 
-    def startThreadTwitterUpdatedFeeds(self,kwd_id, keyword):
+    def startThreadTwitterUpdatedFeeds(self, kwd_id, keyword):
         from threading import Thread
         t = Thread(target=self.get_update_feeds, args=(kwd_id, keyword))
         t.start()
@@ -24,7 +25,7 @@ class TwintThread(threading.Thread):
         asyncio.set_event_loop(asyncio.new_event_loop())
         self.get_twitter_feed(keyword, kwd_id)
 
-    def startThreadTwitterFeeds(self,keyword, kwd_id):
+    def startThreadTwitterFeeds(self, keyword, kwd_id):
         from threading import Thread
         t = Thread(target=self.get_feeds, args=(keyword, kwd_id))
         t.start()
@@ -34,40 +35,40 @@ class TwintThread(threading.Thread):
         asyncio.set_event_loop(asyncio.new_event_loop())
         self.get_daily_tweets(kwd_id, keyword)
 
-    def get_daily_tweets(self,keyword_id, keyword):
+    def get_daily_tweets(self, keyword_id, keyword):
         print("Keyword: " + keyword)
 
         # configure config object to get tweets
         c = twint.Config()
-        c.Search=Keyword
-        c.KwdID=keyword_id
-        c.Database="dbTweets"
+        c.Search = Keyword
+        c.KwdID = keyword_id
+        c.Database = "dbTweets"
         c.Since = datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
-        c.Until = datetime.strftime(datetime.now(),'%Y-%m-%d')
-        c.Store_object=True
+        c.Until = datetime.strftime(datetime.now(), '%Y-%m-%d')
+        c.Store_object = True
 
-        #search keyword with above configuration and the tweets will be stored sequentially after being scrapped
+        # search keyword with above configuration and the tweets will be stored sequentially after being scrapped
         twint.run.Search(c)
 
-    def get_twitter_feed(self,keyword, kwd_id):
+    def get_twitter_feed(self, keyword, kwd_id):
         keyword_result = []
         c = None
         c = twint.Config()
         c.Search = keyword
         c.Limit = 50
-        c.KwdID=kwd_id
-        c.Database="db_tweets"
-        c.Store_object=True
+        c.KwdID = kwd_id
+        c.Database = "db_tweets"
+        c.Store_object = True
         twint.run.Search(c)
 
     @staticmethod
     def checkExistenceOfAPostForAUserKeyword(kwd_id, status_id):
-        posts=Post.objects.filter(Keyword_id=int(kwd_id), StatusID = status_id)
-        if(posts.count()==0):
+        posts = Post.objects.filter(Keyword_id=int(kwd_id), StatusID=status_id)
+        if(posts.count() == 0):
             return True
         return False
 
-    def add_to_database(self,list, kwd_id):
+    def add_to_database(self, list, kwd_id):
         ''' check setmoke api '''
         # install_setmoke()
         ''' load urdu_sentiment data '''
@@ -101,8 +102,7 @@ class TwintThread(threading.Thread):
                         )
             post.save()
 
-
-    def get_reach(self,user_name, api, follower_count, post_id):
+    def get_reach(self, user_name, api, follower_count, post_id):
         page_count = 0
         loop = follower_count / 200
         iterations = follower_count % 200
@@ -133,16 +133,19 @@ class TwintThread(threading.Thread):
 
         reach = follower_count + no_of_followers_share
 
-
-    def language_detection(self,text):
+    def language_detection(self, text):
         ''' constrain the non-determinastic beahvour '''
         DetectorFactory.seed = 0
         languages_list = dict()
-        for lang in detect_langs(text):
-            la = str(lang)
-            score = la.split(":")
-            languages_list[score[0]] = float(score[1])
-        return max(languages_list.items(), key=operator.itemgetter(1))[0]
+        languages = detect_langs(text)
+        if len(languages) > 0:
+            for lang in languages:
+                la = str(lang)
+                score = la.split(":")
+                languages_list[score[0]] = float(score[1])
+            return max(languages_list.items(), key=operator.itemgetter(1))[0]
+        else:
+            return None
 
     # def install_setmoke():
     #     import pip
@@ -155,8 +158,7 @@ class TwintThread(threading.Thread):
     #     else:
     #         print('setmoke api already installed')
 
-
-    def detect_sentiment(self,text, analysis):
+    def detect_sentiment(self, text, analysis):
         ''' detect language and set the sentiments '''
         lang = self.language_detection(text)
         ''' for urdu '''
@@ -164,6 +166,8 @@ class TwintThread(threading.Thread):
             data = text.split('\n')
             pred_sentiment = self.predOnData(data)
             result = max(pred_sentiment, key=pred_sentiment.count)
+        elif lang == None:
+            result = 0
         else:
             ''' for english '''
             result = analysis.analysis(text, "NLTK", "./my_classifier.pickle")
@@ -201,4 +205,3 @@ class TwintThread(threading.Thread):
     #             twitter_posts.set_user(twitter_posts_user)
     #             keyword_result.append(twitter_posts)
     #     self.add_to_database(keyword_result, keyword_id)
-

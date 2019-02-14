@@ -3,100 +3,94 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="icon" href="{% static 'images/icon-trans.png' %}">
-    <link rel="stylesheet" href="{% static 'SMM/login.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Sign Up</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+            integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" href="{% static 'images/icon-trans.png' %}">
+        <link rel="stylesheet" href="{% static 'SMM/login.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
+    </head>
 
-<body>
-    {% block content %}
-    <div class="container-fluid">
-        <div class="text-center">
-            <span>
-	 <!--<h1 class="h3 font-weight-normal text-logo">-->
-		<!--<img class=" logo-pic image-responsive" src="{% static 'images/icon-trans.png' %}" alt="">-->
-			 <!--Social Media Monitor</h1>-->
-	</span>
+    <body>
+        {% block content %}
+        <div class="container-fluid">
+            <div class="text-center">
+                <span>
+                </span>
+            </div>
+            <form class="signup-form" method="post">
+                <h4 class="text-center font-weight-normal">Sign Up for new Account</h4>
+                {% csrf_token %}
+
+                <div class="form-label-group">
+                    <label for="{{form.username.id_for_label}}" class="label">Username:</label>
+                    <input name="{{form.username.html_name}}" class="form-control" maxlength="30" autofocus="" required=""
+                        id="{{form.username.id_for_label}}" placeholder="Enter user name" type="input" class="form-control">
+                        <p style="color: red">{{ form.username.errors.0 }}</p>
+                </div>
+                <div class="form-label-group">
+                    <label for="{{form.first_name.id_for_label}}" class="label">First Name:</label>
+                    <input name="{{form.first_name.html_name}}" class="form-control" maxlength="30" autofocus=""
+                        required="" id="{{form.fist_name.id_for_label}}" placeholder="Enter first name" type="input"
+                        class="form-control">
+                    <p style="color: red">{{ form.first_name.errors.0 }}</p>
+
+                </div>
+                <div class="form-label-group">
+                    <label for="{{form.last_name.id_for_label}}" class="label">Last Name:</label>
+                    <input name="{{form.last_name.html_name}}" class="form-control" maxlength="30" autofocus=""
+                        required="" id="{{form.last_name.id_for_label}}" placeholder="Enter last name" type="input"
+                        class="form-control">
+<p style="color: red">{{ form.last_name.errors.0 }}</p>
+
+                </div>
+                <div class="form-label-group">
+                    <label for="{{form.email.id_for_label}}" class="label">Email:</label>
+                    <input name="{{form.email.html_name}}" class="form-control" maxlength="256" required id="{{form.email.id_for_label}}"
+                        placeholder="Enter email" type="input" class="form-control">
+<p style="color: red">{{ form.email.errors.0 }}</p>
+
+                </div>
+
+
+                <div class="form-label-group">
+                    <label for="{{ form.password1.id_for_label }}" class="label">New Password</label>
+                    <span class="passwordSublabel">(Minimun 6 characters)</span>
+                    <input type="password" name="{{form.password1.html_name}}" class="form-control" placeholder="New password"
+                        required id="{{form.password1.id_for_label}}">
+
+                </div>
+                <div class="form-label-group">
+                    <label for="{{ form.password2.id_for_label }}" class="label">Confirm Password</label>
+                    <input type="password" name="{{form.password2.html_name}}" class="form-control" placeholder="Confirm password"
+                        required id="{{form.password2.id_for_label}}">
+                                                <p style="color: red">{{ form.password2.errors.0 }}</p>
+
+
+                </div>
+                {%for field in form%}
+                {% if field.help_text %}
+                <small style="color: green">
+                    {{ field.help_text }}
+                </small>
+                {% endif %}
+                {% endfor %}
+                <br>
+                <button class="btnn" type="submit">Create Your Account</button>
+                <br>
+                <div class="text-center">
+                    <p>Already have an account? <a class="SignIn-links" href="{% url 'remember_me_login' %}">SignIn</a></p>
+                </div>
+            </form>
         </div>
-        <form class="signup-form" method="post">
-            <h4 class="text-center font-weight-normal">Sign Up for new Account</h4> 
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="form-label-group">
-                {% if field.name == 'show_password' %}
-                <div class="rows">
-                    <div class="col">
-                        <div class="checkbox">
-                            <label>
-                                <input class="text-left" type="checkbox" value="show-password" onclick="">Show Password</label>
-                        </div>
-                    </div>
-                </div>
-                {% else %}
-                    {% if field.name == 'password1'%}
-                        <label for="{{ form.password1.id_for_label }}" class="label">New Password</label>
-                        <span class="passwordSublabel">(Minimun 6 characters)</span>
-                        {% elif field.name == 'password2'%}
-                        <label for="{{ form.password2.id_for_label }}" class="label">Confirm Password</label>
-                        {% else %}
-                        {{ field.label_tag }}
-                        {% endif %}
-
-            </div>
-            {{ field }} 
-            {% endif %} 
-            {% if field.help_text %}
-            <small style="color: grey">{{ field.help_text }}</small> {% endif %} {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-            {% endfor %} {% endfor %}
-        <br>
-        <br>
-            <button class="btnn" type="submit">Create Your Account</button>
-            <br>
-        <!-- For social accounts sign up
-            <div class="row">
-                <div class="col-5">
-                    <hr>
-                </div>
-                <div class="col-2">
-                    <p> OR </p>
-                </div>
-                <div class="col-5">
-                    <hr>
-                </div>
-            </div>
-            <div class="text-center">
-                <p style="">Create Account with your Social Media account</p>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <a href="#" class="fa fa-facebook white-link"></a>
-                </div>
-                <div class="col">
-                    <a href="#" class="fa fa-linkedin  white-link"></a>
-                </div>
-                <div class="col">
-                    <a href="#" class="fa fa-twitter white-link"></a>
-                </div>
-                <div class="col">
-                    <a href="#" class="fa fa-google white-link"></a>
-                </div>
-            </div>
-            <br>-->
-            <br>
-            <div class="text-center">
-                <p>Already have an account? <a class="SignIn-links" href="{% url 'login' %}">SignIn</a></p>
-            </div>
-        </form>
         {% endblock %}
-</body>
+
+    </body>
 
 </html>

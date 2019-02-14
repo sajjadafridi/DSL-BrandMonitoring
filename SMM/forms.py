@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm, PasswordInput, Textarea, TextInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -10,6 +12,18 @@ from string import Template
 form_control_class = forms.TextInput(attrs={'class': 'form-control'})
 
 
+class AuthenticationRememberMeForm(AuthenticationForm):
+
+    """
+    Subclass of Django ``AuthenticationForm`` which adds a remember me
+    checkbox.
+
+    """
+
+    remember_me = forms.BooleanField(label=_('Remember Me'), initial=False,
+                                     required=False)
+
+
 class PictureWidget(forms.widgets.Widget):
     def render(self, name, value, attrs=None):
         html = Template("""<img src="$link"/>""")
@@ -18,7 +32,7 @@ class PictureWidget(forms.widgets.Widget):
 
 class SignUpForm(UserCreationForm):
     username = forms.CharField(
-        max_length=30, required=True, widget=form_control_class)
+        max_length=30, required=True, widget=form_control_class, help_text="user name and email should be unique.")
     first_name = forms.CharField(
         max_length=30, required=True, widget=form_control_class)
     last_name = forms.CharField(
@@ -27,7 +41,7 @@ class SignUpForm(UserCreationForm):
     password1 = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'New password'}))
     password2 = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Conform password', }), help_text="Enter the same password as before, for verification.")
+        attrs={'class': 'form-control', 'placeholder': 'Conform password', }))
 
     class Meta:
         model = User

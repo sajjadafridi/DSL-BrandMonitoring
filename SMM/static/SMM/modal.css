@@ -170,3 +170,7 @@ a:active {
   height: auto;
 
 }
+#search-input.modal-form-input{
+  margin-top:1px;
+
+}
