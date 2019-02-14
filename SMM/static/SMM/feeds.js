@@ -33,12 +33,12 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
   }, 3000);
 
   $scope.resetAlertBadges = function () {
-    $scope.badges = [];
-    console.log('time')
     $http.get('display_feed_badge/').then(function (data) {
+    var count=0;
       angular.forEach(data.data, function (value, key) {
         var keyword = JSON.parse(value);
-        $scope.badges.push(keyword.alert_badge_count);
+        $scope.badges[count]=keyword.alert_badge_count;
+        count++;
       });
     });
   };
