@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
         <!--Angular JS-->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
             <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css' %}">
@@ -38,7 +39,7 @@ div#scroll::-webkit-scrollbar-thumb {
     </head>
     <body>
     <!--Main -->
-    <div class="container-fluid" ng-app="FeedsApp" ng-controller="FeedsController">
+    <div class="container-fluid" ng-app="FeedsApp" ng-controller="FeedsController" style="margin-top:10px">
         <div class="row d-flex flex-row h-100">
             <!--Side Bar-->
             <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2 d-flex flex-column float-left">
@@ -50,7 +51,7 @@ div#scroll::-webkit-scrollbar-thumb {
         </div>
                     <div class="col-12">
                         <div id ="scroll1"  style="overflow-y: auto; height:500px; overflow-x: hidden">
-                    <div  ng-repeat="keyword in alerts" ng-click="loadData(keyword.alert_id)">
+                    <div  ng-repeat="keyword in alerts" ng-click="loadData(keyword.alert_id,$index)">
 
                         <!--{%  for kwd_id, alert_name in keyword_list.items %}-->
                         <!--<li  class="db-list-item">-->
@@ -63,7 +64,7 @@ div#scroll::-webkit-scrollbar-thumb {
                          <li  class="db-list-item">
                             <a  id="alert_redirect" onclick="return false;" href="/" class="db-side-link">
                             <span class="d-none d-md-inline alert">{$ keyword.alert_name $}</span>
-                                <span class="alert_badge_count">{$ badges[$index] $}</span>
+                                <span class="alert_badge_count" class="ng-cloak">{$ badges[$index] $}</span>
                             </a>
                          </li>
                     </div>
@@ -77,9 +78,9 @@ div#scroll::-webkit-scrollbar-thumb {
             <!--Feed Panel-->
             <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 db-sidebar border-right">
 
-<div id ="scroll"  style="overflow-y: auto; height:500px; overflow-x: hidden">
+<div id ="scroll"  style="overflow-y: auto; height:500px; overflow-x: hidden" class="feedsScrollDiv">
 
-                <div class="row" ng-repeat="message in feeds" >
+                <div class="row" ng-repeat="message in feeds" id="feed_{$ message.ID $}" scroll-feeds="message.ID == scrolledFeedID" >
 
                     <div class="db-FeedSocial" ng-click="reply_click(message)">
                         <div class="db-FeedSocialLeft">
@@ -113,6 +114,24 @@ div#scroll::-webkit-scrollbar-thumb {
                 </div>
 </div>
 <script>
+function reply_click(time, text, name, picture, status_id , user_id,sentiment)
+{
+  console.log("hello")
+    $("#display_name").text(name);
+    $("#created_at").text(time);
+    $("#text").text(text);
+    $('#display_picture').attr('src',picture);
+    $('#display_picture_link').attr('href',"https://twitter.com/"+name);
+    $("#post_url").attr('href',"https://twitter.com/"+name+"/status/"+status_id);
+    $("#post_url").html("https://twitter.com/"+name+"/status/"+status_id);
+    if(sentiment=='1')
+    {
+          $('#dropdownEmotionButton').attr('src','{% static 'images/happy.png' %}');
+    }else {
+      $('#dropdownEmotionButton').attr('src','{% static 'images/sad.svg' %}');
+    }
+}
+
 function click_alert(keyword_id) {
 
     kwd_id=parseInt(keyword_id)
@@ -132,7 +151,7 @@ function click_alert(keyword_id) {
                                     <div class="col-1 col-sm-1 col-md-10 col-lg-10"></div>
                                     <div title="Add Your Response" class="col-3 col-sm-3 col-md-2 col-lg-2">
 
-                                        <div class="dropdown">
+                                       <div class="dropdown">
                                             <img class="image-emotion dropdown-toggle" src="{% static 'images/smily.jpg' %}" id="dropdownEmotionButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <div class="dropdown-menu dropdown-content" aria-labelledby="dropdownEmotionButton">
                                                 <a class="dropdown-item" onclick="return false;" ng-click = "update_sentiment(1)" href="/">Positive<img class="image-emotion-dropdown ml-auto" align="left" src="{% static 'images/happy.png' %}"></a>
@@ -177,14 +196,8 @@ function click_alert(keyword_id) {
         </div>
     </div>
     <!--script-->
-    <script
-            src="https://code.jquery.com/jquery-3.1.1.js"
-            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-            crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"
             integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9"
             crossorigin="anonymous"></script>
@@ -192,10 +205,17 @@ function click_alert(keyword_id) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.js'%}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.js'%}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js'%}"></script>
     <script src="{% static 'SMM/feeds.js' %}"></script>
-    <script src="{% static 'SMM/dropdown.js' %}"> </script>
+        <script src="{% static 'SMM/dropdown.js' %}"> </script>
+
+    <!--Scroll To-->
+    <!--<script src="{% static 'jquery.scrollTo-2.1.2/jquery.scrollTo.min.js' %}"></script>-->
+
+    <!--<script src="{% static 'jquery.scrollTo-2.1.2/jquery.scrollTo.js'%}"></script>-->
+    <!--<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
+
     </body>
     </html>
 {% endblock %}

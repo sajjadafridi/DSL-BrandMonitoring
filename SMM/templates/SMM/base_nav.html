@@ -42,11 +42,11 @@
 
                      <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="{% url 'redirect_login' %}"><span class="fa fa-clipboard db-icon header-nav-link-text"></span><span class="header-nav-link-text">Feeds</span></a></li>
 
-                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="#about">
+                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="{% url 'index' %}#about">
                         <span class="fa fa-info-circle db-icon header-nav-link-text"></span>
                         <span class="header-nav-link-text">About Us</span>
                        </a></li>
-                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="#main"><span
+                    <li class="nav-item db-nav-item"><a class="nav-link  text-white" href="{% url 'index' %}#main"><span
                             class="fa fa-phone-square db-icon header-nav-link-text"></span><span class="header-nav-link-text">Contact Us</span></a></li>
                 {% if user.is_authenticated %}
                      <li class="nav-item db-nav-item"><a class="nav-link db-nav-link text-white" href="/SMM/logout/"><span
@@ -67,10 +67,6 @@
 </main>
 {% block content %}
 {% endblock %}
-<script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
 </body>
 </html>

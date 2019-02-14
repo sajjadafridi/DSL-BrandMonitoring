@@ -187,6 +187,6 @@ CELERY_BEAT_SCHEDULE = {
 
     'scheduling_script': {
         'task': 'SMM.tasks.scheduling_script',
-        'schedule': crontab(minute='*/2'),
+        'schedule': crontab(hour='*/24,0'),
     }
 }
