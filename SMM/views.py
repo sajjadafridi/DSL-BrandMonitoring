@@ -198,10 +198,6 @@ def signup(request):
                     'token': account_activation_token.make_token(user),
                 })
                 user.email_user(subject, message, user.email)
-                mail_subject = subject
-                to_email = form.cleaned_data.get('email')
-                email = EmailMessage(mail_subject, message, to=[to_email])
-                email.send()
                 return redirect('account_activation_sent')
         else:
             # print(form.data['first_name'])
