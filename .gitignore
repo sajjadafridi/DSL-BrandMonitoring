@@ -5,7 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+BrandMonitoring/settings.py
 # Distribution / packaging
 .Python
 build/
@@ -15,6 +15,9 @@ downloads/
 eggs/
 libs/*
 libs/
+*.pyc
+
+SMM/__pycache__/*
 .eggs/
 lib/
 lib64/
