@@ -600,6 +600,7 @@
 }
 
 #about .container {
+  margin-top: 20px;
   position: relative;
   z-index: 10;
 }
