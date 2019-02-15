@@ -446,7 +446,7 @@ def display_feed_angular(request):
         message.set_DisplayPicture(post.PostUser.DisplayPicture)
         message.set_UserID(post.PostUser.UserID)
         message.set_EscapedContent(post.Content.replace(
-            "'", "\\'").replace('"', "&quot;"))
+            "'", "\'").replace('"', "&#34;"))
         jsonResult.append(message.toJSON())
         Posts.append(message)
 

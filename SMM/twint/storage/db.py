@@ -223,7 +223,6 @@ def user(conn, config, User):
 
 #  store the tweet in django model in mysql instead of twint sqlite3
 def tweets(conn, tweet, config):
-    print('i am here')
     result=[]
     twitter_posts = Posts()
     twitter_posts_user = Users()
@@ -237,6 +236,7 @@ def tweets(conn, tweet, config):
     twitter_posts_user.set_user_id(tweet.user_id_str)
     twitter_posts.set_user(twitter_posts_user)
     result.append(twitter_posts)
+    print(tweet.tweet)
 
     if (TwintThread.checkExistenceOfAPostForAUserKeyword(config.KwdID,tweet.id)):
         databaseThread.add_to_database(result,config.KwdID)

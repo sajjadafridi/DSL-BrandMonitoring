@@ -103,7 +103,7 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
     $scope.post_id = feed.ID;
     $("#display_name").text(feed.DisplayName);
     $("#created_at").text(feed.CreatedAt);
-    $("#text").text(feed.EscapedContent);
+    $("#text").text(feed.Content);
     $('#display_picture').attr('src', feed.DisplayPicture);
     $('#display_picture_link').attr('href', "https://twitter.com/" + feed.DisplayName);
     $("#post_url").attr('href', "https://twitter.com/" + name + "/status/" + feed.StatusID);
