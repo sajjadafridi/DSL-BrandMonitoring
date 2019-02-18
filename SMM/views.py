@@ -198,11 +198,9 @@ def signup(request):
                     'token': account_activation_token.make_token(user),
                 })
                 user.email_user(subject, message, user.email)
-                mail_subject = subject
-                to_email = form.cleaned_data.get('email')
-                email = EmailMessage(mail_subject, message, to=[to_email])
-                email.send()
                 return redirect('account_activation_sent')
+        else:
+            return render(request, 'SMM/signup.html', {'form': form})
     else:
         form = SignUpForm()
     return render(request, 'SMM/signup.html', {'form': form})
@@ -383,7 +381,7 @@ def load_profile(user):
 def update_sentiment(request):
     Post.objects.filter(id=request.GET.get('post_id')).update(
         Sentiment=request.GET.get('sentiment'))
-    print(request.GET.get('sentiment'))
+    # print(request.GET.get('sentiment'))
 
     return HttpResponse(request)
 
@@ -435,7 +433,6 @@ def display_feed_angular(request):
 
     jsonResult = []
     for post in post_table:
-
         message = Message()
         message.set_ID(post.id)
         message.set_statusID(post.StatusID)
@@ -530,7 +527,9 @@ def check_user_keyword(request):
 
 
 def get_user_keywords(request):
-    user_keywords = Keyword.objects.filter(User_id=request.user.id)
+    keyword = request.GET.get('keyword_name')
+    user_keywords = Keyword.objects.filter(
+        User_id=request.user.id, alert_name=keyword)
     keywords = []
     for kwd in user_keywords:
         keywords.append(kwd.alert_name)
@@ -556,3 +555,25 @@ def delete_account(user_request):
 
 def account_delete(request):
     return render(request, 'SMM/account_delete.html')
+
+
+def report(request):
+    user_id = request.user.id
+    keywords_list = []
+    keywords = list(Keyword.objects.filter(User_id=user_id))
+    user_keywords = Keyword.objects.filter(
+        User_id=request.user.id, alert_name=keyword).values_list('id', flat=True)
+    return render_to_response('SMM/report.html', {'keyword_list': keywords})
+
+def get_user_sentiment(request):
+    keyword = request.GET.get('alert_name')
+    keyword_id = Keyword.objects.filter(
+        User_id=request.user.id, alert_name=keyword).values_list('id', flat=True)
+    positive_count = Post.objects.filter(Keyword_id=keyword_id[0], Sentiment=1).count()
+    negative_count = Post.objects.filter(
+        Keyword_id=keyword_id[0], Sentiment=-1).count()
+    neutral_count = Post.objects.filter(
+        Keyword_id=keyword_id[0], Sentiment=0).count()
+
+    post_sentiment_counts = {'positive':positive_count,'negative':negative_count,'neutral':neutral_count}
+    return JsonResponse(post_sentiment_counts, safe=False)

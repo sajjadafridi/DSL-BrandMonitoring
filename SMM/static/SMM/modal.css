@@ -172,7 +172,7 @@ button[disabled] {
 
 /* unvisited link */
 a:link {
-  color: darkcyan;
+  color: #2f8833;
 }
 
 /* visited link */

@@ -118,3 +118,12 @@ venv.bak/
 dmypy.json
 
 *.xml
+
+# image file
+
+*.png
+*.PNG
+*.jpeg
+*.JPEG
+*.JPG
+*.jpg

@@ -16,7 +16,6 @@ app.directive('scrollFeeds', function () {
     });
   }
 });
-
 app.controller('FeedsController', ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
 
   $scope.update_sentiment = function (sentiment) {
@@ -33,15 +32,22 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
   }, 3000);
 
   $scope.resetAlertBadges = function () {
-    $scope.badges = [];
-    console.log('time')
     $http.get('display_feed_badge/').then(function (data) {
+    var count=0;
       angular.forEach(data.data, function (value, key) {
         var keyword = JSON.parse(value);
-        $scope.badges.push(keyword.alert_badge_count);
+        $scope.badges[count]=keyword.alert_badge_count;
+        count++;
       });
     });
   };
+
+  $scope.getKeywordBgColor = function (kwd_ID) {
+    switch(kwd_ID){
+        case $scope.kwd_ID: return '#c6e4c1';
+        default: return 'white';
+    }
+    };
 
   $scope.loadFeedsAndBadges = function () {
     console.log('time')
@@ -53,6 +59,7 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
           "alert_name": keyword.alert_name
         });
         $scope.badges.push(keyword.alert_badge_count);
+        $scope.kwd_ID=$scope.alerts[0].alert_id;
       });
     });
   };

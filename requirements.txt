@@ -25,3 +25,4 @@ langdetect
 libs/setmoke_api-1.0-py3-none-any.whl
 HTMLParser
 jsonpickle
+vaderSentiment

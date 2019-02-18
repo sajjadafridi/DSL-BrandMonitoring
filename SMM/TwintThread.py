@@ -5,9 +5,10 @@ from SMM.Posts import Posts
 from SMM.Users import Users
 from SMM.models import *
 from datetime import datetime, timedelta
-from Analysis.SentimentAnalysis import SentimentAnalysis
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from langdetect import detect_langs, DetectorFactory, detect
 import operator
+import re
 from SMM.UrduSentimentPredication import *
 
 import asyncio
@@ -36,7 +37,7 @@ class TwintThread(threading.Thread):
         self.get_daily_tweets(kwd_id, keyword)
 
     def get_daily_tweets(self, keyword_id, keyword):
-        print("Keyword: " + keyword)
+        # print("Keyword: " + keyword)
 
         # configure config object to get tweets
         c = twint.Config()
@@ -74,11 +75,11 @@ class TwintThread(threading.Thread):
         ''' load urdu_sentiment data '''
         loadData()
         ''' load english sentiment class'''
-        analysis = SentimentAnalysis()
+        analyser = SentimentIntensityAnalyzer()
         sentiment = 0
         result = ''
         for message in list:
-            result = self.detect_sentiment(message.get_text(), analysis)
+            result = self.detect_sentiment(message.get_text(), analyser)
             ''' result for neutral will be 0 and for negative, positive will be -1, 1 '''
             if result == 'Negative':
                 sentiment = -1
@@ -147,18 +148,7 @@ class TwintThread(threading.Thread):
         else:
             return None
 
-    # def install_setmoke():
-    #     import pip
-    #     installed_packages = pip.get_installed_distributions()
-    #     installed_packages_dict = dict((i.key, str(i.version)) for i in installed_packages)
-    #
-    #     if 'setmoke-api' not in installed_packages_dict:
-    #         path = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__),"..")),"libs")
-    #         main(['install', path+'/setmoke_api-1.0-py3-none-any.whl'])
-    #     else:
-    #         print('setmoke api already installed')
-
-    def detect_sentiment(self, text, analysis):
+    def detect_sentiment(self, text, analyser):
         ''' detect language and set the sentiments '''
         lang = self.language_detection(text)
         ''' for urdu '''
@@ -170,9 +160,35 @@ class TwintThread(threading.Thread):
             result = 0
         else:
             ''' for english '''
-            result = analysis.analysis(text, "NLTK", "./my_classifier.pickle")
+            result = self.english_sentiment_analysis(text, analyser)
 
         return result
+
+    def english_sentiment_analysis(self, text, analyser):
+        result = ""
+        if not text.strip():
+            print(text)
+            result = "Neutral"
+        else:
+            clean_text = self.clean_text(text)
+            score = analyser.polarity_scores(clean_text)
+            if (score['compound'] >= 0.05):
+                result = "Positive"
+            elif (score['compound'] > -0.05 and score['compound'] < 0.05):
+                result = "Neutral"
+            elif (score['compound'] < -0.05):
+                result = "Negative"
+        return result
+
+    def clean_text(self, text):
+        text = re.sub(
+            r'\b(?:(?:https?|ftp)://)?\w[\w-]*(?:\.[\w-]+)+\S*', '', text)
+        text = re.sub(r'…', '', text)
+        text = re.sub(r'\.+', '.', text)
+        text = re.sub(r'\?+', '?', text)
+        text = text.replace(r'\'', '\'').replace(
+            r'\"', '"').rstrip('\'').lstrip('\'').strip()
+        return text
 
     # def get_updated_tweets(self,keyword_id, keyword):
     #     print("kwwd id" + str(keyword_id))
