@@ -70,6 +70,7 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
     });
   };
   $scope.loadData = function (id, index, caller) {
+  $('#detailsPanelFeed').css('display', 'none');
     var no_of_feeds = 10;
     $scope.kwd_index = index;
     $scope.kwd_ID = id;
@@ -114,6 +115,7 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
   };
   $scope.reply_click = function (feed) {
     $scope.post_id = feed.ID;
+    $('#detailsPanelFeed').css('display', 'block');
     $("#display_name").text(feed.DisplayName);
     $("#created_at").text(feed.CreatedAt);
     $("#text").text(feed.Content);

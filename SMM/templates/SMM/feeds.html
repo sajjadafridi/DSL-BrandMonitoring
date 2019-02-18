@@ -49,6 +49,7 @@ div#scroll::-webkit-scrollbar-thumb {
                                 <i class="fa fa-plus-square db-list-add-icon" style="font-size:14px;"></i><span class="db-list-newalert">New Alert</span></a>
 
         </div>
+
                     <div class="col-12">
                         <div id ="scroll1"  style="overflow-y: auto; height:500px; overflow-x: hidden;margin-top:10px;">
                     <div  ng-repeat="keyword in alerts" ng-click="loadData(keyword.alert_id,$index)" class="row d-flex flex-row" id="alert_{$keyword.alert_id$}" ng-style="{'background-color':getKeywordBgColor(keyword.alert_id)}">
@@ -119,7 +120,7 @@ div#scroll::-webkit-scrollbar-thumb {
             <div class="col-lg-6 col-xl-6 d-flex flex-column"  style="width:auto;height:auto;">
                 <div class="row">
                     <div class="col">
-                        <div class="db-FeedSocial-expand h-100">
+                        <div class="db-FeedSocial-expand h-100" id="detailsPanelFeed">
                             <div class="db-action-bar">
                                 <div class="row m-2">
                                     <div class="col-1 col-sm-1 col-md-10 col-lg-10"></div>
