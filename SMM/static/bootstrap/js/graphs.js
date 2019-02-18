@@ -20,10 +20,11 @@ app.controller('ReportsAppController', ["$scope", "$http", function ($scope, $ht
 
         //your code here
         alert_name = $(this).val();
-        $scope.drawKeywordPieChart(alert_name)
+
+        if (alert_name != "_")
+            $scope.drawKeywordPieChart(alert_name)
 
     }));
-    $scope.name = "sid"
     $scope.reply_click = function (feed) {
         $scope.Keyword_name = feed.ID;
         $("#display_name").text(feed.DisplayName);
@@ -46,10 +47,6 @@ app.controller('ReportsAppController', ["$scope", "$http", function ($scope, $ht
 google.charts.load('current', {
     'packages': ['corechart']
 });
-
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(drawChart);
-
 // Callback that creates and populates a data table,
 // instantiates the pie chart, passes in the data and
 // draws it.
@@ -65,12 +62,12 @@ function drawChart(pos, neg, net) {
         ['Negative', neg],
         ['Neutral', net]
     ]);
-
+    console.log($('#chart_div').height())
     // Set chart options
     var options = {
         'title': 'Sentimental Analysis',
         'width': 800,
-        'height': 600
+        'height': 800
     };
 
     // Instantiate and draw our chart, passing in some options.

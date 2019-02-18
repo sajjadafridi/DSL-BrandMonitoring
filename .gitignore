@@ -41,6 +41,7 @@ SMM/migrations/__pycache__/*.pyc
 *.pyc
 SMM/__pycache__/*.pyc
 MANIFEST
+BrandMonitoring/__pycache__/*.pyc
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

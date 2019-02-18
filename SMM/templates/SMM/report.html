@@ -28,15 +28,14 @@
 
         <div class = "row">
         <label for="keyword_list" class="label">Select Keyword:</label>
+        
                 <select name="item_id" id="keywords">
+                <option value="_" ng-click="drawKeywordPieChart()">-----------</option>
                     {% for keyword in keyword_list %}
                     <option value="{{ keyword.alert_name }}" ng-click="drawKeywordPieChart()">{{ keyword.alert_name }}</option>
                     {% endfor %}
                 </select>
                 </div>
-                <button ng-click="drawKeywordPieChart()"></button>
-
-
             <!--Div that will hold the pie chart-->
             <div id="chart_div"></div>
 
