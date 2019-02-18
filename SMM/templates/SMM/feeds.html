@@ -52,10 +52,10 @@ div#scroll::-webkit-scrollbar-thumb {
                     <div class="col-12">
                         <div id ="scroll1"  style="overflow-y: auto; height:500px; overflow-x: hidden;margin-top:10px;">
                     <div  ng-repeat="keyword in alerts" ng-click="loadData(keyword.alert_id,$index)" class="row d-flex flex-row" id="alert_{$keyword.alert_id$}" ng-style="{'background-color':getKeywordBgColor(keyword.alert_id)}">
-                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flex flex-column float-left" style="padding:0">
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flex float-left" style="padding:0">
                                 <li  class="db-list-item">
                                     <a  id="alert_redirect" onclick="return false;" href="/" class="db-side-link" >
-                                        <span class="d-none d-md-inline alert alert_badge_text">{$ keyword.alert_name $}</span>
+                                        <span class="d-md-inline alert alert_badge_text">{$ keyword.alert_name $}</span>
                                     </a>
                                 </li>
                             </div>
