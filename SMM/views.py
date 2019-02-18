@@ -379,11 +379,15 @@ def load_profile(user):
 
 
 def update_sentiment(request):
-    Post.objects.filter(id=request.GET.get('post_id')).update(
+    is_updated="False"
+    try:
+        Post.objects.filter(id=request.GET.get('post_id')).update(
         Sentiment=request.GET.get('sentiment'))
-    # print(request.GET.get('sentiment'))
+        is_updated="True"
+    except:
+        is_updated="False"
 
-    return HttpResponse(request)
+    return JsonResponse('{"is_updated":"'+is_updated+'"}', safe=False)
 
 
 def temp(request, alert_id):

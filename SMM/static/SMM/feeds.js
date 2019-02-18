@@ -24,6 +24,13 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
         "post_id": $scope.post_id,
         "sentiment": sentiment
       }
+    }).then(function (data) {
+      if (JSON.parse(data.data).is_updated == "True") {
+        var feedIndex = $scope.feeds.findIndex(feed => {
+          return feed.ID === $scope.post_id
+        });
+        $scope.feeds[feedIndex].Sentiment = sentiment;
+      }
     });
   };
 
@@ -33,10 +40,10 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
 
   $scope.resetAlertBadges = function () {
     $http.get('display_feed_badge/').then(function (data) {
-    var count=0;
+      var count = 0;
       angular.forEach(data.data, function (value, key) {
         var keyword = JSON.parse(value);
-        $scope.badges[count]=keyword.alert_badge_count;
+        $scope.badges[count] = keyword.alert_badge_count;
         count++;
       });
     });
@@ -50,7 +57,6 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
     };
 
   $scope.loadFeedsAndBadges = function () {
-    console.log('time')
     $http.get('display_feed_badge/').then(function (data) {
       angular.forEach(data.data, function (value, key) {
         var keyword = JSON.parse(value);
