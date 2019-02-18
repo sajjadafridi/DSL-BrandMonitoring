@@ -110,29 +110,7 @@ div#scroll::-webkit-scrollbar-thumb {
                 </div>
 </div>
 <script>
-function reply_click(time, text, name, picture, status_id , user_id,sentiment)
-{
-  console.log("hello")
-    $("#display_name").text(name);
-    $("#created_at").text(time);
-    $("#text").text(text);
-    $('#display_picture').attr('src',picture);
-    $('#display_picture_link').attr('href',"https://twitter.com/"+name);
-    $("#post_url").attr('href',"https://twitter.com/"+name+"/status/"+status_id);
-    $("#post_url").html("https://twitter.com/"+name+"/status/"+status_id);
-    if(sentiment=='1')
-    {
-          $('#dropdownEmotionButton').attr('src','{% static 'images/happy.png' %}');
-    }else {
-      $('#dropdownEmotionButton').attr('src','{% static 'images/sad.svg' %}');
-    }
-}
 
-function click_alert(keyword_id) {
-
-    kwd_id=parseInt(keyword_id)
-    $('#alert_redirect').attr('href', "{% url 'display_feed' alert_id=1 %}")
-}
 </script>
 
 

@@ -66,9 +66,8 @@ function drawChart(pos, neg, net) {
     console.log($('#chart_div').height())
     // Set chart options
     var options = {
-        'title': 'Sentimental Analysis',
-        'width': 800,
-        'height': 800
+        'width': $('#chart_div').width(),
+        'height': 500
     };
 
     // Instantiate and draw our chart, passing in some options.

@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
+        <link rel="stylesheet" href="{% static 'SMM/dropdown.css' %}">
          <!--Angular JS-->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
@@ -25,19 +26,29 @@
     </head>
 
     <body>
-        <div ng-app="ReportsApp" ng-controller="ReportsAppController" class="container" style="margin-top:10px">
 
-        <div class = "row">
-        <label for="keywords" class="label">Select Keyword:</label>
-                <select name="item_id" id="keywords">
-                <option value="_" ng-click="drawKeywordPieChart()">-----------</option>
-                    {% for keyword in keyword_list %}
-                    <option value="{{ keyword.alert_name }}" ng-click="drawKeywordPieChart()">{{ keyword.alert_name }}</option>
-                    {% endfor %}
-                </select>
-                </div>
+    <div class="row">
+        <div class="col-4">
+            <div ng-app="ReportsApp" ng-controller="ReportsAppController" class="container" style="margin-top:10px">
+
+            <div class="drop">
+  <div class="option active placeholder" data-value="placeholder">
+    Select Keyword
+  </div>
+        {% for keyword in keyword_list %}
+                <div class="option" data-value="{{ keyword.alert_name }}" ng-click="drawKeywordPieChart('{{keyword.alert_name}}')">
+   {{keyword.alert_name}}
+  </div>
+                {% endfor %}
+</div>
+        </div>
+
+    </div>
+
+<div class="col-8"><div id="chart_div"></div></div>
+
             <!--Div that will hold the pie chart-->
-            <div id="chart_div"></div>
+
 
         </div>
         <!--script-->
@@ -55,8 +66,19 @@
         <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'bootstrap/js/graphs.js' %}"></script>
+     <script type="text/javascript" src="{% static 'SMM/animate_dropdown.js' %}"></script>
 
     </body>
 
 </html>
 {% endblock %}
+
+<!--<div class = "row">-->
+        <!--<label for="keywords" class="label">Select Keyword:</label>-->
+                <!--<select name="item_id" id="keywords">-->
+                <!--<option value="_" ng-click="drawKeywordPieChart()">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>-->
+                    <!--{% for keyword in keyword_list %}-->
+                    <!--<option value="{{ keyword.alert_name }}" ng-click="drawKeywordPieChart()">{{ keyword.alert_name }}</option>-->
+                    <!--{% endfor %}-->
+                <!--</select>-->
+                <!--</div>-->

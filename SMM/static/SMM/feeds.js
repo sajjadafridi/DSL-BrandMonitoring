@@ -123,10 +123,9 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
     $("#post_url").html("https://twitter.com/" + name + "/status/" + feed.StatusID);
     if (feed.Sentiment == '1') {
       $('#dropdownEmotionButton').attr('src', '/static/images/happy.png');
-    } else if (feed.Sentiment == '-1') {
+    } else if (feed.Sentiment == '0') {
       $('#dropdownEmotionButton').attr('src', '/static/images/emotion.svg');
     } else {
-
       $('#dropdownEmotionButton').attr('src', '/static/images/sad.svg');
     }
 
