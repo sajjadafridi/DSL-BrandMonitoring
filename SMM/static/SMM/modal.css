@@ -204,3 +204,7 @@ a:active {
   margin-top: 1px;
 
 }
+
+.selected {
+  background: #9aff9e;
+}
