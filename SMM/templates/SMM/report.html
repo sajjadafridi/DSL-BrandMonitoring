@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
          <!--Angular JS-->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
         <link rel="icon" href="{% static 'images/icon-trans.png' %}">
     </head>
 
@@ -27,8 +28,7 @@
         <div ng-app="ReportsApp" ng-controller="ReportsAppController" class="container" style="margin-top:10px">
 
         <div class = "row">
-        <label for="keyword_list" class="label">Select Keyword:</label>
-        
+        <label for="keywords" class="label">Select Keyword:</label>
                 <select name="item_id" id="keywords">
                 <option value="_" ng-click="drawKeywordPieChart()">-----------</option>
                     {% for keyword in keyword_list %}
@@ -55,7 +55,6 @@
         <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'bootstrap/js/graphs.js' %}"></script>
-
 
     </body>
 
