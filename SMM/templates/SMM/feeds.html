@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>Social Media Monitor</title>
-    
+        <link href='https://fonts.googleapis.com/css?family=Acme' rel='stylesheet'>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
@@ -50,23 +50,19 @@ div#scroll::-webkit-scrollbar-thumb {
 
         </div>
                     <div class="col-12">
-                        <div id ="scroll1"  style="overflow-y: auto; height:500px; overflow-x: hidden">
-                    <div  ng-repeat="keyword in alerts" ng-click="loadData(keyword.alert_id,$index)">
+                        <div id ="scroll1"  style="overflow-y: auto; height:500px; overflow-x: hidden;margin-top:10px;">
+                    <div  ng-repeat="keyword in alerts" ng-click="loadData(keyword.alert_id,$index)" class="row d-flex flex-row" id="alert_{$keyword.alert_id$}" ng-style="{'background-color':getKeywordBgColor(keyword.alert_id)}">
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 d-flex flex-column float-left" style="padding:0">
+                                <li  class="db-list-item">
+                                    <a  id="alert_redirect" onclick="return false;" href="/" class="db-side-link" >
+                                        <span class="d-none d-md-inline alert alert_badge_text">{$ keyword.alert_name $}</span>
+                                    </a>
+                                </li>
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex flex-column float-left" style="text-align:center">
+                                <span class="d-none d-md-inline alert_badge_count" class="ng-cloak">{$ badges[$index] $}</span>
+                            </div>
 
-                        <!--{%  for kwd_id, alert_name in keyword_list.items %}-->
-                        <!--<li  class="db-list-item">-->
-                            <!--<a  id="alert_redirect" onclick="return false;" ng-click="loadData('{{kwd_id}}')" href="/" class="db-side-link">-->
-                            <!--<span class="d-none d-md-inline">{{alert_name }}</span>-->
-                                <!--<span>{$ badgeCounter[] $}</span>-->
-                            <!--</a>-->
-                         <!--</li>-->
-                        <!--{% endfor %}-->
-                         <li  class="db-list-item">
-                            <a  id="alert_redirect" onclick="return false;" href="/" class="db-side-link">
-                            <span class="d-none d-md-inline alert">{$ keyword.alert_name $}</span>
-                                <span class="alert_badge_count" class="ng-cloak">{$ badges[$index] $}</span>
-                            </a>
-                         </li>
                     </div>
 </div>
                     </div>
@@ -80,7 +76,7 @@ div#scroll::-webkit-scrollbar-thumb {
 
 <div id ="scroll"  style="overflow-y: auto; height:500px; overflow-x: hidden" class="feedsScrollDiv">
 
-                <div class="row" ng-repeat="message in feeds" id="feed_{$ message.ID $}" scroll-feeds="message.ID == scrolledFeedID" >
+                <div class="row" ng-repeat="message in feeds" id="feed_{$ message.ID $}" scroll-feeds="message.ID == 'init'" >
 
                     <div class="db-FeedSocial" ng-click="reply_click(message)">
                         <div class="db-FeedSocialLeft">
@@ -209,11 +205,6 @@ function click_alert(keyword_id) {
     <script src="{% static 'SMM/feeds.js' %}"></script>
         <script src="{% static 'SMM/dropdown.js' %}"> </script>
 
-    <!--Scroll To-->
-    <!--<script src="{% static 'jquery.scrollTo-2.1.2/jquery.scrollTo.min.js' %}"></script>-->
-
-    <!--<script src="{% static 'jquery.scrollTo-2.1.2/jquery.scrollTo.js'%}"></script>-->
-    <!--<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
 
     </body>

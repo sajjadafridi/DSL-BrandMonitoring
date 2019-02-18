@@ -57,6 +57,11 @@ class Message:
     def get_EscapedContent(self):
         return self.EscapedContent
 
+    def get_KeywordId(self):
+        return self.keywordId
+    def set_KeywordId(self,keywordId):
+        self.keywordId=keywordId
+
     def toJSON(self):
         return json.dumps(vars(self))
         # return json.dumps(self, default=lambda o: o.__dict__,

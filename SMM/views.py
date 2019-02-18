@@ -433,7 +433,6 @@ def display_feed_angular(request):
 
     jsonResult = []
     for post in post_table:
-
         message = Message()
         message.set_ID(post.id)
         message.set_statusID(post.StatusID)
