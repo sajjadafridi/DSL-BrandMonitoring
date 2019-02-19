@@ -39,6 +39,11 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
   }, 3000);
 
   $scope.resetAlertBadges = function () {
+
+  if($scope.feeds.length<10 && $scope.badges[$scope.kwd_index] >=10){
+        $scope.loadData($scope.kwd_ID,$scope.kwd_index);
+        }
+        
     $http.get('display_feed_badge/').then(function (data) {
       var count = 0;
       angular.forEach(data.data, function (value, key) {
@@ -70,7 +75,7 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
     });
   };
   $scope.loadData = function (id, index, caller) {
-  $('#detailsPanelFeed').css('display', 'none');
+
     var no_of_feeds = 10;
     $scope.kwd_index = index;
     $scope.kwd_ID = id;
@@ -79,6 +84,7 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
       no_of_feeds = no_of_feeds + $scope.feeds.length;
     } else {
       $scope.feeds = [];
+      $('#detailsPanelFeed').css('display', 'none');
     }
 
     $http.get('display_feed_angular/', {
@@ -121,8 +127,8 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
     $("#text").text(feed.Content);
     $('#display_picture').attr('src', feed.DisplayPicture);
     $('#display_picture_link').attr('href', "https://twitter.com/" + feed.DisplayName);
-    $("#post_url").attr('href', "https://twitter.com/" + name + "/status/" + feed.StatusID);
-    $("#post_url").html("https://twitter.com/" + name + "/status/" + feed.StatusID);
+    $("#post_url").attr('href', "https://twitter.com/" + feed.DisplayName + "/status/" + feed.StatusID);
+    $("#post_url").html("https://twitter.com/" + feed.DisplayName + "/status/" + feed.StatusID);
     if (feed.Sentiment == '1') {
       $('#dropdownEmotionButton').attr('src', '/static/images/happy.png');
     } else if (feed.Sentiment == '0') {
