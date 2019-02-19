@@ -127,8 +127,8 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
     $("#text").text(feed.Content);
     $('#display_picture').attr('src', feed.DisplayPicture);
     $('#display_picture_link').attr('href', "https://twitter.com/" + feed.DisplayName);
-    $("#post_url").attr('href', "https://twitter.com/" + name + "/status/" + feed.StatusID);
-    $("#post_url").html("https://twitter.com/" + name + "/status/" + feed.StatusID);
+    $("#post_url").attr('href', "https://twitter.com/" + feed.DisplayName + "/status/" + feed.StatusID);
+    $("#post_url").html("https://twitter.com/" + feed.DisplayName + "/status/" + feed.StatusID);
     if (feed.Sentiment == '1') {
       $('#dropdownEmotionButton').attr('src', '/static/images/happy.png');
     } else if (feed.Sentiment == '0') {
