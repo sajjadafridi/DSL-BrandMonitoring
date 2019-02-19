@@ -36,7 +36,7 @@
             </ul>
         </div>
 
-        <form method="POST" enctype="multipart/form-data" id="myProfileArea" class="settingsArea">
+        <form method="POST" enctype="multipart/form-data" id="myProfileArea" class="settingsArea" ng-app="profileApp" name="user">
             {% csrf_token %}
             <div class="row" id="heading">
                 <h2>My Profile</h2>
@@ -46,27 +46,20 @@
                 <div class="row">
                     <label for="name" class="input-labels">Profile Image</label>
                     {% if profile_form.profile_image %}
-                    {% comment %} <img src='{{ profile_form.profile_image }}' width='240' id="profileImagePlaceHolder"
-                        alt="" /> {% endcomment %}
                     <img src='{{profile_form.instance.profile_image.url}}' width='240' id="profileImagePlaceHolder" alt="" />
                     {% endif %}
                     <input type="file" name="{{ profile_form.profile_image.html_name }}" id="{{ profile_form.profile_image.id_for_label }}"
                         value="{{ profile_form.profile_image.url }}" class="form-control" onchange="loadImage()">
-                    {% comment %} <input type="file" id="profileImageInput" class="form-control" name="profileImage" id="fileToUpload"
-                        onchange="loadImage()"> {% endcomment %}
+
                 </div>
 
                 <div class="row">
                     <label for="{{ user_form.first_name.id_for_label }}" class="input-labels">First Name</label>
                     {{ user_form.first_name }}
                     {{ user_form.first_name.errors }}
-                    {% comment %} <input type="text" id="fname" class="form-control" placeholder="First Name" required
-                        autofocus> {% endcomment %}
                 </div>
                 <div class="row">
                     <label for="{{ user_form.last_name.id_for_label }}" class="input-labels">Last Name</label>
-                    {% comment %} <input type="text" id="lname" class="form-control" placeholder="Last Name" required
-                        autofocus> {% endcomment %}
                     {{ user_form.last_name }}
                     {{ user_form.last_name.errors }}
 
@@ -76,8 +69,6 @@
                     <label for="{{ user_form.email.id_for_label }}" class="input-labels">Email address</label>
                     {{ user_form.email }}
                     {{ user_form.email.errors }}
-                    {% comment %} <input type="email" id="Email" class="form-control" placeholder="Email address"
-                        required autofocus> {% endcomment %}
                 </div>
 
                 <div class="row">
@@ -85,8 +76,7 @@
                     {{ profile_form.company_name }}
                     {{ profile_form.company_name.errors }}
 
-                    {% comment %} <input type="text" id="companyname" class="form-control" placeholder="Company"
-                        required autofocus> {% endcomment %}
+
                 </div>
 
                 <div class="row">
@@ -94,14 +84,6 @@
                     <input hidden type="text" id="employeRange" class="form-control">
                     {{ profile_form.company_size }}
 
-                    {% comment %} <select class="form-control">
-                        <option selected="selected" disabled>Objects on page:</option>
-                        <option>5-10 employees</option>
-                        <option>10-25 employees</option>
-                        <option>25-50 employees</option>
-                        <option>50-100 employees</option>
-                        <option>>100 employees</option>
-                    </select> {% endcomment %}
                 </div>
                 {% if messages %}
                 {% for msg in messages %}
@@ -114,7 +96,7 @@
                 <div class="rows">
                     <br>
                     <div class="row">
-                        <input class="btn-success " type="submit" name="profileupdatebtn" value="update">
+                        <input class="btn-success " type="submit" name="profileupdatebtn" value="update" ng-disabled="user.$pristine">
                     </div>
                 </div>
             </div>

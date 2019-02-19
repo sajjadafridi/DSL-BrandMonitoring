@@ -328,7 +328,7 @@ def update_profile(request):
                 # profile = Profile.objects.get(request.user.id)
                 usr_profile = Profile.objects.get(user_id=request.user.id)
                 profile = usr_profile.profile_image.file.name
-                if usr_profile.profile_image.name != "default_profile_image.png":
+                if usr_profile.profile_image.name != "default_profile_image.png" :
                     if os.path.exists(profile):
                         os.remove(profile)
                 user_form.save()

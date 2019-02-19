@@ -44,6 +44,7 @@ $('#sourcebtn').prop('disabled', true);
 $('#rlist').on('click', 'li', function () {
     $('#rlist').hide();
     var searchvalue = $(this).text();
+    console.log(searchvalue)
     $('#search-input').val(searchvalue);
     var domainvalue = $(this).children("input").val();
     $('#domain-input').val(domainvalue);
@@ -54,6 +55,23 @@ $('#rlist').on('click', 'li', function () {
     $('#sourcebtn').prop('disabled', false);
 });
 
+$('#rlist').on("keypress", function (e) {
+
+    var code = e.keyCode || e.which;
+
+    if (code == 13) { // 13 = enter key-code        
+        var searchvalue = $(this).text();
+        console.log(searchvalue)
+        $('#search-input').val(searchvalue);
+        var domainvalue = $(this).children("input").val();
+        $('#domain-input').val(domainvalue);
+        $('#search_keyword').val(searchvalue);
+        var imgUrl = $(this).children('img').attr('src');
+        $('#input-image').attr('src', imgUrl);
+        $('#image-input').attr('src', imgUrl);
+        $('#sourcebtn').prop('disabled', false);
+    }
+});
 
 
 $('#search-input').on('click', function () {
@@ -95,7 +113,11 @@ $('#ajax-example').on('keydown', function (e) {
     } else if (key == 13 || key == 10) {
         e.preventDefault();
         $('#rlist').hide();
+        var $domainvalue = $('#search-input').val();
+        $('#search_keyword').val($domainvalue);
+        console.log($domainvalue)
         $('#sourcebtn').prop('disabled', false);
+
     }
 
     $current.addClass('selected');
