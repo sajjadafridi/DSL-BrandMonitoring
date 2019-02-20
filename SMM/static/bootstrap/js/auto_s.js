@@ -10,13 +10,17 @@ app.controller('NewAlertSubmitAppController', ["$scope", "$http", function ($sco
     $scope.preventSubmission = function ($event) {
 
         var keyword = "";
+console.log($scope.keywords)
         if (dataStore.getItem(index) === "company") {
             keyword = $('#search-input').val();
+            alert(dataStore.getItem(index))
         } else {
             keyword = $('#keyword-input').val();
+            alert(dataStore.getItem(index))
         }
         if (keyword != "") {
-            if ($scope.keywords.includes(keyword)) {
+
+            if ($scope.keywords.includes(keyword.toLowerCase())) {
                 $event.preventDefault();
                 $('#errorMessage').css('display', 'block');
             } else {
@@ -25,6 +29,7 @@ app.controller('NewAlertSubmitAppController', ["$scope", "$http", function ($sco
         }
     }
 
+
     $scope.get_user_keywords = function () {
         $http.get('get_user_keywords/').then(function (data) {
             angular.forEach(data.data, function (value, key) {
@@ -32,7 +37,8 @@ app.controller('NewAlertSubmitAppController', ["$scope", "$http", function ($sco
             });
         });
     }
-    $scope.get_user_keywords();
+
+     $scope.get_user_keywords();
 
 }]);
 

@@ -49,8 +49,14 @@
                     <img src='{{profile_form.instance.profile_image.url}}' width='240' id="profileImagePlaceHolder" alt="" />
                     {% endif %}
                     <input type="file" name="{{ profile_form.profile_image.html_name }}" id="{{ profile_form.profile_image.id_for_label }}"
+<<<<<<< Updated upstream
                         value="{{ profile_form.profile_image.url }}" class="form-control" onchange="loadImage()">
 
+=======
+                        value="{{ profile_form.instance.profile_image.url }}" class="form-control" onchange="loadImage()">
+                    {% comment %} <input type="file" id="profileImageInput" class="form-control" name="profileImage" id="fileToUpload"
+                        onchange="loadImage()"> {% endcomment %}
+>>>>>>> Stashed changes
                 </div>
 
                 <div class="row">

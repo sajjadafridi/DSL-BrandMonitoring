@@ -37,11 +37,8 @@ def get_daily_tweets(keyword_id, keyword):
     c.Search = Keyword
     c.KwdID = keyword_id
     c.Database = "dbTweets"
-    c.Limit = 100
-    # c.Since = datetime.strftime(datetime.now() - timedelta(2), '%Y-%m-%d')
-    # print(c.Since)
-    # c.Until = datetime.strftime(datetime.now(),'%Y-%m-%d')
-    # print(c.Unt)
+    c.Since = datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
+    c.Until = datetime.strftime(datetime.now(),'%Y-%m-%d')
     c.Store_object = True
     # search keyword with above configuration and the tweets will be stored sequentially after being scrapped
     twint.run.Search(c)

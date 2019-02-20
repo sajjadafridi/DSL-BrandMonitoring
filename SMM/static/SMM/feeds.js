@@ -36,7 +36,7 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
 
   $interval(function () {
     $scope.resetAlertBadges();
-  }, 3000);
+  }, 1000);
 
   $scope.resetAlertBadges = function () {
 

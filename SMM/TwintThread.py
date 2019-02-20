@@ -13,7 +13,6 @@ from SMM.UrduSentimentPredication import *
 
 import asyncio
 
-
 class TwintThread(threading.Thread):
 
     def startThreadTwitterUpdatedFeeds(self, kwd_id, keyword):
@@ -30,6 +29,9 @@ class TwintThread(threading.Thread):
         from threading import Thread
         t = Thread(target=self.get_feeds, args=(keyword, kwd_id))
         t.start()
+        # import multiprocessing
+        # p = multiprocessing.Process(target=self.get_feeds, args=(keyword, kwd_id))
+        # p.start()
         # t.join()
 
     def get_update_feeds(self, kwd_id, keyword):
@@ -56,8 +58,11 @@ class TwintThread(threading.Thread):
         c = None
         c = twint.Config()
         c.Search = keyword
-        c.Limit = 50
         c.KwdID = kwd_id
+        c.Since = datetime.strftime(datetime.now() - timedelta(30), '%Y-%m-%d')
+        print(c.Since)
+        c.Until = datetime.strftime(datetime.now(), '%Y-%m-%d')
+        print(c.Until)
         c.Database = "db_tweets"
         c.Store_object = True
         twint.run.Search(c)
@@ -136,17 +141,20 @@ class TwintThread(threading.Thread):
 
     def language_detection(self, text):
         ''' constrain the non-determinastic beahvour '''
-        DetectorFactory.seed = 0
-        languages_list = dict()
-        languages = detect_langs(text)
-        if len(languages) > 0:
-            for lang in languages:
-                la = str(lang)
-                score = la.split(":")
-                languages_list[score[0]] = float(score[1])
-            return max(languages_list.items(), key=operator.itemgetter(1))[0]
-        else:
-            return None
+        try:
+            DetectorFactory.seed = 0
+            languages_list = dict()
+            languages = detect_langs(text)
+            if len(languages) > 0:
+                for lang in languages:
+                    la = str(lang)
+                    score = la.split(":")
+                    languages_list[score[0]] = float(score[1])
+                return max(languages_list.items(), key=operator.itemgetter(1))[0]
+            else:
+                return None
+        except:
+            return 'en'
 
     def detect_sentiment(self, text, analyser):
         ''' detect language and set the sentiments '''
@@ -154,7 +162,7 @@ class TwintThread(threading.Thread):
         ''' for urdu '''
         if(lang == 'ur'):
             data = text.split('\n')
-            pred_sentiment = self.predOnData(data)
+            pred_sentiment = predOnData(data)
             result = max(pred_sentiment, key=pred_sentiment.count)
         elif lang == None:
             result = 0
@@ -190,34 +198,34 @@ class TwintThread(threading.Thread):
             r'\"', '"').rstrip('\'').lstrip('\'').strip()
         return text
 
-    # def get_updated_tweets(self,keyword_id, keyword):
-    #     print("kwwd id" + str(keyword_id))
-    #     post_table = Post.objects.filter(Keyword_id=keyword_id).latest('CreatedAt')
-    #     created_at = str(post_table.CreatedAt).split(" ")
-    #     keyword_result = []
-    #     last_post_date = created_at[0]
-    #     last_post_time = created_at[1]
-    #     last_post_time = datetime.strptime(last_post_time[:8], '%H:%M:%S')
-    #     c = twint.Config()
-    #     c.Search = keyword
-    #     c.Limit = 10
-    #     c.Database="dbTweets"
-    #     c.Since = created_at[0][:10]
-    #     c.Store_object = True
-    #     twitter_response = twint.run.Search(c)
-    #     for tweet in twitter_response:
-    #         time_spam = datetime.strptime(tweet.timestamp[:10], '%H:%M:%S')
-    #         if (last_post_time.time() < time_spam.time()):
-    #             twitter_posts = Posts()
-    #             twitter_posts_user = Users()
-    #             twitter_posts.set_keyword(keyword)
-    #             text = tweet.tweet
-    #             twitter_posts.set_text(text)
-    #             twitter_posts.set_status_id(tweet.id)
-    #             twitter_posts.set_time(tweet.datestamp + " " + tweet.timestamp)
-    #             twitter_posts_user.set_display_name(tweet.username)
-    #             twitter_posts_user.set_display_picture(tweet.profile_image_url)
-    #             twitter_posts_user.set_user_id(tweet.user_id_str)
-    #             twitter_posts.set_user(twitter_posts_user)
-    #             keyword_result.append(twitter_posts)
-    #     self.add_to_database(keyword_result, keyword_id)
+    def get_updated_tweets(self,keyword_id, keyword):
+        print("kwwd id" + str(keyword_id))
+        post_table = Post.objects.filter(Keyword_id=keyword_id).latest('CreatedAt')
+        created_at = str(post_table.CreatedAt).split(" ")
+        keyword_result = []
+        last_post_date = created_at[0]
+        last_post_time = created_at[1]
+        last_post_time = datetime.strptime(last_post_time[:8], '%H:%M:%S')
+        c = twint.Config()
+        c.Search = keyword
+        c.Limit = 10
+        c.Database="dbTweets"
+        c.Since = created_at[0][:10]
+        c.Store_object = True
+        twitter_response = twint.run.Search(c)
+        for tweet in twitter_response:
+            time_spam = datetime.strptime(tweet.timestamp[:10], '%H:%M:%S')
+            if (last_post_time.time() < time_spam.time()):
+                twitter_posts = Posts()
+                twitter_posts_user = Users()
+                twitter_posts.set_keyword(keyword)
+                text = tweet.tweet
+                twitter_posts.set_text(text)
+                twitter_posts.set_status_id(tweet.id)
+                twitter_posts.set_time(tweet.datestamp + " " + tweet.timestamp)
+                twitter_posts_user.set_display_name(tweet.username)
+                twitter_posts_user.set_display_picture(tweet.profile_image_url)
+                twitter_posts_user.set_user_id(tweet.user_id_str)
+                twitter_posts.set_user(twitter_posts_user)
+                keyword_result.append(twitter_posts)
+        self.add_to_database(keyword_result, keyword_id)

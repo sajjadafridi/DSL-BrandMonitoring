@@ -531,12 +531,11 @@ def check_user_keyword(request):
 
 
 def get_user_keywords(request):
-    keyword = request.GET.get('keyword_name')
     user_keywords = Keyword.objects.filter(
-        User_id=request.user.id, alert_name=keyword)
+        User_id=request.user.id)
     keywords = []
     for kwd in user_keywords:
-        keywords.append(kwd.alert_name)
+        keywords.append(kwd.alert_name.lower())
     return JsonResponse(keywords, safe=False)
 
 

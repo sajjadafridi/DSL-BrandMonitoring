@@ -52,7 +52,6 @@ function loadImage() {
 	} else {}
 }
 
-
 var modalConfirm = function (callback) {
 
 	$("#deleteAccountbtn").on("click", function () {
