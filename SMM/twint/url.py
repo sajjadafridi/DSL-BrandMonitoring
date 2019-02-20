@@ -1,5 +1,6 @@
 #from datetime import datetime
 #import logging
+import time
 
 mobile = "https://mobile.twitter.com"
 base = "https://twitter.com/i"
@@ -105,4 +106,5 @@ async def Search(config, init):
         q += " filter:replies"
 
     params.append(("q", q))
+    print(url)
     return url, params

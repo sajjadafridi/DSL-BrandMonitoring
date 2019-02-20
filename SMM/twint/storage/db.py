@@ -223,23 +223,24 @@ def user(conn, config, User):
 
 #  store the tweet in django model in mysql instead of twint sqlite3
 def tweets(conn, tweet, config):
-    result=[]
-    twitter_posts = Posts()
-    twitter_posts_user = Users()
-    twitter_posts.set_keyword(config.Search)
-    text = tweet.tweet
-    twitter_posts.set_text(text)
-    twitter_posts.set_status_id(tweet.id)
-    twitter_posts.set_time(tweet.datestamp + " " + tweet.timestamp)
-    twitter_posts_user.set_display_name(tweet.username)
-    twitter_posts_user.set_display_picture(tweet.profile_image_url)
-    twitter_posts_user.set_user_id(tweet.user_id_str)
-    twitter_posts.set_user(twitter_posts_user)
-    result.append(twitter_posts)
-    print(tweet.tweet)
+    if config.Search.lower() in tweet.tweet.lower():
+        result=[]
+        twitter_posts = Posts()
+        twitter_posts_user = Users()
+        twitter_posts.set_keyword(config.Search)
+        text = tweet.tweet
+        twitter_posts.set_text(text)
+        twitter_posts.set_status_id(tweet.id)
+        twitter_posts.set_time(tweet.datestamp + " " + tweet.timestamp)
+        twitter_posts_user.set_display_name(tweet.username)
+        twitter_posts_user.set_display_picture(tweet.profile_image_url)
+        twitter_posts_user.set_user_id(tweet.user_id_str)
+        twitter_posts.set_user(twitter_posts_user)
+        result.append(twitter_posts)
+        print(tweet.tweet)
 
-    if (TwintThread.checkExistenceOfAPostForAUserKeyword(config.KwdID,tweet.id)):
-        databaseThread.add_to_database(result,config.KwdID)
+        if (TwintThread.checkExistenceOfAPostForAUserKeyword(config.KwdID,tweet.id)):
+            databaseThread.add_to_database(result,config.KwdID)
 
 # def tweets(conn, Tweet, config):
 #     try:

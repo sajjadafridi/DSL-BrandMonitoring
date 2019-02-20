@@ -46,6 +46,7 @@ class TwintThread(threading.Thread):
         c.Search = Keyword
         c.KwdID = keyword_id
         c.Database = "dbTweets"
+        c.Lang="ur"
         c.Since = datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
         c.Until = datetime.strftime(datetime.now(), '%Y-%m-%d')
         c.Store_object = True
@@ -75,6 +76,7 @@ class TwintThread(threading.Thread):
         return False
 
     def add_to_database(self, list, kwd_id):
+
         ''' check setmoke api '''
         # install_setmoke()
         ''' load urdu_sentiment data '''
@@ -84,29 +86,30 @@ class TwintThread(threading.Thread):
         sentiment = 0
         result = ''
         for message in list:
-            result = self.detect_sentiment(message.get_text(), analyser)
-            ''' result for neutral will be 0 and for negative, positive will be -1, 1 '''
-            if result == 'Negative':
-                sentiment = -1
-            elif result == 'Positive':
-                sentiment = 1
-            else:
-                sentiment = 0
-                ''' update in database '''
-            users, created = PostUser.objects.get_or_create(UserID=message.get_user().get_user_id(),
-                                                            DisplayName=message.get_user().get_display_name(),
-                                                            DisplayPicture=message.get_user().get_display_picture())
+            if self.language_detection(message.get_text())==('en' or 'ur'):
+                result = self.detect_sentiment(message.get_text(), analyser)
+                ''' result for neutral will be 0 and for negative, positive will be -1, 1 '''
+                if result == 'Negative':
+                    sentiment = -1
+                elif result == 'Positive':
+                    sentiment = 1
+                else:
+                    sentiment = 0
+                    ''' update in database '''
+                users, created = PostUser.objects.get_or_create(UserID=message.get_user().get_user_id(),
+                                                                DisplayName=message.get_user().get_display_name(),
+                                                                DisplayPicture=message.get_user().get_display_picture())
 
-            users.save()
-            print()
-            post = Post(PostUser_id=users.id,
-                        Keyword_id=kwd_id,
-                        StatusID=message.get_status_id(),
-                        Content=message.get_text(),
-                        CreatedAt=message.get_time(),
-                        Sentiment=sentiment
-                        )
-            post.save()
+                users.save()
+                print()
+                post = Post(PostUser_id=users.id,
+                            Keyword_id=kwd_id,
+                            StatusID=message.get_status_id(),
+                            Content=message.get_text(),
+                            CreatedAt=message.get_time(),
+                            Sentiment=sentiment
+                            )
+                post.save()
 
     def get_reach(self, user_name, api, follower_count, post_id):
         page_count = 0
