@@ -562,10 +562,7 @@ def account_delete(request):
 
 def report(request):
     user_id = request.user.id
-    keywords_list = []
-    keywords = list(Keyword.objects.filter(User_id=user_id))
-    user_keywords = Keyword.objects.filter(
-        User_id=request.user.id, alert_name=keyword).values_list('id', flat=True)
+    keywords = list(Keyword.objects.filter(User_id=user_id).order_by('-id'))
     return render_to_response('SMM/report.html', {'keyword_list': keywords})
 
 def get_user_sentiment(request):

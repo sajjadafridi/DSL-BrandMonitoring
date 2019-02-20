@@ -10,13 +10,10 @@ app.controller('NewAlertSubmitAppController', ["$scope", "$http", function ($sco
     $scope.preventSubmission = function ($event) {
 
         var keyword = "";
-console.log($scope.keywords)
         if (dataStore.getItem(index) === "company") {
             keyword = $('#search-input').val();
-            alert(dataStore.getItem(index))
         } else {
             keyword = $('#keyword-input').val();
-            alert(dataStore.getItem(index))
         }
         if (keyword != "") {
 
@@ -28,7 +25,6 @@ console.log($scope.keywords)
             }
         }
     }
-
 
     $scope.get_user_keywords = function () {
         $http.get('get_user_keywords/').then(function (data) {
