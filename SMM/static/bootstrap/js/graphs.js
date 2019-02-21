@@ -8,6 +8,7 @@ app.config(function ($interpolateProvider) {
 app.controller('ReportsAppController', ["$scope", "$http", function ($scope, $http) {
 
     $scope.drawKeywordPieChart = function (alert_name) {
+
         $http.get('get_user_sentiment/', {
             params: {
                 "alert_name": alert_name,
@@ -54,20 +55,33 @@ google.charts.load('current', {
 function drawChart(pos, neg, net) {
     // console.log(data['positive'])
     // Create the data table.
+    $('#sentiment_details').css('display', 'block');
+
+    $('#no_of_posts').text((pos+neg+net).toString());
+
+    $('#neg_sentiment_count').text((neg).toString());
+    $('#net_sentiment_count').text((net).toString());
+    $('#pos_sentiment_count').text((pos).toString());
+
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Topping');
     data.addColumn('number', 'Slices');
 
     data.addRows([
-        ['Positive', pos],
-        ['Negative', neg],
-        ['Neutral', net]
+        ['Negative', pos],
+        ['Neutral', neg],
+        ['Positive', net]
     ]);
-    console.log($('#chart_div').height())
     // Set chart options
     var options = {
         'width': $('#chart_div').width(),
-        'height': 500
+        'height': 500,
+        is3D: true,
+        slices: {
+            0: { color: '#f6465b' },
+            1: { color: '#90d8e8' },
+            2: { color: '#8cd53a' }
+          }
     };
 
     // Instantiate and draw our chart, passing in some options.

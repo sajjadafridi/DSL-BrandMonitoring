@@ -15,6 +15,36 @@
   height: auto;
   z-index: 10;
 }
+.sentiment_count_value{
+font-family: 'Allerta Stencil', sans-serif;
+font-size:24px;
+display:inline-block;
+margin-left:20px;
+}
+.sentiment_image{
+width:40px;
+height:40px;
+}
+.sentiment_count_row{
+margin-top:20px;
+}
+#no_of_posts{
+font-family: 'Allerta Stencil', sans-serif;
+font-size:24px;
+display:inline-block;
+margin-left:5px;
+}
+.reports_details_heading{
+font-family: 'Josefin Sans', sans-serif;
+font-size:24px;
+}
+.report_heading{
+font-family: 'Josefin Slab', serif;
+font-family: 'Coiny', cursive;
+    color: cornflowerblue;
+    padding:50px 0px 0px 0px;
+    text-align:center;
+}
 
 .alert_badge_count {
   border-radius: 10px;

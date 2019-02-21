@@ -19,6 +19,9 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
         <link rel="stylesheet" href="{% static 'SMM/dropdown.css' %}">
+
+        <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Allerta+Stencil|Coiny|Josefin+Sans" rel="stylesheet">
          <!--Angular JS-->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
@@ -26,7 +29,8 @@
     </head>
 
     <body>
-
+    <div class="container-fluid">
+        <h2 class="report_heading">SENTIMENT ANALYSIS</h2>
     <div class="row">
         <div class="col-4">
             <div ng-app="ReportsApp" ng-controller="ReportsAppController" class="container" style="margin-top:10px">
@@ -45,12 +49,27 @@
 
     </div>
 
-<div class="col-8"><div id="chart_div"></div></div>
-
-            <!--Div that will hold the pie chart-->
-
-
+<div class="col-8">
+    <div id="sentiment_details" style="display:none;margin-top:50px">
+        <div class="row"><span class="reports_details_heading">Total No of Tweets: </span><span id="no_of_posts"></span></div>
+        <div class="row">
+             <div class="col-2">
+            <div class="row sentiment_count_row"><img class="sentiment_image" src="{% static 'images/negative.png' %}"/><span id="neg_sentiment_count" class="sentiment_count_value" style="color:#f6465b">23</span></div>
+            <div class="row sentiment_count_row"><img class="sentiment_image" src="{% static 'images/neutral.png' %}"/><span id="net_sentiment_count" class="sentiment_count_value" style="color:#90d8e8">56</span></div>
+            <div class="row sentiment_count_row"><img class="sentiment_image" src="{% static 'images/positive.png' %}"/><span id="pos_sentiment_count" class="sentiment_count_value" style="color:#8cd53a">67</span></div>
         </div>
+        <div class="col-10">
+            <div id="chart_div"></div>
+        </div>
+        </div>
+
+
+    </div>
+    </div>
+            <!--Div that will hold the pie chart-->
+        </div>
+    </div>
+
         <!--script-->
         <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
             crossorigin="anonymous"></script>
