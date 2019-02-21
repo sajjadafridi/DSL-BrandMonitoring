@@ -1,11 +1,13 @@
-
+{% extends 'SMM/base_nav.html' %}
+{% block content %}
+    {% load staticfiles %}
     <!DOCTYPE html>
     <html lang="en">
     <head>
          <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>Social Media Monitor</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}">
+
+         <link rel="stylesheet" type="text/css" href="{% static 'SMM/modal.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'SMM/login.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'SMM/dashboard.css' %}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -18,7 +20,12 @@
         <link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,900" rel="stylesheet">
 
 	<!-- Custom stlylesheet -->
-         <link type="text/css" rel="stylesheet" href="{% static 'SMM/404.css' %}" />
+	    <link type="text/css" rel="stylesheet" href="{% static 'SMM/404.css' %}" />
+	<!-- Custom stlylesheet -->
+         <link type="text/css" rel="stylesheet" href="404.css" />
+        <link type="text/css" rel="stylesheet" href="{% static 'SMM/404.css' %}" />
+        <link rel="icon" href="{% static 'images/icon-trans.png' %}">
+
     </head>
     <body>
     <div id="notfound">
@@ -28,12 +35,11 @@
 			</div>
 			<h2>We are sorry, Page not found!</h2>
 			<p>The page you are looking for might have been removed had its name changed or is temporarily unavailable.</p>
-			<a href="#">Back To Homepage</a>
+			<a href="{% url 'index' %}">Back To Homepage</a>
 		</div>
 	</div>
 </div>
-
-   <script
+     <script
             src="https://code.jquery.com/jquery-3.1.1.js"
             integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
             crossorigin="anonymous"></script>
@@ -52,7 +58,7 @@
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
-
+{% endblock %}
 </body>
 </html>
 
