@@ -63,8 +63,8 @@ def index(request):
         contactform = ContactForm()
         return render(request, "SMM/index.html", {'contact_form': contactform})
 
-def handler404(request):
-    return render(request, 'SMM/404.html', status=404)
+def handler404(request,exception):
+    return render(request, 'SMM/404.html',status=404)
 
 def handler500(request):
     return render(request, 'SMM/500.html', status=500)
