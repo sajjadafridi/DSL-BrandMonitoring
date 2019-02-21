@@ -1,8 +1,11 @@
+from functools import wraps
+
 from django.contrib.auth import login, update_session_auth_hash
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect, render_to_response
+from django.urls import resolve
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
@@ -35,10 +38,8 @@ import json
 template_name = "feeds"
 keyword = ' '
 
-
 def load_forgetpassword_page(request):
     return render(request, 'SMM/password_reset.html')
-
 
 def index(request):
     # handle the contact form
@@ -64,12 +65,17 @@ def index(request):
 
 
 def redirect_login(request):
+    print(resolve(request.META['PATH_INFO'])[0])
     if request.user.is_authenticated:
         if not check_existing_keyword(request):
             return redirect('new_alert')
         else:
             request.session['search_keyword'] = None
-            return redirect('feeds')
+            redirect_view=request.session['view_name'];
+            if redirect_view=='None':
+                return redirect('feeds')
+            else:
+                return redirect(redirect_view)
     else:
         return redirect('remember_me_login')
 
@@ -81,6 +87,12 @@ def remember_me_login(request, template_name='SMM/login.html',
                       authentication_form=AuthenticationRememberMeForm):
 
     redirect_to = request.POST.get(redirect_field_name, '')
+
+    try:
+        view_name = resolve(request.GET.get('next')).view_name
+        request.session['view_name'] = view_name
+    except:
+        request.session['view_name'] = 'None'
 
     if request.method == "POST":
         form = authentication_form(data=request.POST)
@@ -122,6 +134,7 @@ def remember_me_login(request, template_name='SMM/login.html',
     })
 
 
+@login_required
 def new_alert(request):
     if request.user.is_authenticated:
         keyword = ''
@@ -226,40 +239,40 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'SMM/account_activation_invalid.html')
 
-
+@login_required
 def feeds(request,  alert_keyword=None):
-    if request.user.is_authenticated:
-        kwd_to_search = ''
-        if 'search_keyword' not in request.session:
-            request.session['search_keyword'] = None
 
-        kwd_to_search = request.session['search_keyword']
+    kwd_to_search = ''
+    if 'search_keyword' not in request.session:
         request.session['search_keyword'] = None
-        if not kwd_to_search == None:
-            latest_keyword = Keyword.objects.order_by('-id')[:1]
-            for kwd in latest_keyword:
-                    # startThreadTwitterFeed(1, 'PayPal')
-                obj = TwintThread()
-                obj.startThreadTwitterFeeds(kwd_to_search, kwd.id)
-                # scheduling_script();
-            time.sleep(3)
-            keywords = {}
-            posts = {}
-            current_user = request.user
-            Keyword_table = Keyword.objects.filter(User_id=current_user.id)
-            for kwd in Keyword_table:
-                keywords[kwd.id] = kwd.alert_name
-            Posts = []
-            list_of_data = {
-                "post_data": Posts,
-                "keyword_list": keywords
-            }
-            return render_to_response('SMM/feeds.html', list_of_data)
-        return render(request, 'SMM/feeds.html')
-    else:
-        return redirect('remember_me_login')
+
+    kwd_to_search = request.session['search_keyword']
+    request.session['search_keyword'] = None
+    if not kwd_to_search == None:
+        latest_keyword = Keyword.objects.order_by('-id')[:1]
+        for kwd in latest_keyword:
+                # startThreadTwitterFeed(1, 'PayPal')
+            obj = TwintThread()
+            obj.startThreadTwitterFeeds(kwd_to_search, kwd.id)
+            # scheduling_script();
+        time.sleep(3)
+        keywords = {}
+        posts = {}
+        current_user = request.user
+        Keyword_table = Keyword.objects.filter(User_id=current_user.id)
+        for kwd in Keyword_table:
+            keywords[kwd.id] = kwd.alert_name
+        Posts = []
+        list_of_data = {
+            "post_data": Posts,
+            "keyword_list": keywords
+        }
+        return render_to_response('SMM/feeds.html', list_of_data)
+    return render(request, 'SMM/feeds.html')
 
 
+
+@login_required
 def get_search(request):
     if request.method == 'GET':
         keyword = request.GET.get('Search')
@@ -269,6 +282,7 @@ def get_search(request):
     return render(request, template_name, {'error': error})
 
 
+@login_required
 def influencers(request):
     selectedkwd = 0
     selectedtime = 'Time'
@@ -315,6 +329,7 @@ def influencers(request):
     return render_to_response('SMM/influencers.html', keywords)
 
 
+@login_required
 def update_profile(request):
     if request.user.is_authenticated:
         if request.method == 'POST' and 'profileupdatebtn' in request.POST:
@@ -370,6 +385,7 @@ def update_profile(request):
         return redirect('remember_me_login')
 
 
+@login_required
 def load_profile(user):
     try:
         return user.profile
@@ -378,6 +394,7 @@ def load_profile(user):
         return profile
 
 
+@login_required
 def update_sentiment(request):
     is_updated="False"
     try:
@@ -395,6 +412,7 @@ def temp(request, alert_id):
     return HttpResponse(alert_id)
 
 
+@login_required
 def display_feed_badge(request):
     keywords = []
     current_user = request.user
@@ -409,7 +427,7 @@ def display_feed_badge(request):
         keywords.append(json.dumps(keyword))
     return JsonResponse(keywords, safe=False)
 
-
+@login_required
 def display_feed_angular(request):
     keywords = {}
     Posts = []
@@ -457,7 +475,7 @@ def display_feed_angular(request):
     }
     return JsonResponse(jsonResult, safe=False)
 
-
+@login_required
 def display_feed(request, alert_id):
     keywords = {}
     Posts = []
@@ -511,7 +529,7 @@ def get_time(time_string):
         dates = datetime.now() - timedelta(days=59)
         return dates.date()
 
-
+@login_required
 def check_existing_keyword(user_request):
     user_id = user_request.user.id
     keyword_count = Keyword.objects.filter(User_id=user_id).count()
@@ -520,7 +538,7 @@ def check_existing_keyword(user_request):
     else:
         return False
 
-
+@login_required
 def check_user_keyword(request):
     keyword = request.GET.get('keyword')
     keyword_count = Keyword.objects.filter(
@@ -529,7 +547,7 @@ def check_user_keyword(request):
         return JsonResponse('{"Exists":"Yes"}', safe=False)
     return JsonResponse('{"Exists":"No"}', safe=False)
 
-
+@login_required
 def get_user_keywords(request):
     user_keywords = Keyword.objects.filter(
         User_id=request.user.id)
@@ -538,7 +556,7 @@ def get_user_keywords(request):
         keywords.append(kwd.alert_name.lower())
     return JsonResponse(keywords, safe=False)
 
-
+@login_required
 def delete_account(user_request):
     user_id = user_request.user.id
     keyword_list = list(Keyword.objects.filter(User_id=user_id))
@@ -559,12 +577,13 @@ def delete_account(user_request):
 def account_delete(request):
     return render(request, 'SMM/account_delete.html')
 
-
+@login_required
 def report(request):
     user_id = request.user.id
     keywords = list(Keyword.objects.filter(User_id=user_id).order_by('-id'))
     return render_to_response('SMM/report.html', {'keyword_list': keywords})
 
+@login_required
 def get_user_sentiment(request):
     keyword = request.GET.get('alert_name')
     keyword_id = Keyword.objects.filter(
