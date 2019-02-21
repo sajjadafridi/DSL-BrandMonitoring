@@ -66,6 +66,9 @@ def index(request):
 def handler404(request):
     return render(request, 'SMM/404.html', status=404)
 
+def handler500(request):
+    return render(request, 'SMM/500.html', status=500)
+
 def redirect_login(request):
     if request.user.is_authenticated:
         if not check_existing_keyword(request):

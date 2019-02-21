@@ -32,4 +32,4 @@ if settings.DEBUG is True:
                           document_root=settings.MEDIA_ROOT)
 
 handler404 = SMM.views.handler404
-handler500 = SMM.views.handler404
+handler500 = SMM.views.handler500
