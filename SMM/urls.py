@@ -1,5 +1,8 @@
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
+
+import SMM
+from SMM import views
 from .import views as core_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -56,3 +59,5 @@ urlpatterns = [
 #                           document_root=settings.MEDIA_ROOT)
 #     urlpatterns += static(settings.STATIC_URL,
 #                           document_root=settings.STATIC_ROOT)
+
+handler404 = SMM.views.handler404

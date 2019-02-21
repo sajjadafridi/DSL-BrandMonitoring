@@ -20,6 +20,8 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
+import SMM
+
 urlpatterns = [
     url(r'', include('SMM.urls')),
     #url(r'^SMM/', include('SMM.urls')),
@@ -28,3 +30,6 @@ urlpatterns = [
 if settings.DEBUG is True:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+
+handler404 = SMM.views.handler404
+handler500 = SMM.views.handler404

@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from SMM.forms import AuthenticationRememberMeForm
 from SMM.tasks import scheduling_script
-from django.template import RequestContext
+from django.template import RequestContext, loader, Context
 from BrandMonitoring import settings
 from SMM.tokens import account_activation_token
 from SMM.forms import SignUpForm, KeywordForm, ContactForm, UserProfileForm, UserEditForm, RemoveUser
@@ -63,9 +63,10 @@ def index(request):
         contactform = ContactForm()
         return render(request, "SMM/index.html", {'contact_form': contactform})
 
+def handler404(request):
+    return render(request, 'SMM/404.html', status=404)
 
 def redirect_login(request):
-    print(resolve(request.META['PATH_INFO'])[0])
     if request.user.is_authenticated:
         if not check_existing_keyword(request):
             return redirect('new_alert')
