@@ -206,10 +206,10 @@ def signup(request):
                 errors = form._errors.setdefault("email", ErrorList())
                 errors.append("Email already exists!")
                 return render(request, 'SMM/signup.html', {'form': form})
-            elif not validate_reg_email(form):
-                errors = form._errors.setdefault("email", ErrorList())
-                errors.append("Email is not valid!")
-                return render(request, 'SMM/signup.html', {'form': form})
+            # elif not validate_reg_email(form):
+            #     errors = form._errors.setdefault("email", ErrorList())
+            #     errors.append("Email is not valid!")
+            #     return render(request, 'SMM/signup.html', {'form': form})
             else:
                 user = form.save(commit=False)
                 user.is_active = False
@@ -263,10 +263,8 @@ def feeds(request,  alert_keyword=None):
     if not kwd_to_search == None:
         latest_keyword = Keyword.objects.order_by('-id')[:1]
         for kwd in latest_keyword:
-                # startThreadTwitterFeed(1, 'PayPal')
             obj = TwintThread()
             obj.startThreadTwitterFeeds(kwd_to_search, kwd.id)
-            # scheduling_script();
         time.sleep(3)
         keywords = {}
         posts = {}
