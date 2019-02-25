@@ -378,9 +378,12 @@ def update_profile(request):
                 user_form = UserEditForm(instance=request.user)
                 profile_form = UserProfileForm(instance=request.user.profile)
                 userdelform = RemoveUser()
-
                 return render(request, 'SMM/update_profile.html',
                               {'user_form': user_form, 'profile_form': profile_form, 'change_password': change_password, 'removeuser_form': userdelform})
+        elif request.method == 'POST' and 'deactivateconfirmbtn' in request.POST:
+            user_record = User.objects.get(id=request.user.id)
+            user_record.is_active=False
+            user_record.save()
         elif request.method == 'POST' and 'deleteconfirmbtn' in request.POST:
             userdelform = RemoveUser(request.POST)
             if userdelform.is_valid():

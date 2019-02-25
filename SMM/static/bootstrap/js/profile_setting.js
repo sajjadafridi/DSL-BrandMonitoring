@@ -13,8 +13,23 @@ function myProfileTabClick() {
 	document.getElementById("changePasswordArea").style.display = "none";
 	document.getElementById("deleteAccountTab").style.color = "darkgray";
 	document.getElementById("deleteAccountArea").style.display = "none";
+	document.getElementById("deactivateAccountTab").style.color = "darkgray";
+	document.getElementById("deactivateAccountArea").style.display = "none";
 
 	dataStore.setItem(index, 'myProfileTabClick')
+}
+
+function deactivateAccounTabClick(){
+    document.getElementById("deactivateAccountTab").style.color = "darkgreen";
+	document.getElementById("deactivateAccountArea").style.display = "block";
+	document.getElementById("myProfileTab").style.color = "darkgray";
+	document.getElementById("myProfileArea").style.display = "none";
+	document.getElementById("deleteAccountTab").style.color = "darkgray";
+	document.getElementById("deleteAccountArea").style.display = "none";
+	document.getElementById("changePasswordTab").style.color = "darkgray";
+	document.getElementById("changePasswordArea").style.display = "none";
+
+	dataStore.setItem(index, 'deactivateAccountTabClick')
 }
 
 function changePasswordTabClick() {
@@ -24,6 +39,8 @@ function changePasswordTabClick() {
 	document.getElementById("myProfileArea").style.display = "none";
 	document.getElementById("deleteAccountTab").style.color = "darkgray";
 	document.getElementById("deleteAccountArea").style.display = "none";
+	document.getElementById("deactivateAccountTab").style.color = "darkgray";
+	document.getElementById("deactivateAccountArea").style.display = "none";
 
 	dataStore.setItem(index, 'changePasswordTabClick')
 }
@@ -35,6 +52,9 @@ function deleteAccountTabClick() {
 	document.getElementById("myProfileArea").style.display = "none";
 	document.getElementById("changePasswordTab").style.color = "darkgray";
 	document.getElementById("changePasswordArea").style.display = "none";
+	document.getElementById("deactivateAccountTab").style.color = "darkgray";
+	document.getElementById("deactivateAccountArea").style.display = "none";
+
 	dataStore.setItem(index, 'deleteAccountTabClick')
 }
 
@@ -67,15 +87,30 @@ var modalConfirm = function (callback) {
 		callback(false);
 		$("#mi-modal").modal('hide');
 	});
+
+	//deactivate account modal
+	$("#deactivateAccountbtn").on("click", function () {
+		$("#deactivate-modal").modal('show');
+	});
+
+	$("#modal-btn-yes-deactivate").on("click", function () {
+		callback(true);
+		$("#deactivate-modal").modal('hide');
+	});
+
+	$("#modal-btn-no-deactivate").on("click", function () {
+		callback(false);
+		$("#deactivate-modal").modal('hide');
+	});
 };
 
 modalConfirm(function (confirm) {
-	if (confirm) {
-		$("#result").html("Confirm");
-	} else {
-		//Acciones si el usuario no confirma
-		$("#result").html("No Confirm");
-	}
+//	if (confirm) {
+//		$("#result").html("Confirm");
+//	} else {
+//		//Acciones si el usuario no confirma
+//		$("#result").html("No Confirm");
+//	}
 });
 var oldIndex;
 $(document).ready(function () {

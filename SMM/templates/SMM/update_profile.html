@@ -32,6 +32,7 @@
             <ul>
                 <li id="myProfileTab" onclick="myProfileTabClick()">My Profile</li>
                 <li id="changePasswordTab" onclick="changePasswordTabClick()">Change Password</li>
+                <li id="deactivateAccountTab" onclick="deactivateAccounTabClick()">Deactivate Account</li>
                 <li id="deleteAccountTab" onclick="deleteAccountTabClick()">Delete Account</li>
             </ul>
         </div>
@@ -49,6 +50,7 @@
                     <img src='{{profile_form.instance.profile_image.url}}' width='240' id="profileImagePlaceHolder" alt="" />
                     {% endif %}
                     <input type="file" name="{{ profile_form.profile_image.html_name }}" id="{{ profile_form.profile_image.id_for_label }}"
+
                         value="{{ profile_form.instance.profile_image.url }}" class="form-control" onchange="loadImage()">
                     {% comment %} <input type="file" id="profileImageInput" class="form-control" name="profileImage" id="fileToUpload"
                         onchange="loadImage()"> {% endcomment %}
@@ -115,6 +117,7 @@
                         <label for="oldPasswordInput" class="input-labels">Old Password</label>
                         <input type="password" name="{{ change_password.old_password.html_name }}" id="{{ change_password.old_password.id_for_label }}"
                             class="form-control" placeholder="Old Password" required autofocus>
+                            class="form-control" placeholder="Old Password" required autofocus>
                     </div>
                     <div class="row">
                         <label for="newPasswordInput" class="input-labels">New Password</label>
@@ -149,10 +152,54 @@
                         </div>
                     </div>
                 </div>
-        </form>
+
         </div>
 
+ </form>
 
+        <div id="deactivateAccountArea" class="settingsArea">
+            <div class="row" id="heading">
+                <h2>Deactivate Account</h2>
+            </div>
+            <div id="inputsDiv">
+                <div class="row">
+                    <p>We do our best to give you a great experience - we'll be sad to see you leave us.</p>
+                    <button id="deactivateAccountbtn" class="links" type="submit" name="deactivateAccountbtn">Deactivate my
+                        account.</button>
+                </div>
+            </div>
+
+
+            <!-- The Modal -->
+            <div class="modal fade" id="deactivate-modal">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Deactivate Confirm</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            Are you sure to deactivate your account?
+                        </div>
+
+                        <!-- Modal footer -->
+                        <form method="POST" enctype="multipart/form-data" id="deactivateAccountForm">
+                            <div class="modal-footer">
+                                {% csrf_token %}
+                                {{removeuser_form.username}}
+                                <button type="submit" class="btn btn-default" id="modal-btn-yes-deactivate" name='deactivateconfirmbtn'>Yes</button>
+                                <button type="button" class="btn btn-primary" id="modal-btn-no-deactivate">No</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
         <div id="deleteAccountArea" class="settingsArea">
             <div class="row" id="heading">
@@ -190,6 +237,7 @@
                                 {{removeuser_form.username}}
                                 <button type="submit" class="btn btn-default" id="modal-btn-yes" name='deleteconfirmbtn'>Yes</button>
                                 <button type="button" class="btn btn-primary" id="modal-btn-no">No</button>
+                            </div>
                         </form>
                     </div>
 
