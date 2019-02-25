@@ -206,10 +206,10 @@ def signup(request):
                 errors = form._errors.setdefault("email", ErrorList())
                 errors.append("Email already exists!")
                 return render(request, 'SMM/signup.html', {'form': form})
-            # elif not validate_reg_email(form):
-            #     errors = form._errors.setdefault("email", ErrorList())
-            #     errors.append("Email is not valid!")
-            #     return render(request, 'SMM/signup.html', {'form': form})
+            elif not validate_reg_email(form):
+                errors = form._errors.setdefault("email", ErrorList())
+                errors.append("Email is not valid!")
+                return render(request, 'SMM/signup.html', {'form': form})
             else:
                 user = form.save(commit=False)
                 user.is_active = False
