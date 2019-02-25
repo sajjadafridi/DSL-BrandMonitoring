@@ -30,7 +30,7 @@ import asyncio
 import time
 from django.forms.utils import ErrorList
 from django.contrib.auth import login as auth_login
-
+from validate_email import validate_email
 from SMM.TwintThread import TwintThread
 import os
 import json
@@ -193,6 +193,10 @@ def check_email(form_request):
     else:
         return False
 
+def validate_reg_email(form_request):
+    email = form_request.cleaned_data.get('email')
+    is_valid = validate_email(email,verify=True)
+    return is_valid
 
 def signup(request):
     if request.method == 'POST':
@@ -200,7 +204,11 @@ def signup(request):
         if form.is_valid():
             if check_email(form):
                 errors = form._errors.setdefault("email", ErrorList())
-                errors.append(u"Email already exist!")
+                errors.append("Email already exists!")
+                return render(request, 'SMM/signup.html', {'form': form})
+            elif not validate_reg_email(form):
+                errors = form._errors.setdefault("email", ErrorList())
+                errors.append("Email is not valid!")
                 return render(request, 'SMM/signup.html', {'form': form})
             else:
                 user = form.save(commit=False)
