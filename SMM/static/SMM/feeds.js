@@ -123,7 +123,7 @@ app.controller('FeedsController', ["$scope", "$http", "$interval", function ($sc
     $scope.post_id = feed.ID;
     $('#detailsPanelFeed').css('display', 'block');
     $("#display_name").text(feed.DisplayName);
-    $("#created_at").text(feed.CreatedAt);
+    $("#created_at").text(feed.CreatedAt+' GMT+5');
     $("#text").text(feed.Content);
     $('#display_picture').attr('src', feed.DisplayPicture);
     $('#display_picture_link').attr('href', "https://twitter.com/" + feed.DisplayName);
