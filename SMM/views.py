@@ -125,25 +125,6 @@ def remember_me_login(request, template_name='SMM/login.html',
 
             return redirect(redirect_to)
 
-        # elif 'activateAccountLink' in request.POST:
-        #     username=request.POST.get('username_active')
-        #     user=User.objects.filter(username=username)[0]
-        #     subject = 'Social Media Brand Monitoring'
-        #     message = render_to_string('SMM/account_activation_email.html', {
-        #         'user': user,
-        #         'domain': current_site.domain,
-        #         'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-        #         'token': account_activation_token.make_token(user),
-        #     })
-        #     user.email_user(subject, message, user.email)
-        #     return redirect('account_activation_sent')
-        #
-        # try:
-        #     is_active = request.POST.get('is_active')
-        #     user=User.objects.filter(form.cleaned_data.get('username'))
-        # except:
-        #     request.session['view_name'] = 'None'
-
     else:
         form = authentication_form(request)
 
