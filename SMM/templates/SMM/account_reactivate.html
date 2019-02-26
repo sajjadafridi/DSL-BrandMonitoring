@@ -18,23 +18,31 @@
 {% block content %}
 
 <div class="text-center">
-<h5 class=" head-main font-weight-normal">Forgot your Account Password?</h5>
+<h5 class=" head-main font-weight-normal">Reactivate your account?</h5>
 <br>
  <p class="btext font-weight-normal">Enter the Email address of your registered Account.You will receive a link to reset your account password. </p>
 </div>
-    <form class="formforgetpassword" method="post" novalidate>
+    <form class="formforgetpassword" method="post" action="" >
            {% csrf_token %}
-            <label for="{{ form.email.id_for_label }}" class="label">Enter your email address to reset your account password </label>
-            <input id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" 
-            placeholder="Enter your confirmation  email " type="email" class="form-control">
+            <label for="email" class="label">Enter your email address to reactivate your account</label>
+            <input id="email" name="reactivate_email"
+            placeholder="Enter your confirmation email" type="email" value="{{email}}" class="form-control" required>
         <div class="form-label-group">
             <div class="rows">
             </div>
             </div>
-    <div class="rows">
-            <button type="submit" class="btn btn-primary btn-block">Confirm Reset Password!</button>
+    <div class="rows" >
+            <button type="submit" class="btn btn-primary btn-block">Reactivate Account</button>
 
         </div>
+
+
+        {% if errors %}
+    <div class="alert alert-danger" style="margin-top:20px">
+                <strong>{{ error|escape }}</strong>
+            </div>
+{% endif %}
+
     </form>
 </div>
 {% endblock %}

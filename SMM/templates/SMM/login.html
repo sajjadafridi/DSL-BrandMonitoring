@@ -27,7 +27,7 @@
        <!--Social Media Monitor</h1>-->
   </span>
     </div>
-    <form class="loginform" method="post" action="" style="margin-top:50px  ">
+    <form id="form" class="loginform" method="post" action="" style="margin-top:50px  ">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}"/>
 {#        {% for field in form %}#}
@@ -35,9 +35,9 @@
                 <div class="row">
                     <label for="{{ form.username.id_for_label }}" class="label">User Name</label>
 {#                    {% if field.name == 'password' %}#}
-                    <input id="{{ form.username.id_for_label }}" maxlength="100" name="{{ form.username.html_name }}" placeholder="Enter user name"  type="input" class="form-control">
-                    <label for="{{ form.password.id_for_label }}" class="label"> Enter Password</label>
-                    <input id="{{ form.password.id_for_label }}" maxlength="100" name="{{ form.password.html_name }}" placeholder="Enter your password"  type="password" class="form-control">
+                    <input {% if form.username.value %} value="{{form.username.value}}"{% endif %} id="{{ form.username.id_for_label }}" maxlength="100" name="{{ form.username.html_name }}" placeholder="Enter user name"  type="input" class="form-control">
+                    <label  for="{{ form.password.id_for_label }}" class="label"> Enter Password</label>
+                    <input {% if form.password.value %} value="{{form.password.value}}"{% endif %} id="{{ form.password.id_for_label }}" maxlength="100" name="{{ form.password.html_name }}" placeholder="Enter your password"  type="password" class="form-control">
 {#                    {% endif%}#}
 
 {#                    {{ field }}#}
@@ -56,7 +56,7 @@
         {% endfor %}
         <br>
         <div class="row">
-            <button class="btn" type="submit">Sign in</button>
+            <button class="btn" type="submit" name="SignIn">Sign in</button>
         </div>
         <div class="rows">
             <div class="col">
@@ -90,6 +90,14 @@
     {% endfor %}
 {% endif %}
     </div>
+        {% if is_active %}
+       <div class="text-right">
+           <form method="post" action="">
+        <input type="hidden" name="username_active" value="{{ form.username.value }}"/>
+               <a name="activateAccountLink" class="links" href="{% url 'account_reactivate'%}">Activate your account?</a>
+        </form>
+           </div>
+        {% endif %}
     </form>
 {% endblock %}
 </div>

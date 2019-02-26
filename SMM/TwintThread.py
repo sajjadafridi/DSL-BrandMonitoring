@@ -60,7 +60,7 @@ class TwintThread(threading.Thread):
         c = twint.Config()
         c.Search = keyword
         c.KwdID = kwd_id
-        c.Since = datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
+        c.Since = datetime.strftime(datetime.now() - timedelta(30), '%Y-%m-%d')
         print(c.Since)
         c.Until = datetime.strftime(datetime.now(), '%Y-%m-%d')
         print(c.Until)

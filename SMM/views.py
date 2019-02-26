@@ -34,12 +34,14 @@ from validate_email import validate_email
 from SMM.TwintThread import TwintThread
 import os
 import json
+from SMM.models import User as ModelUser
 
 template_name = "feeds"
 keyword = ' '
 
 def load_forgetpassword_page(request):
     return render(request, 'SMM/password_reset.html')
+
 
 def index(request):
     # handle the contact form
@@ -123,8 +125,35 @@ def remember_me_login(request, template_name='SMM/login.html',
 
             return redirect(redirect_to)
 
+        # elif 'activateAccountLink' in request.POST:
+        #     username=request.POST.get('username_active')
+        #     user=User.objects.filter(username=username)[0]
+        #     subject = 'Social Media Brand Monitoring'
+        #     message = render_to_string('SMM/account_activation_email.html', {
+        #         'user': user,
+        #         'domain': current_site.domain,
+        #         'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+        #         'token': account_activation_token.make_token(user),
+        #     })
+        #     user.email_user(subject, message, user.email)
+        #     return redirect('account_activation_sent')
+        #
+        # try:
+        #     is_active = request.POST.get('is_active')
+        #     user=User.objects.filter(form.cleaned_data.get('username'))
+        # except:
+        #     request.session['view_name'] = 'None'
+
     else:
         form = authentication_form(request)
+
+    is_active=False;
+
+    try:
+        if form.cleaned_data.get('username') != None:
+            is_active = not User.objects.filter(username=form.cleaned_data.get('username'))[0].is_active
+    except:
+        is_active=False
 
     request.session.set_test_cookie()
 
@@ -132,10 +161,12 @@ def remember_me_login(request, template_name='SMM/login.html',
 
     return render(request, template_name, {
         'form': form,
+        'is_active':is_active,
         redirect_field_name: redirect_to,
         'site': current_site,
         'site_name': current_site.name,
     })
+
 
 
 @login_required
@@ -186,15 +217,13 @@ def new_alert(request):
         return redirect('remember_me_login')
 
 
-def check_email(form_request):
-    email = form_request.cleaned_data.get('email')
+def check_email(email):
     if User.objects.filter(email=email).exists():
         return True
     else:
         return False
 
-def validate_reg_email(form_request):
-    email = form_request.cleaned_data.get('email')
+def validate_reg_email(email):
     is_valid = validate_email(email,verify=True)
     return is_valid
 
@@ -202,11 +231,11 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            if check_email(form):
+            if check_email(form.cleaned_data.get('email')):
                 errors = form._errors.setdefault("email", ErrorList())
                 errors.append("Email already exists!")
                 return render(request, 'SMM/signup.html', {'form': form})
-            elif not validate_reg_email(form):
+            elif not validate_reg_email(form.cleaned_data.get('email')):
                 errors = form._errors.setdefault("email", ErrorList())
                 errors.append("Email is not valid!")
                 return render(request, 'SMM/signup.html', {'form': form})
@@ -234,6 +263,42 @@ def signup(request):
 def account_activation_sent(request):
     return render(request, 'SMM/account_activation_sent.html')
 
+def account_reactivation_sent(request):
+    return render(request, 'SMM/account_reactivation_sent.html')
+
+def account_reactivation(request):
+    error="";
+    errors=False;
+    email="";
+    if request.method == "POST":
+        email=request.POST.get('reactivate_email')
+        if not validate_reg_email(email):
+            error="Not a valid email address!"
+            errors = True
+        elif not check_email(email):
+            error="Email does not exists!"
+            errors = True
+        else:
+            user=User.objects.filter(email=email)[0]
+            if user.is_active:
+                error="The user with this email address is already active!"
+                errors = True
+            else:
+                subject = 'Social Media Brand Monitoring: User Account Reactivation'
+                message = render_to_string('SMM/account_reactivation_email.html', {
+                    'user': user,
+                    'domain':get_current_site(request),
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                    'token': account_activation_token.make_token(user),
+                })
+                user.email_user(subject, message, user.email)
+                return redirect('account_reactivation_sent')
+
+    return render(request, "SMM/account_reactivate.html", {
+        'error':error,
+        'errors':errors,
+        'email':email
+    })
 
 def activate(request, uidb64, token):
     try:
@@ -247,7 +312,7 @@ def activate(request, uidb64, token):
         user.profile.email_confirmed = True
         user.save()
         login(request, user)
-        return redirect('new_alert')
+        return redirect('redirect_login')
     else:
         return render(request, 'SMM/account_activation_invalid.html')
 
